@@ -256,7 +256,7 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css?v={ASSET_VERSION}">
 {schema_tags}
 </head>
@@ -349,7 +349,7 @@ def footer(form_anchor="#devis"):
 
 <div class="consent" id="consent" role="dialog" aria-labelledby="consent-title">
   <h2 id="consent-title">Vos choix en matière de cookies</h2>
-  <p>Avec votre accord, nous utilisons des cookies Google Ads pour mesurer les appels et demandes de devis issus de nos annonces. Aucun cookie publicitaire n'est déposé sans votre accord, et le site fonctionne dans tous les cas. Votre choix est conservé 6 mois et modifiable à tout moment via le lien « Cookies » en bas de page. <a href="/politique-confidentialite/">En savoir plus</a></p>
+  <p>Avec votre accord, nous utilisons des cookies Google Ads pour mesurer l'efficacité de nos annonces. Le site fonctionne dans tous les cas. <a href="/politique-confidentialite/">En savoir plus</a></p>
   <div class="consent-prefs" id="consent-prefs" hidden>
     <label class="toggle"><input type="checkbox" checked disabled><span><b>Cookies nécessaires</b> — mémorisation de votre choix. Toujours actifs.</span></label>
     <label class="toggle"><input type="checkbox" id="c-ads"><span><b>Mesure publicitaire (Google Ads)</b> — savoir quelles annonces génèrent des appels et des demandes de devis.</span></label>
@@ -576,7 +576,7 @@ def quote_modal():
         <div class="frow"><label for="q-tel">Téléphone *</label><input id="q-tel" name="telephone" type="tel" required autocomplete="tel" placeholder="06 00 00 00 00"></div>
         <div class="frow"><label for="q-ville">Commune</label><select id="q-ville" name="commune">{city_options()}</select></div>
       </div>
-      <div class="frow"><label for="q-msg">Votre message *</label><textarea id="q-msg" name="message" rows="3" required placeholder="Décrivez rapidement la situation"></textarea></div>
+      <div class="frow"><label for="q-msg">Votre message *</label><textarea id="q-msg" name="message" rows="2" required placeholder="Décrivez rapidement la situation"></textarea></div>
       {consent_field("q")}
       <button type="submit" class="btn btn-orange">Envoyer ma demande</button>
       <p class="form-status" role="status"></p>

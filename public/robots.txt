@@ -31,7 +31,7 @@ User-agent: YouBot
 Allow: /
 Disallow: /404.html
 
-Sitemap: https://proserviceplomberievar.netlify.app/sitemap.xml
+Sitemap: https://pro-service83plomberie.netlify.app/sitemap.xml
 
-# Résumé du site pour les modèles de langage : https://proserviceplomberievar.netlify.app/llms.txt
-# Version complète : https://proserviceplomberievar.netlify.app/llms-full.txt
+# Résumé du site pour les modèles de langage : https://pro-service83plomberie.netlify.app/llms.txt
+# Version complète : https://pro-service83plomberie.netlify.app/llms-full.txt
