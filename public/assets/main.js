@@ -41,7 +41,65 @@ function gtagReportConversion_Formulaire(url) {
     });
   }
 
-  /* Formulaires de devis (Netlify Forms, envoi en arrière-plan) */
+  /* Fenêtre « Demander un devis » */
+  var modal = document.getElementById('quote-modal');
+  var lastFocus = null;
+  function openModal(service){
+    if(!modal){ return; }
+    lastFocus = document.activeElement;
+    var label = document.getElementById('quote-service-label');
+    var input = document.getElementById('quote-service-input');
+    if(label){ label.textContent = service; }
+    if(input){ input.value = service; }
+    var page = modal.querySelector('input[name="page"]');
+    if(page){ page.value = location.pathname; }
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    var first = document.getElementById('q-prenom');
+    if(first){ first.focus(); }
+  }
+  function closeModal(){
+    if(!modal){ return; }
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if(lastFocus && lastFocus.focus){ lastFocus.focus(); }
+  }
+  document.querySelectorAll('.svc-quote').forEach(function(b){
+    b.addEventListener('click', function(){ openModal(b.getAttribute('data-service') || 'Demande de devis'); });
+  });
+  var qc = document.getElementById('quote-close');
+  if(qc){ qc.addEventListener('click', closeModal); }
+  if(modal){ modal.addEventListener('click', function(e){ if(e.target === modal){ closeModal(); } }); }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && modal && modal.classList.contains('open')){ closeModal(); }
+  });
+
+  /* Page merci : conversion « formulaire » */
+  if(document.body.getAttribute('data-page') === 'merci'){ gtagReportConversion_Formulaire(); }
+
+  /* Agrandissement des photos de chantiers */
+  var shots = document.querySelectorAll('[data-lightbox]');
+  if(shots.length && typeof HTMLDialogElement === 'function'){
+    var d = document.createElement('dialog');
+    d.className = 'lightbox';
+    d.innerHTML = '<button type="button" class="lightbox-close" aria-label="Fermer">✕</button><img alt=""><p></p>';
+    document.body.appendChild(d);
+    var img = d.querySelector('img'), cap = d.querySelector('p');
+    d.querySelector('.lightbox-close').addEventListener('click', function(){ d.close(); });
+    d.addEventListener('click', function(e){ if(e.target === d){ d.close(); } });
+    shots.forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        img.src = a.getAttribute('href');
+        img.alt = cap.textContent = a.getAttribute('data-caption') || '';
+        d.showModal();
+      });
+    });
+  }
+
+  /* Formulaires de devis (Netlify Forms, envoi en arrière-plan puis page merci) */
   document.querySelectorAll('form.quote').forEach(function(form){
     form.addEventListener('submit', function(e){
       e.preventDefault();
@@ -57,14 +115,9 @@ function gtagReportConversion_Formulaire(url) {
         body: body
       }).then(function(res){
         if(!res.ok){ throw new Error(res.status); }
-        gtagReportConversion_Formulaire();
         btn.textContent = 'Demande envoyée ✓';
         btn.style.background = '#22a559';
-        if(status){
-          status.className = 'form-status ok';
-          status.textContent = 'Merci ! Nous vous rappelons rapidement. En cas d’urgence, appelez le 06 75 93 19 04.';
-        }
-        form.reset();
+        window.location.href = '/merci/';
       }).catch(function(){
         btn.disabled = false;
         btn.textContent = original;

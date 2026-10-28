@@ -451,3 +451,152 @@ a:focus-visible, button:focus-visible, summary:focus-visible{outline:2px solid v
 }
 .prose .chip{text-decoration:none; color:var(--ink); font-weight:600;}
 .prose .chip:hover{color:var(--purple-700);}
+
+/* ======================================================================
+   Éléments repris du site de Gironde : menus, héros avec photo, bandeaux,
+   logos d'assureurs, fenêtre devis, garanties, galerie
+   ====================================================================== */
+
+/* Menus déroulants */
+nav.main .has-sub{position:relative;}
+nav.main .has-sub > a{display:inline-flex; align-items:center; gap:4px; padding:26px 0;}
+nav.main .caret{font-size:11px; color:var(--gray-600);}
+nav.main .sub{position:absolute; top:100%; left:-18px; min-width:260px; background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); box-shadow:0 22px 40px -18px rgba(44,26,77,0.35); padding:8px; display:none; z-index:60;}
+nav.main .has-sub:hover .sub, nav.main .has-sub:focus-within .sub{display:block;}
+nav.main .sub a{display:block; padding:9px 12px; border-radius:var(--radius-sm); font-size:14px;}
+nav.main .sub a:hover{background:var(--purple-100);}
+nav.main .nav-urgent{display:inline-flex; align-items:center; gap:8px; color:#c2410c; font-weight:700;}
+nav.main .nav-urgent .dot{background:#ef4444; box-shadow:0 0 0 3px rgba(239,68,68,0.25);}
+.mgroup{padding:10px 0; border-bottom:1px solid var(--line);}
+.mgroup span{display:block; padding:6px 24px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gray-600);}
+.mobile-nav .mgroup a{border-bottom:none; padding:9px 24px; font-weight:500;}
+.mobile-nav{max-height:calc(100vh - 78px); overflow-y:auto;}
+
+/* Héros avec photo */
+.hero-split .hero-inner{display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center; text-align:left; padding-top:56px; padding-bottom:64px;}
+.hero-split .hero-text{display:flex; flex-direction:column; align-items:flex-start;}
+.hero-split .hero-checks{justify-content:flex-start;}
+.hero-split .lead{max-width:600px;}
+button.hero-devis{background:none; border:none; cursor:pointer; font-family:inherit;}
+.hero-media{position:relative;}
+.hero-media img{width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:var(--radius-lg); box-shadow:0 30px 60px -24px rgba(0,0,0,0.55);}
+.page-hero .hero-media img{aspect-ratio:5/4;}
+.hero-tag{position:absolute; left:-18px; bottom:24px; background:#fff; color:var(--ink); border-radius:var(--radius-md); padding:12px 18px; box-shadow:0 16px 34px -14px rgba(0,0,0,0.45); display:flex; flex-direction:column;}
+.hero-tag b{font-family:'Poppins', sans-serif; color:var(--orange-700); font-size:15px;}
+.hero-tag span{font-size:13px; color:var(--gray-600);}
+.ph-grid{display:block;}
+.page-hero.with-media .ph-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:44px; align-items:center;}
+.page-hero.with-media h1{font-size:clamp(28px,3.8vw,42px);}
+
+/* Bandes défilantes (engagements, assureurs) */
+.marquee{overflow:hidden; width:100%; -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-image:linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);}
+.marquee-track{display:flex; width:max-content; animation:marquee 45s linear infinite;}
+.marquee:hover .marquee-track{animation-play-state:paused;}
+@keyframes marquee{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+.trust-band{background:var(--paper-2); border-bottom:1px solid var(--line); padding:16px 0;}
+.trust-band li{display:flex; align-items:center; gap:9px; padding:0 26px; white-space:nowrap; font-size:14px; font-weight:600; color:var(--purple-800);}
+.ins-marquee{margin:6px 0 4px;}
+.ins-marquee .marquee-track{animation-duration:70s; gap:0;}
+.ins-logo{flex:none; width:150px; height:84px; margin:0 8px; background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; padding:12px 16px;}
+.ins-logo img{max-width:100%; max-height:52px; width:auto; height:auto; object-fit:contain;}
+.ins-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(120px,1fr)); gap:10px; margin:6px 0 20px; padding:0 !important;}
+.prose .ins-grid li{padding:10px; margin:0; height:72px;}
+.prose .ins-grid li::before{display:none;}
+.ins-count{text-align:center; font-family:'Poppins', sans-serif; font-weight:700; color:var(--purple-800); margin-top:18px;}
+@media (prefers-reduced-motion: reduce){
+  .marquee-track{flex-wrap:wrap; width:auto; justify-content:center; row-gap:10px;}
+  .marquee-track [aria-hidden="true"]{display:none;}
+}
+
+/* Bandeau urgence */
+.urgent-band{background:#fff4ed; border-bottom:1px solid #fbd5bd;}
+.urgent-inner{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:14px 24px;}
+.urgent-title{display:flex; align-items:center; gap:10px; font-family:'Poppins', sans-serif; color:#9a3412;}
+.urgent-dot{width:10px; height:10px; border-radius:50%; background:#ef4444; animation:urgentPulse 1.6s infinite;}
+@keyframes urgentPulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.5);} 70%{box-shadow:0 0 0 8px rgba(239,68,68,0);} 100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}}
+.urgent-links{display:flex; gap:8px; flex-wrap:wrap;}
+.urgent-links a{background:#fff; border:1px solid #fbd5bd; border-radius:var(--radius-pill); padding:7px 14px; font-size:13.5px; font-weight:600; color:#9a3412;}
+.urgent-links a:hover{border-color:#ea580c;}
+.urgent-cta{display:flex; align-items:center; gap:14px; margin-left:auto;}
+.urgent-help{font-size:14px; font-weight:600; color:#9a3412; text-decoration:underline; text-underline-offset:3px;}
+.urgent-cta .btn{padding:10px 18px; font-size:14px;}
+
+/* Cartes de service avec photo */
+.svc-card.has-img{padding:0; overflow:hidden; gap:0;}
+.svc-img{position:relative; display:block; aspect-ratio:5/3; overflow:hidden; background:var(--paper-2);}
+.svc-img img{width:100%; height:100%; object-fit:cover; transition:transform .4s ease;}
+.svc-card:hover .svc-img img{transform:scale(1.04);}
+.svc-img .pill{position:absolute; top:14px; left:14px; box-shadow:0 6px 16px -6px rgba(0,0,0,0.3);}
+.svc-body{padding:24px; display:flex; flex-direction:column; gap:13px; flex:1;}
+.svc-actions{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.svc-actions .btn{padding:11px 12px; font-size:13.5px;}
+
+/* Bandeau d'appel */
+.cta-band{background:linear-gradient(135deg, var(--orange-600), #e85d04); color:#fff; padding:44px 0;}
+.cta-inner{display:flex; align-items:center; justify-content:space-between; gap:28px; flex-wrap:wrap;}
+.cta-band h2{color:#fff; font-size:clamp(24px,3vw,32px); margin-bottom:6px;}
+.cta-band p{color:rgba(255,255,255,0.92);}
+.cta-actions{display:flex; gap:12px; flex-wrap:wrap;}
+.cta-band .btn-orange{background:#fff; color:var(--orange-700); box-shadow:0 14px 28px -12px rgba(0,0,0,0.35);}
+.cta-band .btn-ghost{border-color:rgba(255,255,255,0.7);}
+
+/* Garanties & autres prestations */
+.g-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+.g-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:26px; display:flex; flex-direction:column; gap:12px; box-shadow:0 4px 18px -12px rgba(44,26,77,0.14);}
+.g-card h3{font-size:17px;}
+.g-card p{font-size:14.5px; color:var(--gray-600);}
+.os-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.os-card{display:flex; align-items:center; gap:14px; background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:14px 18px; font-weight:600; transition:border-color .15s, transform .15s;}
+.os-card:hover{border-color:var(--purple-600); transform:translateY(-2px);}
+.os-card .icon-sq{width:44px; height:44px;}
+.os-card .arrow{margin-left:auto; color:var(--purple-700);}
+
+/* Fenêtre devis */
+.modal-overlay{position:fixed; inset:0; z-index:90; background:rgba(28,16,48,0.6); display:flex; align-items:flex-start; justify-content:center; padding:32px 16px; overflow-y:auto; opacity:0; pointer-events:none; transition:opacity .2s;}
+.modal-overlay.open{opacity:1; pointer-events:auto;}
+.modal-card{background:#fff; border-radius:var(--radius-lg); max-width:540px; width:100%; padding:28px; position:relative; margin:auto; box-shadow:0 30px 70px -20px rgba(0,0,0,0.5);}
+.modal-card h2{font-size:22px; margin:12px 0 4px;}
+.modal-sub{font-size:14px; color:var(--gray-600); margin-bottom:18px;}
+.modal-sub a{color:var(--purple-700); font-weight:700;}
+.modal-close{position:absolute; top:14px; right:14px; width:38px; height:38px; border:none; background:var(--paper-2); border-radius:10px; cursor:pointer; font-size:16px;}
+.consent-row .check{display:flex; gap:10px; align-items:flex-start; font-size:12.5px; color:var(--gray-600); font-weight:500; cursor:pointer;}
+.consent-row .check input{width:17px; height:17px; margin-top:2px; flex:none; accent-color:var(--purple-700);}
+.consent-row a{color:var(--purple-700); text-decoration:underline;}
+.mobile-bar button{border:none;}
+
+/* Page merci */
+.merci{text-align:center; display:flex; flex-direction:column; align-items:center; padding:30px 0;}
+.merci .actions{justify-content:center;}
+.merci-icon{width:72px; height:72px; border-radius:50%; background:#22a559; color:#fff; font-size:36px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;}
+
+/* Galerie de chantiers */
+.ch-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+.ch-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden;}
+.ch-card img{width:100%; aspect-ratio:4/3; object-fit:cover;}
+.ch-card figcaption{padding:16px 18px; display:flex; flex-direction:column; gap:4px; font-size:14px; color:var(--gray-600);}
+.ch-card figcaption b{color:var(--ink); font-family:'Poppins', sans-serif;}
+.lightbox{border:none; padding:0; background:transparent; max-width:min(1000px,94vw); overflow:visible;}
+.lightbox::backdrop{background:rgba(10,8,20,.85);}
+.lightbox img{max-width:min(1000px,94vw); max-height:80vh; border-radius:12px; margin:0 auto;}
+.lightbox p{color:#fff; text-align:center; margin-top:10px; font-weight:600;}
+.lightbox-close{position:absolute; top:-14px; right:-14px; width:40px; height:40px; border-radius:50%; border:none; background:#fff; cursor:pointer;}
+
+@media (max-width: 980px){
+  .hero-split .hero-inner, .page-hero.with-media .ph-grid{grid-template-columns:1fr; gap:30px;}
+  .hero-split .hero-inner{padding-top:36px; padding-bottom:44px;}
+  .hero-media img, .page-hero .hero-media img{aspect-ratio:4/3;}
+  .hero-media{max-width:520px;}
+  .hero-tag{left:12px;}
+  .g-grid{grid-template-columns:1fr 1fr;}
+  .os-grid, .ch-grid{grid-template-columns:1fr 1fr;}
+  .urgent-cta{margin-left:0;}
+}
+@media (max-width: 560px){
+  .g-grid, .os-grid, .ch-grid{grid-template-columns:1fr;}
+  .ins-logo{width:120px; height:70px;}
+  .svc-actions{grid-template-columns:1fr;}
+  .modal-card{padding:22px 18px;}
+  .trust-band li{font-size:13px; padding:0 18px;}
+}
+.svc-card.has-img .svc-foot{flex-wrap:wrap; row-gap:4px;}
+.svc-actions .btn{white-space:nowrap; padding:11px 8px; font-size:13px; gap:6px;}

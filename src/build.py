@@ -266,11 +266,25 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
 
 
 def header(path):
-    links = "".join(
-        '<a href="%s"%s>%s</a>' % (href, ' aria-current="page"' if path.startswith(href) else "", label)
-        for label, href in NAV
-    )
-    mlinks = "".join('<a href="%s">%s</a>' % (href, label) for label, href in [("Accueil", "/"), ("Urgence 24h/24", "/plombier-urgence-24h-var/")] + NAV)
+    def cur(href):
+        return ' aria-current="page"' if path.startswith(href) and href != "/" else ""
+    svc_items = [(s["short"], service_path(s)) for s in SERVICES] + [(ASSURANCE_PAGE["name"], "/%s/" % ASSURANCE_PAGE["slug"]), ("Toutes les prestations", "/prestations/")]
+    zone_items = [("Plombier %s" % c["name"], city_path(c)) for c in CORE_CITIES] + [("Toutes nos zones (22 communes)", "/zones-intervention/")]
+
+    def dropdown(label, href, items):
+        sub = "".join('<a href="%s">%s</a>' % (h, esc(t)) for t, h in items)
+        return ('<div class="has-sub"><a href="%s"%s>%s <span class="caret" aria-hidden="true">▾</span></a>'
+                '<div class="sub">%s</div></div>') % (href, cur(href), label, sub)
+    links = '<a class="nav-urgent" href="/plombier-urgence-24h-var/"%s><span class="dot dot-pulse"></span>Urgence 24h/24</a>' % cur("/plombier-urgence-24h-var/")
+    links += dropdown("Prestations", "/prestations/", svc_items)
+    links += dropdown("Zones", "/zones-intervention/", zone_items)
+    links += "".join('<a href="%s"%s>%s</a>' % (href, cur(href), label) for label, href in NAV[2:])
+    mgroup = lambda title, items: '<div class="mgroup"><span>%s</span>%s</div>' % (title, "".join('<a href="%s">%s</a>' % (h, esc(t)) for t, h in items))
+    mlinks = mgroup("Menu", [("Accueil", "/")])
+    mlinks += mgroup("Prestations", svc_items)
+    mlinks += mgroup("Zones d'intervention", zone_items)
+    mlinks += mgroup("Informations", [(l, h) for l, h in NAV[2:]] + [("Questions fréquentes", "/faq/")])
+    mlinks += '<a class="btn btn-orange" style="margin:16px 24px 20px" href="tel:%s">%s Appeler le %s</a>' % (B.PHONE_TEL, phone_icon(18, True), B.PHONE)
     return f"""<header class="site">
   <div class="wrap headbar">
     <a class="logo" href="/" aria-label="{B.NAME}, accueil">
@@ -310,8 +324,9 @@ def footer(form_anchor="#devis"):
       <div><h2>Prestations</h2><ul>{svc_links}</ul></div>
       <div><h2>Zones d'intervention</h2><ul>{city_links}</ul></div>
       <div><h2>Informations</h2><ul>
+        <li><a href="/plombier-urgence-24h-var/">Urgence plombier 24h/24</a></li>
         <li><a href="/tarifs/">Tarifs</a></li>
-        <li><a href="/a-propos/">À propos &amp; engagements</a></li>
+        <li><a href="/a-propos/">À propos &amp; engagements</a></li>{'<li><a href="/realisations/">Nos chantiers en images</a></li>' if B.REALISATIONS else ""}
         <li><a href="/conseils/">Conseils plomberie</a></li>
         <li><a href="/faq/">Questions fréquentes</a></li>
         <li><a href="/contact/">Contact &amp; devis</a></li>
@@ -319,7 +334,7 @@ def footer(form_anchor="#devis"):
       </ul></div>
     </div>
     <div class="foot-bottom">
-      <span>© {date.today().year} {B.NAME} — Artisan plombier indépendant, Vidauban (83550), Var.</span>
+      <span>© {date.today().year} {B.NAME} — Artisan plombier indépendant, Vidauban (83550), Var{" · SIRET " + B.SIRET if B.SIRET else ""}.</span>
       <span><a href="/mentions-legales/">Mentions légales</a> · <a href="/politique-confidentialite/">Confidentialité</a> · <button type="button" data-consent="open">Cookies</button></span>
     </div>
   </div>
@@ -328,8 +343,9 @@ def footer(form_anchor="#devis"):
 <a href="tel:{B.PHONE_TEL}" class="float-call" aria-label="Appeler {B.NAME}">{phone_icon(24, True)}</a>
 <div class="mobile-bar">
   <a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} Appeler</a>
-  <a href="{form_anchor}" class="btn btn-purple">Devis gratuit</a>
+  <button type="button" class="btn btn-purple svc-quote" data-service="Demande de devis">Devis gratuit</button>
 </div>
+{quote_modal()}
 
 <div class="consent" id="consent" role="dialog" aria-labelledby="consent-title">
   <h2 id="consent-title">Vos choix en matière de cookies</h2>
@@ -372,7 +388,7 @@ def crumbs_html(crumbs):
     return '<nav class="crumbs" aria-label="Fil d\'Ariane">%s</nav>' % "".join(parts)
 
 
-def page_hero(crumbs, h1, lead, checks=None, badge=None):
+def page_hero(crumbs, h1, lead, checks=None, badge=None, image=None, image_alt="", quote_service="Demande de devis"):
     checks_html = ""
     if checks:
         checks_html = '<div class="hero-checks">%s</div>' % "".join(
@@ -380,17 +396,132 @@ def page_hero(crumbs, h1, lead, checks=None, badge=None):
     badge_html = ""
     if badge:
         badge_html = '<div class="pill avail-badge" style="margin:18px 0 0"><span class="dot dot-pulse"></span><span>%s</span></div>' % badge
-    return f"""<section class="page-hero">
+    media = ""
+    if image:
+        media = ('<div class="hero-media"><img src="/assets/img/%s" alt="%s" width="560" height="440" fetchpriority="high">'
+                 '<div class="hero-tag"><b>Prix annoncé</b><span>avant toute intervention</span></div></div>') % (image, esc(image_alt))
+    return f"""<section class="page-hero{' with-media' if image else ''}">
   <div class="wrap">
     {crumbs_html(crumbs)}
-    {badge_html}
-    <h1>{h1}</h1>
-    <p class="lead">{lead}</p>
-    <div class="actions">
-      <a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} {B.PHONE}</a>
-      <a href="#devis" class="btn btn-ghost">Demander un devis gratuit</a>
+    <div class="ph-grid">
+      <div>
+        {badge_html}
+        <h1>{h1}</h1>
+        <p class="lead">{lead}</p>
+        <div class="actions">
+          <a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} {B.PHONE}</a>
+          <button type="button" class="btn btn-ghost svc-quote" data-service="{esc(quote_service)}">Demander un devis gratuit</button>
+        </div>
+        {checks_html}
+      </div>
+      {media}
     </div>
-    {checks_html}
+  </div>
+</section>
+"""
+
+
+def trust_items_short():
+    items = ["Plus de %s ans d'expérience en plomberie" % B.YEARS.rstrip("+"), "Disponible 24h/24 et 7j/7",
+             "Prix annoncé avant toute intervention", "Devis gratuit, sans engagement",
+             "Factures acceptées par les assurances", "Artisan local basé à Vidauban",
+             "Intervention dans tout le Var (83)", "Travaux garantis"]
+    if B.ASSURANCE_DECENNALE:
+        items.insert(1, "Assurance décennale & RC professionnelle")
+    return items
+
+
+def trust_marquee():
+    one = "".join('<li><span class="check-circle gr">✓</span>%s</li>' % esc(t) for t in trust_items_short())
+    return ('<div class="trust-band"><div class="marquee" aria-label="Nos engagements"><ul class="marquee-track">%s%s</ul></div></div>\n'
+            % (one, one.replace("<li>", '<li aria-hidden="true">')))
+
+
+def urgent_band():
+    links = [("Fuite d'eau", "/plombier-urgence-24h-var/"), ("Dégât des eaux", "/%s/" % ASSURANCE_PAGE["slug"]),
+             ("WC bouché", "/debouchage-canalisation-var/"), ("Chauffe-eau qui fuit", "/chauffe-eau-var/")]
+    chips = "".join('<a href="%s">%s</a>' % (h, t) for t, h in links)
+    return f"""<div class="urgent-band"><div class="wrap urgent-inner">
+  <b class="urgent-title"><span class="urgent-dot"></span>Une urgence plomberie ?</b>
+  <div class="urgent-links">{chips}</div>
+  <div class="urgent-cta"><a href="/conseils/fuite-d-eau-que-faire/" class="urgent-help">Que faire maintenant</a><a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(16, True)} Appeler</a></div>
+</div></div>
+"""
+
+
+def cta_band(title="Une fuite, une panne, un projet ?", text="Un artisan plombier basé à Vidauban, joignable 24h/24 et 7j/7 dans tout le Var."):
+    return f"""<section class="cta-band"><div class="wrap cta-inner">
+  <div><h2>{title}</h2><p>{text}</p></div>
+  <div class="cta-actions">
+    <a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} Appeler le {B.PHONE}</a>
+    <a href="/plombier-urgence-24h-var/" class="btn btn-ghost">Que faire en urgence ?</a>
+  </div>
+</div></section>
+"""
+
+
+def guarantees_section(cls="alt"):
+    cards = [
+        ("Plus de %s ans d'expérience" % B.YEARS.rstrip("+"), "Un plombier de métier, installé à Vidauban depuis %d, qui a déjà rencontré à peu près toutes les pannes." % B.SINCE),
+        ("Prix annoncé avant travaux", "Diagnostic d'abord, prix ensuite, intervention seulement avec votre accord. Aucune mauvaise surprise."),
+        ("Facture pour l'assurance", "Facture détaillée remise systématiquement, reconnue par les assureurs habitation en cas de sinistre."),
+        ("Artisan local, 24h/24", "Un seul numéro, un plombier qui connaît le Var et qui reste votre interlocuteur après l'intervention."),
+    ]
+    if B.ASSURANCE_DECENNALE:
+        cards[3] = ("Artisan assuré", "Assurance décennale et responsabilité civile professionnelle, garantie sur la prestation réalisée.")
+    items = "".join('<div class="g-card"><div class="icon-sq la">%s</div><h3>%s</h3><p>%s</p></div>' % (svc_icon("shield", 22), esc(t), esc(d)) for t, d in cards)
+    return f"""<section class="{cls}">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="pill pill-green sec-badge">Nos garanties</div>
+      <h2>Pourquoi nous faire confiance</h2>
+      <p>Les mêmes engagements pour chaque intervention, de la plus petite fuite à la rénovation complète.</p>
+    </div>
+    <div class="g-grid">{items}</div>
+  </div>
+</section>
+"""
+
+
+def other_services_section(current=None, city=None):
+    items = []
+    for s in SERVICES:
+        if s is current:
+            continue
+        href = combo_path(s, city) if city else service_path(s)
+        items.append('<a class="os-card" href="%s"><span class="icon-sq pu">%s</span><span>%s%s</span><span class="arrow">→</span></a>'
+                     % (href, svc_icon(s["icon"], 22), esc(s["short"]), (" " + city["a"]) if city else ""))
+    if not city:
+        items.append('<a class="os-card" href="/%s/"><span class="icon-sq pu">%s</span><span>%s</span><span class="arrow">→</span></a>'
+                     % (ASSURANCE_PAGE["slug"], svc_icon("shield", 22), ASSURANCE_PAGE["name"]))
+    return f"""<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="pill pill-lav sec-badge">Nos autres prestations</div>
+      <h2>Nous pouvons aussi vous aider pour</h2>
+    </div>
+    <div class="os-grid">{"".join(items)}</div>
+  </div>
+</section>
+"""
+
+
+def realisations_section(limit=6, cls=""):
+    if not B.REALISATIONS:
+        return ""
+    cards = "".join(
+        '<figure class="ch-card"><a href="/assets/chantiers/%s" data-lightbox data-caption="%s"><img src="/assets/chantiers/%s" alt="%s" loading="lazy"></a><figcaption><b>%s</b><span>%s</span></figcaption></figure>'
+        % (r["image"], esc(r["title"]), r["image"], esc(r["title"]), esc(r["title"]), esc(r.get("text", ""))) for r in B.REALISATIONS[:limit])
+    more = '<div class="center" style="margin-top:28px"><a class="btn btn-outline" href="/realisations/">Voir tous nos chantiers</a></div>' if len(B.REALISATIONS) > limit else ""
+    return f"""<section class="{cls}" id="realisations">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="pill pill-lav sec-badge">Réalisations</div>
+      <h2>Nos chantiers en images</h2>
+      <p>Quelques interventions réalisées dans le Var.</p>
+    </div>
+    <div class="ch-grid">{cards}</div>
+    {more}
   </div>
 </section>
 """
@@ -419,6 +550,42 @@ def city_options(selected=None):
     return "".join(opts)
 
 
+def consent_field(prefix):
+    return ('<div class="frow consent-row"><label class="check"><input type="checkbox" name="consentement" value="oui" required id="%s-consent">'
+            '<span>J\'accepte d\'être recontacté au sujet de ma demande, conformément à la <a href="/politique-confidentialite/">politique de confidentialité</a>.</span></label></div>') % prefix
+
+
+def quote_modal():
+    """Fenêtre « Demander un devis » (Netlify Forms : « devis-express »), ouverte par les boutons .svc-quote."""
+    return f"""<div class="modal-overlay" id="quote-modal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="quote-title">
+    <button type="button" class="modal-close" id="quote-close" aria-label="Fermer">✕</button>
+    <span class="pill pill-orange" id="quote-service-label">Demande de devis</span>
+    <h2 id="quote-title">Demander un devis gratuit</h2>
+    <p class="modal-sub">Réponse rapide. Pour une urgence, appelez le <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>.</p>
+    <form class="quote" name="devis-express" method="POST" data-netlify="true" netlify-honeypot="adresse-web" action="/merci/" style="padding:0">
+      <input type="hidden" name="form-name" value="devis-express">
+      <input type="hidden" name="page" value="">
+      <input type="hidden" name="besoin" value="Demande de devis" id="quote-service-input">
+      <p class="hp"><label>Ne pas remplir : <input name="adresse-web" tabindex="-1" autocomplete="off"></label></p>
+      <div class="frow-2">
+        <div class="frow"><label for="q-prenom">Prénom *</label><input id="q-prenom" name="prenom" type="text" required autocomplete="given-name"></div>
+        <div class="frow"><label for="q-nom">Nom *</label><input id="q-nom" name="nom" type="text" required autocomplete="family-name"></div>
+      </div>
+      <div class="frow-2">
+        <div class="frow"><label for="q-tel">Téléphone *</label><input id="q-tel" name="telephone" type="tel" required autocomplete="tel" placeholder="06 00 00 00 00"></div>
+        <div class="frow"><label for="q-ville">Commune</label><select id="q-ville" name="commune">{city_options()}</select></div>
+      </div>
+      <div class="frow"><label for="q-msg">Votre message *</label><textarea id="q-msg" name="message" rows="3" required placeholder="Décrivez rapidement la situation"></textarea></div>
+      {consent_field("q")}
+      <button type="submit" class="btn btn-orange">Envoyer ma demande</button>
+      <p class="form-status" role="status"></p>
+    </form>
+  </div>
+</div>
+"""
+
+
 def contact_section(path, title="Besoin d'un plombier maintenant ?", service=None, city=None):
     """Formulaire de devis complet (Netlify Forms : « devis »), présent en bas de chaque page."""
     return f"""<section class="contact" id="devis">
@@ -442,47 +609,52 @@ def contact_section(path, title="Besoin d'un plombier maintenant ?", service=Non
         </div>
       </div>
     </div>
-    <form class="quote" name="devis" method="POST" data-netlify="true" netlify-honeypot="adresse-web" action="/contact/">
+    <form class="quote" name="devis" method="POST" data-netlify="true" netlify-honeypot="adresse-web" action="/merci/">
       <input type="hidden" name="form-name" value="devis">
       <input type="hidden" name="page" value="{esc(path)}">
       <p class="hp"><label>Ne pas remplir : <input name="adresse-web" tabindex="-1" autocomplete="off"></label></p>
       <div class="frow-2">
         <div class="frow">
-          <label for="d-nom">Nom *</label>
-          <input id="d-nom" name="nom" type="text" required autocomplete="name" placeholder="Votre nom">
+          <label for="d-prenom">Prénom *</label>
+          <input id="d-prenom" name="prenom" type="text" required autocomplete="given-name" placeholder="Votre prénom">
         </div>
+        <div class="frow">
+          <label for="d-nom">Nom *</label>
+          <input id="d-nom" name="nom" type="text" required autocomplete="family-name" placeholder="Votre nom">
+        </div>
+      </div>
+      <div class="frow-2">
         <div class="frow">
           <label for="d-tel">Téléphone *</label>
           <input id="d-tel" name="telephone" type="tel" required autocomplete="tel" placeholder="06 00 00 00 00">
         </div>
-      </div>
-      <div class="frow-2">
         <div class="frow">
           <label for="d-email">E-mail</label>
           <input id="d-email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.fr">
         </div>
+      </div>
+      <div class="frow-2">
         <div class="frow">
           <label for="d-ville">Commune</label>
           <select id="d-ville" name="commune">{city_options(city)}</select>
         </div>
-      </div>
-      <div class="frow-2">
         <div class="frow">
           <label for="d-service">Type de besoin</label>
           <select id="d-service" name="besoin">{service_options(service)}</select>
         </div>
-        <div class="frow">
-          <label for="d-urgence">Urgence</label>
-          <select id="d-urgence" name="urgence"><option>Urgent (aujourd'hui)</option><option>Dans la semaine</option><option>Pas urgent / projet</option></select>
-        </div>
       </div>
       <div class="frow">
-        <label for="d-msg">Message</label>
-        <textarea id="d-msg" name="message" rows="3" placeholder="Décrivez rapidement la situation"></textarea>
+        <label for="d-urgence">Urgence</label>
+        <select id="d-urgence" name="urgence"><option>Urgent (aujourd'hui)</option><option>Dans la semaine</option><option>Pas urgent / projet</option></select>
       </div>
+      <div class="frow">
+        <label for="d-msg">Votre message *</label>
+        <textarea id="d-msg" name="message" rows="3" required placeholder="Décrivez rapidement la situation"></textarea>
+      </div>
+      {consent_field("d")}
       <button type="submit" class="btn btn-orange">Envoyer ma demande</button>
       <p class="form-status" role="status"></p>
-      <p class="form-note">En urgence, appelez directement le {B.PHONE}. Vos données servent uniquement à vous recontacter. <a href="/politique-confidentialite/" style="text-decoration:underline">Confidentialité</a></p>
+      <p class="form-note">En urgence, appelez directement le {B.PHONE}.</p>
     </form>
   </div>
 </section>
@@ -494,7 +666,7 @@ def quick_form(path, service=None, city=None, title="Rappel rapide"):
     return f"""<div class="side-card" id="rappel">
   <h2>{title}</h2>
   <p style="color:var(--gray-600)">Laissez votre numéro, un plombier vous rappelle au plus vite.</p>
-  <form class="quote" name="rappel" method="POST" data-netlify="true" netlify-honeypot="adresse-web" action="/contact/" style="padding:0">
+  <form class="quote" name="rappel" method="POST" data-netlify="true" netlify-honeypot="adresse-web" action="/merci/" style="padding:0">
     <input type="hidden" name="form-name" value="rappel">
     <input type="hidden" name="page" value="{esc(path)}">
     <p class="hp"><label>Ne pas remplir : <input name="adresse-web" tabindex="-1" autocomplete="off"></label></p>
@@ -502,6 +674,7 @@ def quick_form(path, service=None, city=None, title="Rappel rapide"):
     <div class="frow"><label for="r-tel">Téléphone *</label><input id="r-tel" name="telephone" type="tel" required autocomplete="tel" placeholder="06 00 00 00 00"></div>
     <div class="frow"><label for="r-ville">Commune</label><select id="r-ville" name="commune">{city_options(city)}</select></div>
     <div class="frow"><label for="r-besoin">Besoin</label><select id="r-besoin" name="besoin">{service_options(service)}</select></div>
+    {consent_field("r")}
     <button type="submit" class="btn btn-orange">Être rappelé</button>
     <p class="form-status" role="status"></p>
   </form>
@@ -560,16 +733,26 @@ def process_section(title="De l'appel à la réparation"):
 """
 
 
+def insurer_logos(marquee=True):
+    tiles = "".join('<li class="ins-logo"><img src="/assets/assurances/%s" alt="%s" loading="lazy" height="44"></li>' % (f, esc(n)) for n, f in B.INSURERS)
+    if not marquee:
+        return '<ul class="ins-grid">%s</ul>' % tiles
+    dup = "".join('<li class="ins-logo" aria-hidden="true"><img src="/assets/assurances/%s" alt="" loading="lazy" height="44"></li>' % f for n, f in B.INSURERS)
+    return '<div class="marquee ins-marquee"><ul class="marquee-track">%s%s</ul></div>' % (tiles, dup)
+
+
 def insurers_section(cls=""):
-    tiles = "".join('<span class="insurer">%s</span>' % esc(n) for n in B.INSURERS)
     return f"""<section class="{cls}" id="assurances">
   <div class="wrap">
     <div class="sec-head">
-      <div class="pill pill-green sec-badge">{svc_icon("shield", 15)}Assurance habitation</div>
-      <h2>Nos factures sont acceptées par votre assurance</h2>
-      <p>En cas de dégât des eaux ou de recherche de fuite, nos clients se font rembourser auprès de leur assureur habitation, notamment :</p>
+      <div class="pill pill-green sec-badge">{svc_icon("shield", 15)}Assurances</div>
+      <h2>Une facture reconnue par votre assureur</h2>
+      <p>En cas de sinistre (dégât des eaux, fuite…), la facture détaillée remise après intervention est acceptée par les compagnies d'assurance habitation, mutuelles et banques-assureurs, notamment :</p>
     </div>
-    <div class="insurers">{tiles}</div>
+  </div>
+  {insurer_logos()}
+  <div class="wrap">
+    <p class="ins-count">{len(B.INSURERS)} assureurs, mutuelles et banques-assureurs</p>
     <p class="ins-note">Nous remettons une facture détaillée et un descriptif de la cause de la fuite, les justificatifs demandés par les assureurs. Remboursement selon les garanties et franchises de votre contrat. <a href="/{ASSURANCE_PAGE['slug']}/" style="color:var(--purple-700);font-weight:600;text-decoration:underline">Dégât des eaux : comment ça marche ?</a></p>
   </div>
 </section>
@@ -606,12 +789,15 @@ def services_grid(city=None):
         href = combo_path(s, city) if city else service_path(s)
         title = s["short"] + (" " + city["a"] if city else "")
         checks = "".join('<div class="check-row"><span class="check-circle la">✓</span>%s</div>' % esc(c) for c in s["card_checks"])
-        cards.append(f"""<article class="svc-card">
-  <div class="svc-top"><div class="icon-sq pu">{svc_icon(s["icon"])}</div><span class="pill {'pill-orange' if 'Urgence' in s['badge'] or s['badge'] == 'Dépannage' else 'pill-lav'}">{esc(s["badge"])}</span></div>
-  <h3><a href="{href}">{esc(title)}</a></h3>
-  <p class="desc">{esc(s["card_desc"])}</p>
-  <div class="svc-checks">{checks}</div>
-  <div class="svc-foot"><span class="svc-price">{esc(s["price_label"])}</span><a class="more" href="{href}">En savoir plus →</a></div>
+        cards.append(f"""<article class="svc-card has-img">
+  <a class="svc-img" href="{href}" tabindex="-1" aria-hidden="true"><img src="/assets/img/{s["image"]}" alt="" loading="lazy" width="400" height="240"><span class="pill {'pill-orange' if 'Urgence' in s['badge'] or s['badge'] == 'Dépannage' else 'pill-lav'}">{esc(s["badge"])}</span></a>
+  <div class="svc-body">
+    <h3><a href="{href}">{esc(title)}</a></h3>
+    <p class="desc">{esc(s["card_desc"])}</p>
+    <div class="svc-checks">{checks}</div>
+    <div class="svc-foot"><span class="svc-price">{esc(s["price_label"])}</span><a class="more" href="{href}">En savoir plus →</a></div>
+    <div class="svc-actions"><a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(16, True)} Appeler</a><button type="button" class="btn btn-outline svc-quote" data-service="{esc(s["short"])}">Demander un devis</button></div>
+  </div>
 </article>""")
     return '<div class="svc-grid">%s</div>' % "".join(cards)
 
@@ -620,7 +806,7 @@ def stats_block():
     stats = [
         ('<path d="M3 17 9 11 13 15 21 7M21 7h-5M21 7v5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>', B.YEARS, "Années d'expérience", "Depuis %d" % B.SINCE),
         ('<path d="M12 3.5 14.6 9.1 20.5 9.9 16.2 14 17.3 20 12 17.1 6.7 20 7.8 14 3.5 9.9 9.4 9.1Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>', B.INTERVENTIONS, "Interventions réalisées", "Note moyenne " + B.RATING),
-        ('<circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="#fff" stroke-width="1.8"/>', "24/7", "Disponibilité", "Nuits, week-ends, fériés"),
+        ('<path d="M4 6h16M4 12h16M4 18h10" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>', "0\u00a0€", "De surprise sur la facture", "Prix validé avant travaux"),
         ('<path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z" stroke="#fff" stroke-width="1.8"/><path d="M8.5 12l2.3 2.3L15.5 9.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>', B.SATISFACTION.replace(" ", "\u00a0"), "Clients satisfaits", "Taux de satisfaction"),
     ]
     items = "".join('<div class="stat"><div class="icon-sq"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">%s</svg></div><b>%s</b><div class="lbl">%s</div><div class="sub">%s</div></div>' % s for s in stats)
@@ -702,9 +888,13 @@ HOME_FAQ = [
     ("Intervenez-vous la nuit, le week-end et les jours fériés ?", "Oui, un plombier est joignable 24h/24 et 7j/7 au 06 75 93 19 04. Un supplément horaire peut s'appliquer la nuit, le week-end et les jours fériés : il vous est communiqué avant le déplacement."),
     ("Dans quelles communes intervenez-vous ?", "Nous sommes basés à Vidauban et intervenons dans tout le centre Var : Le Muy, Les Arcs-sur-Argens, Le Cannet-des-Maures, Le Luc, La Garde-Freinet, Gonfaron, Draguignan, Lorgues, Taradeau, Le Thoronet et au-delà. <a href=\"/zones-intervention/\">Voir toutes les communes</a>."),
     ("Le devis est-il gratuit ?", "Oui, le diagnostic téléphonique et le devis sur place sont gratuits et sans engagement."),
-    ("Vos factures sont-elles acceptées par les assurances ?", "Oui. Nous remettons une facture détaillée et un descriptif de la cause de la fuite. Nos clients se font rembourser auprès de leur assureur habitation (Crédit Mutuel, Crédit Agricole, MAAF, MMA, GMF, Allianz, LCL, Société Générale, etc.), selon les garanties de leur contrat."),
+    ("Vos factures sont-elles acceptées par les assurances ?", "Oui. Nous remettons une facture détaillée et un descriptif de la cause de la fuite. Nos clients se font rembourser auprès de leur assureur habitation (AXA, Allianz, MAIF, MACIF, MAAF, Matmut, Groupama, Generali, Crédit Agricole, Crédit Mutuel, etc.), selon les garanties de leur contrat."),
     ("Faites-vous de la recherche de fuite ?", "Oui, nous réalisons la détection de fuite (visuelle, thermique ou acoustique selon le cas) puis la réparation, en limitant la casse au strict nécessaire."),
     ("En combien de temps arrivez-vous ?", "Depuis Vidauban, comptez environ 15 minutes pour Le Muy, Les Arcs ou Le Cannet-des-Maures, 20 minutes pour Le Luc ou La Garde-Freinet, 25 minutes pour Gonfaron ou Draguignan, hors trafic. Le délai précis est donné à l'appel."),
+    ("Allez-vous devoir casser du carrelage ou un mur ?", "Nous privilégions toujours les méthodes les moins invasives (détection thermique ou acoustique, contrôle de pression) et n'ouvrons que si c'est vraiment nécessaire, uniquement à l'endroit de la fuite et avec votre accord."),
+    ("Faut-il réparer ou remplacer mon chauffe-eau ?", "Tout dépend de son âge et de la panne. Une résistance, un thermostat ou un groupe de sécurité se remplacent facilement. Si la cuve elle-même fuit ou si l'appareil est très ancien, le remplacement est souvent plus rentable. Nous vous donnons un avis honnête, chiffres à l'appui."),
+    ("Qui va intervenir chez moi ?", "Un plombier de PRO SERVICE 83, artisan installé à Vidauban. Vous l'avez au téléphone avant son arrivée, il vous annonce le prix avant de commencer et vous remet une facture détaillée. Après l'intervention, vous gardez le même numéro pour tout suivi."),
+    ("Que faire en attendant le plombier en cas de fuite ?", "Coupez l'arrivée d'eau au robinet d'arrêt général (souvent près du compteur), coupez l'électricité si l'eau approche des prises ou d'un appareil électrique, et épongez pour limiter les dégâts. Prenez quelques photos : elles seront utiles pour votre assurance. Si besoin, nous vous guidons par téléphone."),
     ("Comment être sûr de ne pas tomber sur un plombier arnaqueur ?", "Exigez un prix avant le déplacement et un devis avant les travaux, méfiez-vous des faux documents « officiels » dans les boîtes aux lettres et préférez un artisan réellement local. <a href=\"/conseils/choisir-plombier-eviter-arnaques/\">Lire notre guide</a>."),
 ]
 
@@ -716,26 +906,33 @@ def build_home():
     website = {"@context": "https://schema.org", "@type": "WebSite", "@id": SITE + "/#site", "name": B.NAME, "url": SITE + "/", "inLanguage": "fr-FR", "publisher": {"@id": SITE + "/#entreprise"}}
     out = head(title, desc, path, [business_schema(), website, faq_schema(HOME_FAQ)])
     out += header(path)
-    out += f"""<section class="hero">
+    out += f"""<section class="hero hero-split">
   <div class="wrap hero-inner">
-    <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>Disponible maintenant · Intervention rapide</span></div>
+    <div class="hero-text">
+    <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>Artisan plombier · Vidauban &amp; tout le Var (83)</span></div>
     <h1>Votre plombier à Vidauban<br><span class="accent">et dans tout le Var, 24h/24</span></h1>
-    <p class="lead">Fuite d'eau, débouchage, chauffe-eau, canalisation, salle de bain : <b>un artisan local vous répond en direct, jour et nuit, 7j/7.</b> Prix annoncé avant de partir.</p>
+    <p class="lead">Fuite d'eau, canalisation bouchée, chauffe-eau en panne ? <b>Un artisan local vous répond en direct, jour et nuit, 7j/7</b>, et intervient avec un prix annoncé avant de commencer. Plus de {B.YEARS.rstrip("+")} ans d'expérience, travail soigné, facture acceptée par les assurances.</p>
     <a href="tel:{B.PHONE_TEL}" class="hero-cta">
       <span class="num">{phone_icon(24, True)} {B.PHONE}</span>
       <span class="sub">Appel direct, disponible 24/7</span>
     </a>
-    <a href="#devis" class="hero-devis">Ou demandez un devis gratuit</a>
+    <button type="button" class="hero-devis svc-quote" data-service="Demande de devis">Ou demandez un devis gratuit</button>
     <div class="hero-checks">
       <div class="check-row"><span class="check-circle gr">✓</span>Diagnostic gratuit</div>
       <div class="check-row"><span class="check-circle gr">✓</span>Prix annoncé à l'avance</div>
       <div class="check-row"><span class="check-circle gr">✓</span>Travaux garantis</div>
       <div class="check-row"><span class="check-circle gr">✓</span>Factures acceptées par les assurances</div>
     </div>
+    </div>
+    <div class="hero-media">
+      <img src="/assets/img/plombier-devis-client.jpg" alt="Plombier présentant le devis à une cliente avant l'intervention" width="560" height="560" fetchpriority="high">
+      <div class="hero-tag"><b>Sur place</b><span>Devis annoncé avant travaux</span></div>
+    </div>
   </div>
 </section>
 """
-    out += strip_band()
+    out += trust_marquee()
+    out += urgent_band()
     out += f"""<section id="services">
   <div class="wrap">
     <div class="sec-head">
@@ -768,10 +965,12 @@ def build_home():
   </div>
 </section>
 """
-    out += process_section()
+    out += process_section("Simple, clair, sans surprise")
     out += insurers_section("alt")
+    out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons à Vidauban et dans tout le Var, tous les jours, 24h/24.")
     out += zones_section()
-    out += reviews_section("alt")
+    out += realisations_section(cls="alt")
+    out += reviews_section("alt" if not B.REALISATIONS else "")
     out += guides_teaser(GUIDES[:3])
     out += faq_block(HOME_FAQ, "Avant d'appeler : vos questions", cls="alt")
     out += contact_section(path)
@@ -787,7 +986,8 @@ def build_service(s, idx):
                faq_schema(s["faq"])]
     out = head(s["title"], s["meta"], path, schemas)
     out += header(path)
-    out += page_hero(crumbs, s["h1"], s["lead"], s["checks"], badge="Disponible 24h/24 · 7j/7")
+    out += page_hero(crumbs, s["h1"], s["lead"], s["checks"], badge="Disponible 24h/24 · 7j/7", image=s["image"], image_alt=s["image_alt"], quote_service=s["short"])
+    out += trust_marquee()
     sections = "".join("<h2>%s</h2>%s" % (h, body) for h, body in s["sections"])
     others = "".join('<li><a href="%s"><span>%s</span><span>→</span></a></li>' % (service_path(o), esc(o["short"])) for o in SERVICES if o is not s)
     city_chips = "".join('<a class="chip" href="%s">%s %s <span class="d">%s</span></a>' % (combo_path(s, c), esc(s["short"]), esc(c["name"]), delay_label(c)) for c in CORE_CITIES)
@@ -815,9 +1015,12 @@ def build_service(s, idx):
   </div>
 </section>
 """
-    out += zones_section(service=s, cls="alt")
+    out += guarantees_section()
+    out += zones_section(service=s)
     out += process_section()
     out += faq_block(s["faq"], "Questions fréquentes : " + s["short"].lower(), cls="")
+    out += other_services_section(s)
+    out += cta_band()
     out += contact_section(path, "Un besoin en %s ?" % s["short"].lower(), service=s["short"])
     out += footer()
     write_page(path, out, "0.9")
@@ -846,7 +1049,8 @@ def build_combo(s, c, si, ci):
                faq_schema(faq)]
     out = head(title, desc, path, schemas)
     out += header(path)
-    out += page_hero(crumbs, h1, lead, s["checks"], badge="%s · %s" % (delay_txt(c), "24h/24, 7j/7"))
+    out += page_hero(crumbs, h1, lead, s["checks"], badge="%s · %s" % (delay_txt(c), "24h/24, 7j/7"), image=s["image"], image_alt="%s %s" % (s["image_alt"], c["a"]), quote_service="%s %s" % (s["short"], c["a"]))
+    out += trust_marquee()
     n = len(s["combo_points"])
     points = [s["combo_points"][(v * 2 + k) % n] for k in range(n)]
     points_html = "".join("<li>%s</li>" % esc(p) for p in points)
@@ -878,8 +1082,10 @@ def build_combo(s, c, si, ci):
   </div>
 </section>
 """
-    out += zones_section(current=c, service=s, cls="alt")
+    out += guarantees_section()
+    out += zones_section(current=c, service=s)
     out += faq_block(faq, "%s %s : vos questions" % (s["short"], c["a"]), cls="")
+    out += other_services_section(s, c)
     out += contact_section(path, "%s %s : contactez-nous" % (s["short"], c["a"]), service=s["short"], city=c["name"])
     out += footer()
     write_page(path, out, "0.7" if c["core"] else "0.6")
@@ -902,7 +1108,9 @@ def build_city(c):
     out = head(title, desc, path, schemas)
     out += header(path)
     lead = "Fuite d'eau, débouchage, chauffe-eau, canalisation, installation sanitaire : un artisan plombier intervient <b>%s 24h/24 et 7j/7</b>, avec un prix annoncé avant de partir." % c["a"]
-    out += page_hero(crumbs, "Plombier %s (%s)" % (c["a"], c["cp"]), lead, ["Diagnostic gratuit", "Prix annoncé à l'avance", "Factures acceptées par les assurances"], badge="%s · disponible 24h/24" % delay_txt(c))
+    out += page_hero(crumbs, "Plombier %s (%s)" % (c["a"], c["cp"]), lead, ["Diagnostic gratuit", "Prix annoncé à l'avance", "Factures acceptées par les assurances"], badge="%s · disponible 24h/24" % delay_txt(c), image="plombier-devis-client.jpg", image_alt="Plombier %s présentant le devis avant l'intervention" % c["a"], quote_service="Plombier %s" % c["a"])
+    out += trust_marquee()
+    out += urgent_band()
     near_html = "".join('<a class="chip" href="%s">Plombier %s <span class="d">%s</span></a>' % (city_path(n), esc(n["name"]), delay_label(n)) for n in near)
     local_reviews = [r for r in B.REVIEWS if r["city"] == c["name"]]
     review_html = ""
@@ -948,7 +1156,8 @@ def build_city(c):
   </div>
 </section>
 """
-    out += zones_section(current=c)
+    out += guarantees_section("")
+    out += zones_section(current=c, cls="alt")
     out += process_section()
     out += faq_block(faq, "Plombier %s : vos questions" % c["a"])
     out += contact_section(path, "Un plombier %s ? Contactez-nous" % c["a"], city=c["name"])
@@ -963,7 +1172,8 @@ def build_prestations():
                "Toutes nos prestations de plomberie dans le Var : urgence 24h/24, recherche de fuite, débouchage, chauffe-eau, canalisation, installation sanitaire, salle de bain.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Nos prestations de plomberie dans le Var", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement, de Vidauban à Draguignan.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"])
+    out += page_hero(crumbs, "Nos prestations de plomberie dans le Var", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement, de Vidauban à Draguignan.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à une cliente")
+    out += trust_marquee()
     out += f"""<section><div class="wrap">{services_grid()}</div></section>
 <section class="alt"><div class="wrap text-block prose">
   <h2>Dégât des eaux : nous gérons aussi le volet assurance</h2>
@@ -991,12 +1201,14 @@ def build_assurance():
                service_schema("Recherche de fuite et réparation après dégât des eaux", "Recherche de fuite, réparation et justificatifs pour l'assurance habitation dans le Var.", path, "Var (83)", 79),
                faq_schema(faq)]
     out = head("Plombier dégât des eaux & assurance dans le Var — factures acceptées",
-               "Dégât des eaux dans le Var : recherche de fuite, réparation et justificatifs pour votre assurance (Crédit Mutuel, Crédit Agricole, MAAF, MMA, GMF, Allianz…). ☎ 06 75 93 19 04",
+               "Dégât des eaux dans le Var : recherche de fuite, réparation et justificatifs pour votre assurance (AXA, Allianz, MAIF, MACIF, MAAF, Groupama…). ☎ 06 75 93 19 04",
                path, schemas)
     out += header(path)
     out += page_hero(crumbs, "Plombier dégât des eaux : on s'occupe aussi des justificatifs pour l'assurance",
                      "Recherche de fuite, réparation, <b>facture détaillée et descriptif de la cause</b> : tout ce qu'il faut pour être remboursé par votre assurance habitation.",
-                     ["Recherche de fuite sans casse inutile", "Facture détaillée", "Factures acceptées par les assurances"], badge="Disponible 24h/24 · 7j/7")
+                     ["Recherche de fuite sans casse inutile", "Facture détaillée", "Factures acceptées par les assurances"], badge="Disponible 24h/24 · 7j/7",
+                     image=ASSURANCE_PAGE["image"], image_alt=ASSURANCE_PAGE["image_alt"], quote_service="Dégât des eaux / assurance")
+    out += trust_marquee()
     out += f"""<section>
   <div class="wrap layout">
     <article class="prose">
@@ -1010,7 +1222,7 @@ def build_assurance():
       <p>Ces documents permettent à votre assureur d'instruire votre dossier rapidement. Nos clients les transmettent à leur assureur habitation pour se faire rembourser, selon les garanties de leur contrat.</p>
       <h2>Assureurs auprès desquels nos clients se font rembourser</h2>
       <p>Nos factures sont notamment acceptées par :</p>
-      <div class="insurers" style="justify-content:flex-start;margin-bottom:18px">{"".join('<span class="insurer">%s</span>' % esc(n) for n in B.INSURERS)}</div>
+      {insurer_logos(marquee=False)}
       <p>Votre assureur n'est pas dans la liste ? Cela ne change rien : une facture détaillée d'un professionnel est le justificatif standard demandé par toutes les compagnies.</p>
       <h2>Les étapes côté assurance</h2>
       <ul>
@@ -1029,8 +1241,10 @@ def build_assurance():
   </div>
 </section>
 """
-    out += zones_section(cls="alt")
-    out += faq_block(faq, "Dégât des eaux et assurance : vos questions", cls="")
+    out += guarantees_section()
+    out += zones_section()
+    out += faq_block(faq, "Dégât des eaux et assurance : vos questions")
+    out += other_services_section()
     out += contact_section(path, "Un dégât des eaux ? Contactez-nous", service="Dégât des eaux / assurance")
     out += footer()
     write_page(path, out, "0.9")
@@ -1129,7 +1343,7 @@ def build_about():
                "PRO SERVICE 83, artisan plombier indépendant installé à Vidauban (Var) depuis %d : notre histoire, nos engagements et notre charte de confiance." % B.SINCE,
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Un artisan plombier local, des engagements tenus", "PRO SERVICE 83 est une entreprise artisanale de plomberie installée à <b>Vidauban depuis %d</b>. Voici qui nous sommes et comment nous travaillons." % B.SINCE, ["%s ans d'expérience" % B.YEARS.replace("+", " +"), "%s interventions" % B.INTERVENTIONS, "Note moyenne %s" % B.RATING])
+    out += page_hero(crumbs, "Un artisan plombier local, des engagements tenus", "PRO SERVICE 83 est une entreprise artisanale de plomberie installée à <b>Vidauban depuis %d</b>. Voici qui nous sommes et comment nous travaillons." % B.SINCE, ["Plus de %s ans d'expérience" % B.YEARS.rstrip("+"), "%s interventions" % B.INTERVENTIONS, "Note moyenne %s" % B.RATING])
     out += f"""<section>
   <div class="wrap text-block prose">
     <h2>Notre histoire</h2>
@@ -1241,6 +1455,48 @@ def build_guides():
         out += contact_section(gp)
         out += footer()
         write_page(gp, out, "0.6")
+
+
+def build_merci():
+    path = "/merci/"
+    out = head("Merci, votre demande est envoyée — %s" % B.NAME, "Votre demande a bien été envoyée à %s." % B.NAME, path, [], noindex=True)
+    out = out.replace("<body>", '<body data-page="merci">', 1)
+    out += header(path)
+    out += f"""<section class="page-hero"><div class="wrap merci">
+  <div class="merci-icon">✓</div>
+  <h1>Merci, votre demande est bien envoyée</h1>
+  <p class="lead">Un plombier de {B.NAME} vous rappelle rapidement (sous 1 h en journée). <b>Pour une urgence, n'attendez pas : appelez directement le {B.PHONE}.</b></p>
+  <div class="actions"><a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} {B.PHONE}</a><a href="/" class="btn btn-ghost">Retour à l'accueil</a></div>
+</div></section>
+<section><div class="wrap text-block prose">
+  <h2>En attendant notre appel</h2>
+  <ul>
+    <li><strong>Fuite d'eau</strong> : coupez l'arrivée d'eau au robinet général et, si l'eau approche d'une prise, coupez le courant.</li>
+    <li><strong>WC ou évier bouché</strong> : n'utilisez plus l'évacuation et évitez les produits déboucheurs corrosifs.</li>
+    <li><strong>Chauffe-eau qui fuit</strong> : coupez son disjoncteur et fermez son arrivée d'eau froide.</li>
+    <li><strong>Dégât des eaux</strong> : prenez des photos pour votre assurance.</li>
+  </ul>
+  <p>Nos guides pratiques peuvent aussi vous aider : <a href="/conseils/">voir les conseils</a>.</p>
+</div></section>
+"""
+    out += footer("/contact/")
+    write_page(path, out, sitemap=False)
+
+
+def build_realisations():
+    if not B.REALISATIONS:
+        return
+    path = "/realisations/"
+    crumbs = [("Accueil", "/"), ("Réalisations", path)]
+    out = head("Nos chantiers de plomberie dans le Var — avant / après | %s" % B.NAME,
+               "Photos de chantiers de plomberie réalisés dans le Var : salles de bain, chauffe-eau, canalisations, installations sanitaires.",
+               path, [business_schema(), breadcrumb_schema(crumbs)])
+    out += header(path)
+    out += page_hero(crumbs, "Nos chantiers en images", "Avant / après : quelques interventions réalisées par %s dans le Var." % B.NAME)
+    out += realisations_section(limit=len(B.REALISATIONS))
+    out += contact_section(path)
+    out += footer()
+    write_page(path, out, "0.6")
 
 
 def build_plan():
@@ -1390,7 +1646,7 @@ def build_llms():
              "- Expérience : depuis %d, plus de %s interventions, note moyenne %s, %s de clients satisfaits" % (B.SINCE, B.INTERVENTIONS, B.RATING, B.SATISFACTION),
              "- Tarifs : fuite d'eau dès 79 €, réparation de canalisation dès 89 €, débouchage dès 99 €, chauffe-eau / installation sanitaire / salle de bain sur devis. Diagnostic téléphonique et devis gratuits. Supplément éventuel nuit, week-end et jours fériés annoncé avant le déplacement.",
              "- Engagements : prix annoncé avant le déplacement, devis validé avant les travaux, facture détaillée, travaux garantis.",
-             "- Assurance : factures acceptées par les assureurs habitation (%s), selon les garanties du contrat." % ", ".join(B.INSURERS),
+             "- Assurance : factures acceptées par les assureurs habitation (%s), selon les garanties du contrat." % ", ".join(n for n, _ in B.INSURERS),
              "- Communes desservies : %s." % ", ".join("%s (%s, %s)" % (c["name"], c["cp"], delay_label(c)) for c in CITIES),
              "", "## Prestations", ""]
     for s in SERVICES:
@@ -1473,6 +1729,8 @@ def main():
     build_contact()
     build_guides()
     build_plan()
+    build_merci()
+    build_realisations()
     build_legal()
     build_404()
     build_robots()
