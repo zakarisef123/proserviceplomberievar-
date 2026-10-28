@@ -35,6 +35,15 @@ netlify.toml          configuration Netlify (dossier publié, en-têtes)
 Chaque page affiche la section « Un plombier proche de chez vous » avec le temps d'arrivée pour chaque commune
 (délais modifiables dans `src/data_cities.py`).
 
+## Éléments repris du site « L'Artisan Plombier Girondin »
+
+Menus déroulants, héros avec photo, bandeau de confiance défilant, bandeau « Une urgence plomberie ? »,
+logos des 38 assureurs défilants (`src/assets/assurances/`), cartes de service avec photo et boutons
+« Appeler / Demander un devis », fenêtre « Demander un devis » (formulaire `devis-express`),
+garanties, « Nous pouvons aussi vous aider pour », bandeau d'appel, page `/merci/` (conversion Google Ads),
+case de consentement RGPD sur les formulaires. Galerie de chantiers prête : remplir `REALISATIONS`
+dans `src/data_business.py` avec des photos de chantiers du Var (dossier `src/assets/chantiers/`).
+
 ## Cookies
 
 Bandeau « Tout accepter / Tout refuser / Personnaliser » relié au Google Consent Mode v2
@@ -49,7 +58,7 @@ Bandeau « Tout accepter / Tout refuser / Personnaliser » relié au Google Cons
 
 ## Formulaires
 
-Deux formulaires Netlify Forms : `devis` (bas de chaque page) et `rappel` (colonne latérale des pages de service et de commune).
+Trois formulaires Netlify Forms : `devis` (bas de chaque page), `rappel` (colonne latérale des pages de service et de commune) et `devis-express` (fenêtre « Demander un devis »). Après envoi, le visiteur arrive sur `/merci/`.
 Activer la détection des formulaires dans Netlify : *Project configuration → Forms → Enable form detection*,
 puis ajouter une notification e-mail vers proservice83@hotmail.fr.
 
@@ -59,4 +68,5 @@ Dans `src/data_business.py` :
 - `SITE_URL` : le nom de domaine définitif (sert aux URL canoniques, au sitemap, à robots.txt et à llms.txt)
 - `SIRET`, `ADDRESS_STREET`, `RESPONSABLE_PUBLICATION` : obligatoires dans les mentions légales
 - `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` : codes de validation Search Console / Bing Webmaster Tools
+- `ASSURANCE_DECENNALE` : passer à `True` si l'entreprise a une décennale et une RC pro à jour
 - `GOOGLE_BUSINESS_URL`, `GOOGLE_REVIEW_URL`, `SAME_AS` : fiche Google, lien « laisser un avis », autres profils

@@ -27,18 +27,60 @@ SIRET = ""
 ADDRESS_STREET = ""
 RESPONSABLE_PUBLICATION = ""
 
-# Assureurs habitation auprès desquels nos clients se font rembourser leurs factures.
+# Assureurs habitation, mutuelles et banques-assureurs qui acceptent nos factures
+# (nom affiché, fichier logo dans src/assets/assurances/).
 INSURERS = [
-    "Crédit Mutuel", "CIC Assurances", "Crédit Agricole Assurances", "LCL",
-    "Société Générale Assurances", "Sogessur", "BNP Paribas", "Banque Populaire",
-    "Caisse d'Épargne", "La Banque Postale Assurances", "Covéa (MAAF, MMA, GMF)",
-    "Allianz", "Amaguiz (Groupama)", "Gan Assurances", "Thélem assurances",
-    "Abeille Assurances", "Swiss Life", "AG2R La Mondiale", "MACSF", "MGEN", "La MAE",
-    "April", "Hiscox", "Direct Assurance", "L'olivier Assurance", "Euro Assurance",
-    "Assu 2000", "Leocare", "Lovys", "Luko", "Acheel",
+    ('AXA', 'axa.jpg'),
+    ('Allianz', 'allianz.png'),
+    ('Generali', 'generali.png'),
+    ('MAIF', 'maif.png'),
+    ('MACIF', 'macif.png'),
+    ('MAAF', 'maaf.png'),
+    ('Matmut', 'matmut.png'),
+    ('Groupama', 'groupama.png'),
+    ('Gan Assurances', 'gan-assurances.png'),
+    ('Amaguiz', 'amaguiz.png'),
+    ('MACSF', 'macsf.png'),
+    ('Direct Assurance', 'direct-assurance.png'),
+    ('Leocare', 'leocare.png'),
+    ('Covéa', 'covea.png'),
+    ('Thélem assurances', 'thelem-assurances.png'),
+    ('La MAE', 'la-mae.png'),
+    ('Swiss Life', 'swiss-life.png'),
+    ('Abeille Assurances', 'abeille-assurances.png'),
+    ('AG2R La Mondiale', 'ag2r-la-mondiale.png'),
+    ('MGEN', 'mgen.png'),
+    ('Hiscox Assurances', 'hiscox-assurances.png'),
+    ('April', 'april.png'),
+    ("L'olivier Assurance", 'lolivier-assurance.png'),
+    ('Assu 2000', 'assu-2000.png'),
+    ('Euro Assurance', 'euro-assurance.png'),
+    ('Acheel', 'acheel.png'),
+    ('Lovys', 'lovys.png'),
+    ('Luko', 'luko.png'),
+    ('Sogessur', 'sogessur.png'),
+    ('Crédit Agricole Assurances', 'credit-agricole-assurances.png'),
+    ('Crédit Mutuel', 'credit-mutuel.png'),
+    ('CIC Assurances', 'cic-assurances.png'),
+    ('BNP Paribas', 'bnp-paribas.png'),
+    ('Société Générale Assurances', 'societe-generale-assurances.png'),
+    ('LCL', 'lcl.png'),
+    ('Banque Populaire', 'banque-populaire.png'),
+    ("Caisse d'Épargne", 'caisse-epargne.png'),
+    ('La Banque Postale Assurances', 'la-banque-postale-assurances.png'),
 ]
 
 GTAG_ID = "AW-18380568336"
+
+# Afficher « Assurance décennale & RC professionnelle » : passer à True uniquement si
+# l'entreprise est bien couverte (attestation à jour).
+ASSURANCE_DECENNALE = False
+
+# Photos de chantiers réalisés dans le Var (galerie + page Réalisations, masquées si vide).
+# Déposer les photos dans src/assets/chantiers/ puis ajouter par exemple :
+# {"image": "salle-de-bain-vidauban.jpg", "title": "Salle de bain rénovée à Vidauban",
+#  "text": "Baignoire remplacée par une douche…", "service": "renovation-salle-de-bain-var"},
+REALISATIONS = []
 
 REVIEWS = [
     {"text": "Fuite sous l'évier un dimanche, plombier arrivé rapidement et prix respecté.",

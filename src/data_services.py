@@ -5,6 +5,8 @@ SERVICES = [
     # ------------------------------------------------------------------ URGENCE
     {
         "slug": "plombier-urgence-24h-var",
+        "image": 'degat-des-eaux.jpg',
+        "image_alt": "Dégât des eaux : fuite d'eau qui traverse un plafond",
         "combo": "plombier-urgence",
         "name": "Plombier urgence 24h/24",
         "short": "Urgence plomberie 24h/24",
@@ -70,6 +72,8 @@ SERVICES = [
     # ------------------------------------------------------------------ FUITE
     {
         "slug": "recherche-de-fuite-var",
+        "image": 'recherche-fuite.jpg',
+        "image_alt": "Plombier réparant une fuite d'eau sous un évier",
         "combo": "recherche-fuite",
         "name": "Fuite d'eau & recherche de fuite",
         "short": "Fuite d'eau",
@@ -134,6 +138,8 @@ SERVICES = [
     # ------------------------------------------------------------------ DEBOUCHAGE
     {
         "slug": "debouchage-canalisation-var",
+        "image": 'debouchage-wc.jpg',
+        "image_alt": 'Débouchage de WC et de canalisation',
         "combo": "debouchage",
         "name": "Débouchage WC & canalisation",
         "short": "Débouchage",
@@ -194,6 +200,8 @@ SERVICES = [
     # ------------------------------------------------------------------ CHAUFFE-EAU
     {
         "slug": "chauffe-eau-var",
+        "image": 'chauffe-eau.jpg',
+        "image_alt": "Plombier en intervention sur un appareil de production d'eau chaude",
         "combo": "chauffe-eau",
         "name": "Chauffe-eau : dépannage & remplacement",
         "short": "Chauffe-eau",
@@ -259,6 +267,8 @@ SERVICES = [
     # ------------------------------------------------------------------ SANITAIRE
     {
         "slug": "installation-sanitaire-var",
+        "image": 'installation-sanitaire.jpg',
+        "image_alt": 'Plombier installant un lavabo dans une salle de bain',
         "combo": "installation-sanitaire",
         "name": "Installation sanitaire & robinetterie",
         "short": "Installation sanitaire",
@@ -317,6 +327,8 @@ SERVICES = [
     # ------------------------------------------------------------------ CANALISATION
     {
         "slug": "reparation-canalisation-var",
+        "image": 'debouchage-regard.jpg',
+        "image_alt": "Intervention sur une canalisation et un regard d'évacuation",
         "combo": "reparation-canalisation",
         "name": "Réparation & remplacement de canalisation",
         "short": "Dépannage canalisation",
@@ -372,6 +384,8 @@ SERVICES = [
     # ------------------------------------------------------------------ SALLE DE BAIN
     {
         "slug": "renovation-salle-de-bain-var",
+        "image": 'renovation-salle-de-bain.jpg',
+        "image_alt": 'Salle de bain rénovée',
         "combo": "renovation-salle-de-bain",
         "name": "Rénovation de salle de bain",
         "short": "Rénovation salle de bain",
@@ -432,6 +446,8 @@ SERVICES = [
 ASSURANCE_PAGE = {
     "slug": "plombier-degat-des-eaux-assurance-var",
     "name": "Dégât des eaux & assurance",
+    "image": "plombier-devis-client.jpg",
+    "image_alt": "Plombier présentant la facture et le descriptif de l'intervention à une cliente",
 }
 
 SERVICE_ICONS = {
