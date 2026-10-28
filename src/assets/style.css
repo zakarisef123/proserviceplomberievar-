@@ -367,12 +367,39 @@ footer.site{background:#1f1238; color:rgba(255,255,255,0.7); padding:56px 0 30px
 .mobile-bar a{flex:1; padding:13px 10px; font-size:14.5px;}
 
 /* ---------- Bandeau cookies ---------- */
-.consent{position:fixed; left:16px; right:16px; bottom:16px; z-index:80; max-width:560px; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:var(--radius-md); padding:18px 20px; box-shadow:0 20px 50px -20px rgba(44,26,77,0.45); font-size:14px; display:none;}
+.consent{position:fixed; left:16px; bottom:16px; z-index:80; width:calc(100% - 32px); max-width:600px; max-height:calc(100vh - 32px); overflow:auto; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:var(--radius-md); padding:20px 22px; box-shadow:0 20px 50px -20px rgba(44,26,77,0.45); font-size:14px; display:none;}
 .consent.show{display:block;}
-.consent p{margin-bottom:12px;}
+.consent h2{font-size:17px; margin-bottom:8px;}
+.consent p{margin-bottom:14px; color:var(--gray-600);}
 .consent a{color:var(--purple-700); text-decoration:underline;}
 .consent .row{display:flex; gap:10px; flex-wrap:wrap;}
-.consent .btn{padding:10px 18px; font-size:14px;}
+.consent .btn{padding:10px 18px; font-size:14px; flex:1 1 auto;}
+.consent-prefs{display:flex; flex-direction:column; gap:10px; margin-bottom:16px;}
+.consent-prefs[hidden]{display:none;}
+.toggle{display:flex; gap:10px; align-items:flex-start; background:var(--paper-2); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 12px; cursor:pointer; font-size:13.5px;}
+.toggle input{margin-top:3px; width:17px; height:17px; accent-color:var(--purple-700); flex:none;}
+
+/* ---------- Zone « Un plombier proche de chez vous » ---------- */
+.zones-inner{display:grid; grid-template-columns:1.25fr 1fr; gap:50px; align-items:start;}
+.zones-inner h2{font-size:clamp(26px,3vw,32px); margin:16px 0 10px; line-height:1.15;}
+.zones-inner .intro{color:var(--gray-600); font-size:15px;}
+.zone-list{display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; margin-top:22px;}
+.zone-list a{display:flex; justify-content:space-between; gap:10px; background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:11px 16px; font-size:14.5px; font-weight:600; transition:border-color .15s, color .15s;}
+.zone-list a:hover{border-color:var(--purple-600); color:var(--purple-700);}
+.zone-list a.current{border-color:var(--orange-600); background:var(--orange-100);}
+.zone-list span.d{color:var(--orange-700); font-family:'Poppins', sans-serif; font-weight:700; font-size:13px; white-space:nowrap;}
+.zone-note{background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:32px; box-shadow:0 4px 18px -12px rgba(44,26,77,0.14); position:sticky; top:100px;}
+.zone-note h3{font-size:20px; margin:14px 0 10px;}
+.zone-note p{font-size:14.5px; color:var(--gray-600); margin-bottom:18px;}
+.zone-note .btn{width:100%;}
+.zone-note .btn + .btn{margin-top:10px;}
+
+/* ---------- Plan du site ---------- */
+.sitemap-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:30px;}
+.sitemap-cols h2{font-size:18px; margin-bottom:12px;}
+.sitemap-cols li{margin-bottom:6px; font-size:14.5px;}
+.sitemap-cols a{color:var(--purple-700);}
+.sitemap-cols a:hover{text-decoration:underline;}
 
 a:focus-visible, button:focus-visible, summary:focus-visible{outline:2px solid var(--purple-600); outline-offset:2px;}
 
@@ -394,6 +421,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible{outline:2px solid v
   aside.side{position:static;}
   .testi-grid{grid-template-columns:1fr;}
   .zone-grid{grid-template-columns:1fr 1fr;}
+  .zones-inner{grid-template-columns:1fr;}
+  .zone-note{position:static;}
+  .sitemap-cols{grid-template-columns:1fr 1fr;}
   .foot-cols{grid-template-columns:1fr 1fr;}
   .trust-list{grid-template-columns:1fr;}
   section{padding:60px 0;}
@@ -410,6 +440,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible{outline:2px solid v
   .stat b{font-size:28px;}
   .proc-list{grid-template-columns:1fr;}
   .zone-grid{grid-template-columns:1fr;}
+  .zone-list{grid-template-columns:1fr;}
+  .sitemap-cols{grid-template-columns:1fr;}
   .frow-2{grid-template-columns:1fr;}
   .hero-cta{padding:18px 24px;}
   .hero-cta .num{font-size:22px;}

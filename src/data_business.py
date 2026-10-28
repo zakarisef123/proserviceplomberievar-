@@ -48,3 +48,15 @@ REVIEWS = [
     {"text": "Débouchage WC efficace, léger retard mais prévenu à l'avance.",
      "name": "Sophie L.", "city": "Draguignan", "stars": 4},
 ]
+
+# Référencement : codes de validation (laisser vide tant qu'ils ne sont pas fournis).
+# Google Search Console : méthode « Balise HTML », copier uniquement la valeur de content="…".
+GOOGLE_SITE_VERIFICATION = ""
+# Bing Webmaster Tools : méthode « Balise meta », valeur de content="…".
+BING_SITE_VERIFICATION = ""
+
+# Fiche Google Business Profile (lien public) et lien direct « Laisser un avis ».
+GOOGLE_BUSINESS_URL = ""
+GOOGLE_REVIEW_URL = ""
+# Autres profils officiels (Facebook, PagesJaunes, Instagram…), sous forme de liste d'URL.
+SAME_AS = []

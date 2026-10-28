@@ -76,23 +76,57 @@ function gtagReportConversion_Formulaire(url) {
     });
   });
 
-  /* Consentement cookies (Google Consent Mode v2) */
+  /* Consentement cookies (Google Consent Mode v2). Choix conservé 6 mois, puis redemandé. */
   var KEY = 'ps83-consent';
+  var MAX_AGE = 182 * 24 * 3600 * 1000;
   var banner = document.getElementById('consent');
-  function read(){ try { return localStorage.getItem(KEY); } catch(e){ return null; } }
-  function save(v){ try { localStorage.setItem(KEY, v); } catch(e){} }
-  function apply(v){
-    var g = v === 'granted' ? 'granted' : 'denied';
-    gtag('consent', 'update', {ad_storage:g, ad_user_data:g, ad_personalization:g, analytics_storage:g});
+  var prefs = document.getElementById('consent-prefs');
+  var customBtn = document.getElementById('consent-custom');
+  var boxAds = document.getElementById('c-ads');
+  var boxPerso = document.getElementById('c-perso');
+  function read(){
+    try {
+      var c = JSON.parse(localStorage.getItem(KEY));
+      return c && (Date.now() - c.t) < MAX_AGE ? c : null;
+    } catch(e){ return null; }
   }
-  var stored = read();
-  if(stored){ apply(stored); } else if(banner){ banner.classList.add('show'); }
+  function save(c){ try { localStorage.setItem(KEY, JSON.stringify(c)); } catch(e){} }
+  function apply(c){
+    var ads = c.ads ? 'granted' : 'denied';
+    var perso = c.ads && c.perso ? 'granted' : 'denied';
+    gtag('consent', 'update', {ad_storage:ads, ad_user_data:ads, ad_personalization:perso, analytics_storage:ads});
+    gtag('set', 'ads_data_redaction', ads === 'denied');
+  }
+  function choose(ads, perso){
+    var c = {ads: !!ads, perso: !!(ads && perso), t: Date.now()};
+    save(c); apply(c);
+    if(banner){ banner.classList.remove('show'); }
+  }
+  function open(){
+    var c = read();
+    if(boxAds){ boxAds.checked = !!(c && c.ads); }
+    if(boxPerso){ boxPerso.checked = !!(c && c.perso); }
+    if(banner){ banner.classList.add('show'); }
+  }
+  if(!read()){ open(); }
+  if(boxPerso && boxAds){
+    boxPerso.addEventListener('change', function(){ if(boxPerso.checked){ boxAds.checked = true; } });
+    boxAds.addEventListener('change', function(){ if(!boxAds.checked){ boxPerso.checked = false; } });
+  }
   document.querySelectorAll('[data-consent]').forEach(function(b){
     b.addEventListener('click', function(){
       var v = b.getAttribute('data-consent');
-      if(v === 'open'){ if(banner){ banner.classList.add('show'); } return; }
-      save(v); apply(v);
-      if(banner){ banner.classList.remove('show'); }
+      if(v === 'open'){ open(); return; }
+      if(v === 'granted'){ choose(true, true); return; }
+      if(v === 'denied'){ choose(false, false); return; }
+      if(v === 'custom'){
+        if(prefs && prefs.hidden){
+          prefs.hidden = false;
+          customBtn.textContent = 'Enregistrer mes choix';
+        } else {
+          choose(boxAds && boxAds.checked, boxPerso && boxPerso.checked);
+        }
+      }
     });
   });
 })();

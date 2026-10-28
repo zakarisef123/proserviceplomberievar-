@@ -32,9 +32,14 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   (function(){
-    var c = null; try { c = localStorage.getItem('ps83-consent'); } catch(e) {}
-    var v = c === 'granted' ? 'granted' : 'denied';
-    gtag('consent', 'default', {ad_storage:v, ad_user_data:v, ad_personalization:v, analytics_storage:v, wait_for_update:500});
+    /* Consentement par défaut : refusé tant que le visiteur n'a pas choisi (CNIL / RGPD) */
+    var c = null; try { c = JSON.parse(localStorage.getItem('ps83-consent')); } catch(e) {}
+    var ok = c && (Date.now() - c.t) < 182*24*3600*1000;
+    var ads = ok && c.ads ? 'granted' : 'denied';
+    var perso = ok && c.ads && c.perso ? 'granted' : 'denied';
+    gtag('consent', 'default', {ad_storage:ads, ad_user_data:ads, ad_personalization:perso, analytics_storage:ads, functionality_storage:'granted', security_storage:'granted', wait_for_update:500});
+    gtag('set', 'ads_data_redaction', ads === 'denied');
+    gtag('set', 'url_passthrough', true);
   })();
   gtag('js', new Date());
   gtag('config', 'AW-18380568336');
@@ -142,47 +147,64 @@
     </div>
     <div class="svc-grid"><article class="svc-card">
   <div class="svc-top"><div class="icon-sq pu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></div><span class="pill pill-orange">Urgence 24/7</span></div>
-  <h3><a href="/plombier-urgence-24h-var/">Urgence plomberie 24h/24</a></h3>
+  <h3><a href="/plombier-urgence-puget-sur-argens/">Urgence plomberie 24h/24 à Puget-sur-Argens</a></h3>
   <p class="desc">Fuite, dégât des eaux, panne : un plombier joignable jour et nuit, week-end et jours fériés compris.</p>
   <div class="svc-checks"><div class="check-row"><span class="check-circle la">✓</span>Disponible 7j/7</div><div class="check-row"><span class="check-circle la">✓</span>Tarif confirmé avant déplacement</div></div>
-  <div class="svc-foot"><span class="svc-price">Tarif annoncé avant déplacement</span><a class="more" href="/plombier-urgence-24h-var/">En savoir plus →</a></div>
+  <div class="svc-foot"><span class="svc-price">Tarif annoncé avant déplacement</span><a class="more" href="/plombier-urgence-puget-sur-argens/">En savoir plus →</a></div>
 </article><article class="svc-card">
   <div class="svc-top"><div class="icon-sq pu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></div><span class="pill pill-orange">Urgence 24/7</span></div>
-  <h3><a href="/recherche-de-fuite-var/">Fuite d&#x27;eau</a></h3>
+  <h3><a href="/recherche-fuite-puget-sur-argens/">Fuite d&#x27;eau à Puget-sur-Argens</a></h3>
   <p class="desc">Détection et réparation de fuites (robinet, canalisation, WC, chauffe-eau) rapidement et proprement.</p>
   <div class="svc-checks"><div class="check-row"><span class="check-circle la">✓</span>Recherche de fuite</div><div class="check-row"><span class="check-circle la">✓</span>Sans casse quand possible</div></div>
-  <div class="svc-foot"><span class="svc-price">à partir de 79 €</span><a class="more" href="/recherche-de-fuite-var/">En savoir plus →</a></div>
+  <div class="svc-foot"><span class="svc-price">à partir de 79 €</span><a class="more" href="/recherche-fuite-puget-sur-argens/">En savoir plus →</a></div>
 </article><article class="svc-card">
   <div class="svc-top"><div class="icon-sq pu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h8a4 4 0 0 1 4 4v8M4 8V5M4 8v3M16 20h-3M16 20h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div><span class="pill pill-lav">Rapide</span></div>
-  <h3><a href="/debouchage-canalisation-var/">Débouchage</a></h3>
+  <h3><a href="/debouchage-puget-sur-argens/">Débouchage à Puget-sur-Argens</a></h3>
   <p class="desc">WC, évier, douche, canalisation bouchée. Intervention rapide avec matériel adapté.</p>
   <div class="svc-checks"><div class="check-row"><span class="check-circle la">✓</span>Sans produits agressifs</div><div class="check-row"><span class="check-circle la">✓</span>Garantie sur l&#x27;intervention</div></div>
-  <div class="svc-foot"><span class="svc-price">à partir de 99 €</span><a class="more" href="/debouchage-canalisation-var/">En savoir plus →</a></div>
+  <div class="svc-foot"><span class="svc-price">à partir de 99 €</span><a class="more" href="/debouchage-puget-sur-argens/">En savoir plus →</a></div>
 </article><article class="svc-card">
   <div class="svc-top"><div class="icon-sq pu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 9v4M10 21v1M14 21v1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div><span class="pill pill-lav">Pose soignée</span></div>
-  <h3><a href="/chauffe-eau-var/">Chauffe-eau</a></h3>
+  <h3><a href="/chauffe-eau-puget-sur-argens/">Chauffe-eau à Puget-sur-Argens</a></h3>
   <p class="desc">Remplacement, dépannage et installation de chauffe-eau électrique ou thermodynamique.</p>
   <div class="svc-checks"><div class="check-row"><span class="check-circle la">✓</span>Pose soignée</div><div class="check-row"><span class="check-circle la">✓</span>Garantie pièces et MO</div></div>
-  <div class="svc-foot"><span class="svc-price">sur devis</span><a class="more" href="/chauffe-eau-var/">En savoir plus →</a></div>
+  <div class="svc-foot"><span class="svc-price">sur devis</span><a class="more" href="/chauffe-eau-puget-sur-argens/">En savoir plus →</a></div>
 </article><article class="svc-card">
   <div class="svc-top"><div class="icon-sq pu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 9h9a3 3 0 0 1 3 3v2M8 9V6M5 6h6M17 17v1M17 20.5v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div><span class="pill pill-lav">Sur devis</span></div>
-  <h3><a href="/installation-sanitaire-var/">Installation sanitaire</a></h3>
+  <h3><a href="/installation-sanitaire-puget-sur-argens/">Installation sanitaire à Puget-sur-Argens</a></h3>
   <p class="desc">Pose de WC, lavabo, douche, baignoire, robinetterie. Rénovation complète possible.</p>
   <div class="svc-checks"><div class="check-row"><span class="check-circle la">✓</span>Conseil personnalisé</div><div class="check-row"><span class="check-circle la">✓</span>Travail soigné</div></div>
-  <div class="svc-foot"><span class="svc-price">sur devis</span><a class="more" href="/installation-sanitaire-var/">En savoir plus →</a></div>
+  <div class="svc-foot"><span class="svc-price">sur devis</span><a class="more" href="/installation-sanitaire-puget-sur-argens/">En savoir plus →</a></div>
 </article><article class="svc-card">
   <div class="svc-top"><div class="icon-sq pu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17l3 3 5.5-5.5a4 4 0 0 0 5.2-5.2l-2.4 2.4-2.6-.6-.6-2.6 2.6-2.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div><span class="pill pill-orange">Dépannage</span></div>
-  <h3><a href="/reparation-canalisation-var/">Dépannage canalisation</a></h3>
+  <h3><a href="/reparation-canalisation-puget-sur-argens/">Dépannage canalisation à Puget-sur-Argens</a></h3>
   <p class="desc">Réparation ou remplacement de canalisations, problèmes d&#x27;évacuation, odeurs, etc.</p>
   <div class="svc-checks"><div class="check-row"><span class="check-circle la">✓</span>Diagnostic sur place</div><div class="check-row"><span class="check-circle la">✓</span>Solutions durables</div></div>
-  <div class="svc-foot"><span class="svc-price">à partir de 89 €</span><a class="more" href="/reparation-canalisation-var/">En savoir plus →</a></div>
+  <div class="svc-foot"><span class="svc-price">à partir de 89 €</span><a class="more" href="/reparation-canalisation-puget-sur-argens/">En savoir plus →</a></div>
 </article><article class="svc-card">
   <div class="svc-top"><div class="icon-sq pu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5v-2ZM6 12V6a2 2 0 0 1 4 0M7 19l-1 2M17 19l1 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div><span class="pill pill-lav">Rénovation</span></div>
-  <h3><a href="/renovation-salle-de-bain-var/">Rénovation salle de bain</a></h3>
+  <h3><a href="/renovation-salle-de-bain-puget-sur-argens/">Rénovation salle de bain à Puget-sur-Argens</a></h3>
   <p class="desc">Rénovation complète ou partielle de salle de bain : plomberie, carrelage, robinetterie.</p>
   <div class="svc-checks"><div class="check-row"><span class="check-circle la">✓</span>Devis détaillé</div><div class="check-row"><span class="check-circle la">✓</span>Travail propre</div></div>
-  <div class="svc-foot"><span class="svc-price">sur devis</span><a class="more" href="/renovation-salle-de-bain-var/">En savoir plus →</a></div>
+  <div class="svc-foot"><span class="svc-price">sur devis</span><a class="more" href="/renovation-salle-de-bain-puget-sur-argens/">En savoir plus →</a></div>
 </article></div>
+  </div>
+</section>
+<section class="zones " id="zones">
+  <div class="wrap zones-inner">
+    <div>
+      <div class="pill pill-lav">Zone d'intervention</div>
+      <h2>Un plombier proche de chez vous</h2>
+      <p class="intro">Temps d'arrivée indicatifs depuis notre base de Vidauban, hors trafic. Le délai exact vous est confirmé au moment de l'appel.</p>
+      <div class="zone-list"><a href="/plombier-vidauban/">Vidauban <span class="d">sur place</span></a><a href="/plombier-taradeau/">Taradeau <span class="d">~10 min</span></a><a href="/plombier-le-cannet-des-maures/">Le Cannet-des-Maures <span class="d">~15 min</span></a><a href="/plombier-le-muy/">Le Muy <span class="d">~15 min</span></a><a href="/plombier-les-arcs-sur-argens/">Les Arcs-sur-Argens <span class="d">~15 min</span></a><a href="/plombier-la-garde-freinet/">La Garde-Freinet <span class="d">~20 min</span></a><a href="/plombier-la-motte/">La Motte <span class="d">~20 min</span></a><a href="/plombier-le-luc/">Le Luc <span class="d">~20 min</span></a><a href="/plombier-le-thoronet/">Le Thoronet <span class="d">~20 min</span></a><a href="/plombier-lorgues/">Lorgues <span class="d">~20 min</span></a><a href="/plombier-trans-en-provence/">Trans-en-Provence <span class="d">~20 min</span></a><a href="/plombier-draguignan/">Draguignan <span class="d">~25 min</span></a><a href="/plombier-gonfaron/">Gonfaron <span class="d">~25 min</span></a><a href="/plombier-les-mayons/">Les Mayons <span class="d">~25 min</span></a><a href="/plombier-puget-sur-argens/" class="current" aria-current="page">Puget-sur-Argens <span class="d">~25 min</span></a><a href="/plombier-roquebrune-sur-argens/">Roquebrune-sur-Argens <span class="d">~25 min</span></a><a href="/plombier-flayosc/">Flayosc <span class="d">~30 min</span></a><a href="/plombier-pignans/">Pignans <span class="d">~30 min</span></a><a href="/plombier-frejus/">Fréjus <span class="d">~35 min</span></a><a href="/plombier-grimaud/">Grimaud <span class="d">~35 min</span></a><a href="/plombier-sainte-maxime/">Sainte-Maxime <span class="d">~35 min</span></a><a href="/plombier-saint-raphael/">Saint-Raphaël <span class="d">~40 min</span></a></div>
+    </div>
+    <div class="zone-note">
+      <span class="pill pill-orange">Hors zone ?</span>
+      <h3>On couvre tout le Var</h3>
+      <p>Les délais ci-contre concernent le secteur autour de Vidauban. Pour les communes plus éloignées du Var, nous intervenons aussi : le délai précis est donné au téléphone, avant tout déplacement.</p>
+      <a href="tel:+33675931904" class="btn btn-purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 10.8c1.5 3 3.9 5.4 6.9 6.9l2.3-2.3c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.9.6.6 0 1 .4 1 1V21c0 .6-.4 1-1 1C10.6 22 2 13.4 2 3c0-.6.4-1 1-1h4.2c.6 0 1 .4 1 1 0 1.4.2 2.7.6 3.9.1.4 0 .8-.2 1.1L6.6 10.8Z" fill="currentColor"/></svg> Vérifier mon secteur</a>
+      <a href="/zones-intervention/" class="btn btn-outline">Toutes nos zones d'intervention</a>
+    </div>
   </div>
 </section>
 <section class="process">
@@ -287,6 +309,7 @@
         <li><a href="/conseils/">Conseils plomberie</a></li>
         <li><a href="/faq/">Questions fréquentes</a></li>
         <li><a href="/contact/">Contact &amp; devis</a></li>
+        <li><a href="/plan-du-site/">Plan du site</a></li>
       </ul></div>
     </div>
     <div class="foot-bottom">
@@ -302,11 +325,18 @@
   <a href="#devis" class="btn btn-purple">Devis gratuit</a>
 </div>
 
-<div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Cookies">
-  <p>Nous utilisons des cookies Google pour mesurer l'efficacité de nos annonces. Vous pouvez les accepter ou les refuser, le site fonctionne dans les deux cas. <a href="/politique-confidentialite/">En savoir plus</a></p>
+<div class="consent" id="consent" role="dialog" aria-labelledby="consent-title">
+  <h2 id="consent-title">Vos choix en matière de cookies</h2>
+  <p>Avec votre accord, nous utilisons des cookies Google Ads pour mesurer les appels et demandes de devis issus de nos annonces. Aucun cookie publicitaire n'est déposé sans votre accord, et le site fonctionne dans tous les cas. Votre choix est conservé 6 mois et modifiable à tout moment via le lien « Cookies » en bas de page. <a href="/politique-confidentialite/">En savoir plus</a></p>
+  <div class="consent-prefs" id="consent-prefs" hidden>
+    <label class="toggle"><input type="checkbox" checked disabled><span><b>Cookies nécessaires</b> — mémorisation de votre choix. Toujours actifs.</span></label>
+    <label class="toggle"><input type="checkbox" id="c-ads"><span><b>Mesure publicitaire (Google Ads)</b> — savoir quelles annonces génèrent des appels et des demandes de devis.</span></label>
+    <label class="toggle"><input type="checkbox" id="c-perso"><span><b>Personnalisation des annonces</b> — vous montrer des annonces adaptées sur les services Google.</span></label>
+  </div>
   <div class="row">
-    <button type="button" class="btn btn-purple" data-consent="granted">Accepter</button>
-    <button type="button" class="btn btn-outline" data-consent="denied">Refuser</button>
+    <button type="button" class="btn btn-purple" data-consent="granted">Tout accepter</button>
+    <button type="button" class="btn btn-purple" data-consent="denied">Tout refuser</button>
+    <button type="button" class="btn btn-outline" data-consent="custom" id="consent-custom">Personnaliser</button>
   </div>
 </div>
 

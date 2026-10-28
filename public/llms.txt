@@ -48,6 +48,8 @@ Informations clés :
 - [Plombier Grimaud (83310)](https://proserviceplomberievar.netlify.app/plombier-grimaud/) : Depuis notre base de Vidauban, comptez environ 35 minutes pour arriver à Grimaud, hors trafic. Le délai précis vous est donné au moment de l'appel.
 - [Plombier Pignans (83790)](https://proserviceplomberievar.netlify.app/plombier-pignans/) : Depuis notre base de Vidauban, comptez environ 30 minutes pour arriver à Pignans, hors trafic. Le délai précis vous est donné au moment de l'appel.
 
+Chaque prestation existe aussi en page dédiée par commune, selon le modèle https://proserviceplomberievar.netlify.app/{prestation}-{commune}/ (ex. https://proserviceplomberievar.netlify.app/debouchage-le-muy/, https://proserviceplomberievar.netlify.app/plombier-urgence-draguignan/). Liste complète : https://proserviceplomberievar.netlify.app/plan-du-site/
+
 ## Guides pratiques
 
 - [Fuite d'eau : les 7 bons réflexes en attendant le plombier](https://proserviceplomberievar.netlify.app/conseils/fuite-d-eau-que-faire/) : Couper l'eau, sécuriser l'électricité, limiter les dégâts et préparer la déclaration d'assurance : ce qu'il faut faire, dans l'ordre.

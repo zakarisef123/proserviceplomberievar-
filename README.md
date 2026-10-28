@@ -23,14 +23,22 @@ netlify.toml          configuration Netlify (dossier publié, en-têtes)
 2. Régénérer : `python3 src/build.py`
 3. Commiter `src/` **et** `public/`, puis pousser.
 
-## Pages générées (101 pages indexables)
+## Pages générées (200 pages indexables)
 
-- Accueil, Prestations, Zones d'intervention, Tarifs, À propos, FAQ, Contact, Conseils
+- Accueil, Prestations, Zones d'intervention, Tarifs, À propos, FAQ, Contact, Conseils, Plan du site
 - 7 pages de service + 1 page « dégât des eaux & assurance »
 - 22 pages « Plombier + commune »
-- 56 pages « service + commune » (7 services × 8 communes principales)
+- 154 pages « service + commune » (7 services × 22 communes)
 - 7 guides pratiques
 - Mentions légales, confidentialité (noindex), 404
+
+Chaque page affiche la section « Un plombier proche de chez vous » avec le temps d'arrivée pour chaque commune
+(délais modifiables dans `src/data_cities.py`).
+
+## Cookies
+
+Bandeau « Tout accepter / Tout refuser / Personnaliser » relié au Google Consent Mode v2
+(refus par défaut, choix conservé 6 mois). Code : `src/assets/main.js` et la fonction `head()` de `src/build.py`.
 
 ## Fichiers SEO / IA
 
@@ -50,3 +58,5 @@ puis ajouter une notification e-mail vers proservice83@hotmail.fr.
 Dans `src/data_business.py` :
 - `SITE_URL` : le nom de domaine définitif (sert aux URL canoniques, au sitemap, à robots.txt et à llms.txt)
 - `SIRET`, `ADDRESS_STREET`, `RESPONSABLE_PUBLICATION` : obligatoires dans les mentions légales
+- `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` : codes de validation Search Console / Bing Webmaster Tools
+- `GOOGLE_BUSINESS_URL`, `GOOGLE_REVIEW_URL`, `SAME_AS` : fiche Google, lien « laisser un avis », autres profils

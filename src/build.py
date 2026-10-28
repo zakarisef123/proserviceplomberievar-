@@ -135,6 +135,9 @@ def business_schema():
             ],
         },
     }
+    same_as = [u for u in [B.GOOGLE_BUSINESS_URL] + list(B.SAME_AS) if u]
+    if same_as:
+        data["sameAs"] = same_as
     if B.SIRET:
         data["identifier"] = {"@type": "PropertyValue", "propertyID": "SIRET", "value": B.SIRET}
     return data
@@ -198,6 +201,11 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
         for s in schemas
     )
     robots = "noindex, follow" if noindex else "index, follow, max-image-preview:large, max-snippet:-1"
+    verif = ""
+    if B.GOOGLE_SITE_VERIFICATION:
+        verif += '<meta name="google-site-verification" content="%s">\n' % esc(B.GOOGLE_SITE_VERIFICATION)
+    if B.BING_SITE_VERIFICATION:
+        verif += '<meta name="msvalidate.01" content="%s">\n' % esc(B.BING_SITE_VERIFICATION)
     return f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -207,7 +215,7 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
 <meta name="description" content="{esc(desc)}">
 <meta name="robots" content="{robots}">
 <link rel="canonical" href="{canonical}">
-<meta name="geo.region" content="FR-83">
+{verif}<meta name="geo.region" content="FR-83">
 <meta name="geo.placename" content="{esc(B.BASE_CITY)}">
 <meta name="geo.position" content="{B.GEO[0]};{B.GEO[1]}">
 <meta name="ICBM" content="{B.GEO[0]}, {B.GEO[1]}">
@@ -232,9 +240,14 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
   window.dataLayer = window.dataLayer || [];
   function gtag(){{dataLayer.push(arguments);}}
   (function(){{
-    var c = null; try {{ c = localStorage.getItem('ps83-consent'); }} catch(e) {{}}
-    var v = c === 'granted' ? 'granted' : 'denied';
-    gtag('consent', 'default', {{ad_storage:v, ad_user_data:v, ad_personalization:v, analytics_storage:v, wait_for_update:500}});
+    /* Consentement par défaut : refusé tant que le visiteur n'a pas choisi (CNIL / RGPD) */
+    var c = null; try {{ c = JSON.parse(localStorage.getItem('ps83-consent')); }} catch(e) {{}}
+    var ok = c && (Date.now() - c.t) < 182*24*3600*1000;
+    var ads = ok && c.ads ? 'granted' : 'denied';
+    var perso = ok && c.ads && c.perso ? 'granted' : 'denied';
+    gtag('consent', 'default', {{ad_storage:ads, ad_user_data:ads, ad_personalization:perso, analytics_storage:ads, functionality_storage:'granted', security_storage:'granted', wait_for_update:500}});
+    gtag('set', 'ads_data_redaction', ads === 'denied');
+    gtag('set', 'url_passthrough', true);
   }})();
   gtag('js', new Date());
   gtag('config', '{B.GTAG_ID}');
@@ -302,6 +315,7 @@ def footer(form_anchor="#devis"):
         <li><a href="/conseils/">Conseils plomberie</a></li>
         <li><a href="/faq/">Questions fréquentes</a></li>
         <li><a href="/contact/">Contact &amp; devis</a></li>
+        <li><a href="/plan-du-site/">Plan du site</a></li>
       </ul></div>
     </div>
     <div class="foot-bottom">
@@ -317,11 +331,18 @@ def footer(form_anchor="#devis"):
   <a href="{form_anchor}" class="btn btn-purple">Devis gratuit</a>
 </div>
 
-<div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Cookies">
-  <p>Nous utilisons des cookies Google pour mesurer l'efficacité de nos annonces. Vous pouvez les accepter ou les refuser, le site fonctionne dans les deux cas. <a href="/politique-confidentialite/">En savoir plus</a></p>
+<div class="consent" id="consent" role="dialog" aria-labelledby="consent-title">
+  <h2 id="consent-title">Vos choix en matière de cookies</h2>
+  <p>Avec votre accord, nous utilisons des cookies Google Ads pour mesurer les appels et demandes de devis issus de nos annonces. Aucun cookie publicitaire n'est déposé sans votre accord, et le site fonctionne dans tous les cas. Votre choix est conservé 6 mois et modifiable à tout moment via le lien « Cookies » en bas de page. <a href="/politique-confidentialite/">En savoir plus</a></p>
+  <div class="consent-prefs" id="consent-prefs" hidden>
+    <label class="toggle"><input type="checkbox" checked disabled><span><b>Cookies nécessaires</b> — mémorisation de votre choix. Toujours actifs.</span></label>
+    <label class="toggle"><input type="checkbox" id="c-ads"><span><b>Mesure publicitaire (Google Ads)</b> — savoir quelles annonces génèrent des appels et des demandes de devis.</span></label>
+    <label class="toggle"><input type="checkbox" id="c-perso"><span><b>Personnalisation des annonces</b> — vous montrer des annonces adaptées sur les services Google.</span></label>
+  </div>
   <div class="row">
-    <button type="button" class="btn btn-purple" data-consent="granted">Accepter</button>
-    <button type="button" class="btn btn-outline" data-consent="denied">Refuser</button>
+    <button type="button" class="btn btn-purple" data-consent="granted">Tout accepter</button>
+    <button type="button" class="btn btn-purple" data-consent="denied">Tout refuser</button>
+    <button type="button" class="btn btn-outline" data-consent="custom" id="consent-custom">Personnaliser</button>
   </div>
 </div>
 
@@ -562,6 +583,9 @@ def reviews_section(cls="", city=None):
         % (r["stars"], "★" * r["stars"] + "☆" * (5 - r["stars"]), esc(r["text"]),
            "".join(w[0] for w in r["name"].replace(".", "").split()), esc(r["name"]), esc(r["city"]))
         for r in reviews)
+    review_btn = ""
+    if B.GOOGLE_REVIEW_URL:
+        review_btn = '<div class="center" style="margin-top:28px"><a class="btn btn-outline" href="%s" target="_blank" rel="noopener">Laisser un avis sur Google</a></div>' % esc(B.GOOGLE_REVIEW_URL)
     return f"""<section class="{cls}" id="avis">
   <div class="wrap">
     <div class="sec-head">
@@ -570,6 +594,7 @@ def reviews_section(cls="", city=None):
       <p>Note moyenne de {B.RATING} et {B.SATISFACTION} de clients satisfaits sur plus de {B.INTERVENTIONS} interventions depuis {B.SINCE}.</p>
     </div>
     <div class="testi-grid">{cards}</div>
+    {review_btn}
   </div>
 </section>
 """
@@ -578,8 +603,8 @@ def reviews_section(cls="", city=None):
 def services_grid(city=None):
     cards = []
     for s in SERVICES:
-        href = combo_path(s, city) if city and city["core"] else service_path(s)
-        title = s["short"] + (" " + city["a"] if city and city["core"] else "")
+        href = combo_path(s, city) if city else service_path(s)
+        title = s["short"] + (" " + city["a"] if city else "")
         checks = "".join('<div class="check-row"><span class="check-circle la">✓</span>%s</div>' % esc(c) for c in s["card_checks"])
         cards.append(f"""<article class="svc-card">
   <div class="svc-top"><div class="icon-sq pu">{svc_icon(s["icon"])}</div><span class="pill {'pill-orange' if 'Urgence' in s['badge'] or s['badge'] == 'Dépannage' else 'pill-lav'}">{esc(s["badge"])}</span></div>
@@ -600,6 +625,35 @@ def stats_block():
     ]
     items = "".join('<div class="stat"><div class="icon-sq"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">%s</svg></div><b>%s</b><div class="lbl">%s</div><div class="sub">%s</div></div>' % s for s in stats)
     return '<div class="stats-card">%s</div>' % items
+
+
+def zones_section(current=None, service=None, cls=""):
+    """Section « Un plombier proche de chez vous » : toutes les communes avec le temps d'arrivée."""
+    cities = sorted(CITIES, key=lambda c: (c["delay"], c["name"]))
+    items = []
+    for c in cities:
+        href = combo_path(service, c) if service else city_path(c)
+        label = ("%s %s" % (service["short"], c["name"])) if service else c["name"]
+        items.append('<a href="%s"%s>%s <span class="d">%s</span></a>' % (
+            href, ' class="current" aria-current="page"' if current and c["slug"] == current["slug"] else "", esc(label), delay_label(c)))
+    return f"""<section class="zones {cls}" id="zones">
+  <div class="wrap zones-inner">
+    <div>
+      <div class="pill pill-lav">Zone d'intervention</div>
+      <h2>Un plombier proche de chez vous</h2>
+      <p class="intro">Temps d'arrivée indicatifs depuis notre base de Vidauban, hors trafic. Le délai exact vous est confirmé au moment de l'appel.</p>
+      <div class="zone-list">{"".join(items)}</div>
+    </div>
+    <div class="zone-note">
+      <span class="pill pill-orange">Hors zone ?</span>
+      <h3>On couvre tout le Var</h3>
+      <p>Les délais ci-contre concernent le secteur autour de Vidauban. Pour les communes plus éloignées du Var, nous intervenons aussi : le délai précis est donné au téléphone, avant tout déplacement.</p>
+      <a href="tel:{B.PHONE_TEL}" class="btn btn-purple">{phone_icon(18, True)} Vérifier mon secteur</a>
+      <a href="/zones-intervention/" class="btn btn-outline">Toutes nos zones d'intervention</a>
+    </div>
+  </div>
+</section>
+"""
 
 
 def zone_cards(cities, link_fn=city_path):
@@ -716,18 +770,7 @@ def build_home():
 """
     out += process_section()
     out += insurers_section("alt")
-    out += f"""<section id="zones">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="pill pill-lav sec-badge">Zone d'intervention</div>
-      <h2>Un plombier proche de chez vous</h2>
-      <p>Délais indicatifs depuis notre base de Vidauban, hors trafic. Pour les communes plus éloignées, le délai exact est donné au moment de l'appel.</p>
-    </div>
-    {zone_cards(CITIES)}
-    <div class="center" style="margin-top:28px"><a class="btn btn-purple" href="/zones-intervention/">Voir toutes nos zones d'intervention</a></div>
-  </div>
-</section>
-"""
+    out += zones_section()
     out += reviews_section("alt")
     out += guides_teaser(GUIDES[:3])
     out += faq_block(HOME_FAQ, "Avant d'appeler : vos questions", cls="alt")
@@ -748,7 +791,7 @@ def build_service(s, idx):
     sections = "".join("<h2>%s</h2>%s" % (h, body) for h, body in s["sections"])
     others = "".join('<li><a href="%s"><span>%s</span><span>→</span></a></li>' % (service_path(o), esc(o["short"])) for o in SERVICES if o is not s)
     city_chips = "".join('<a class="chip" href="%s">%s %s <span class="d">%s</span></a>' % (combo_path(s, c), esc(s["short"]), esc(c["name"]), delay_label(c)) for c in CORE_CITIES)
-    other_chips = "".join('<a class="chip" href="%s">%s</a>' % (city_path(c), esc(c["name"])) for c in CITIES if not c["core"])
+    other_chips = "".join('<a class="chip" href="%s">%s %s <span class="d">%s</span></a>' % (combo_path(s, c), esc(s["short"]), esc(c["name"]), delay_label(c)) for c in CITIES if not c["core"])
     related_guides = [g for g in GUIDES if s["slug"] in g["services"]]
     guides_html = ""
     if related_guides:
@@ -760,7 +803,7 @@ def build_service(s, idx):
       <h2>{esc(s["short"])} : où intervenons-nous ?</h2>
       <p>Nous intervenons depuis Vidauban dans tout le centre Var. Retrouvez le détail de notre intervention dans votre commune :</p>
       <div class="chips" style="margin-bottom:14px">{city_chips}</div>
-      <p>Nous intervenons aussi à : </p>
+      <p>Nous intervenons aussi dans les communes voisines : </p>
       <div class="chips">{other_chips}</div>
       {guides_html}
     </article>
@@ -772,8 +815,9 @@ def build_service(s, idx):
   </div>
 </section>
 """
+    out += zones_section(service=s, cls="alt")
     out += process_section()
-    out += faq_block(s["faq"], "Questions fréquentes : " + s["short"].lower())
+    out += faq_block(s["faq"], "Questions fréquentes : " + s["short"].lower(), cls="")
     out += contact_section(path, "Un besoin en %s ?" % s["short"].lower(), service=s["short"])
     out += footer()
     write_page(path, out, "0.9")
@@ -807,7 +851,7 @@ def build_combo(s, c, si, ci):
     points = [s["combo_points"][(v * 2 + k) % n] for k in range(n)]
     points_html = "".join("<li>%s</li>" % esc(p) for p in points)
     other_services = "".join('<li><a href="%s"><span>%s %s</span><span>→</span></a></li>' % (combo_path(o, c), esc(o["short"]), esc(c["name"])) for o in SERVICES if o is not s)
-    near_chips = "".join('<a class="chip" href="%s">%s %s</a>' % (combo_path(s, n) if n["core"] else city_path(n), esc(s["short"]) if n["core"] else "Plombier", esc(n["name"])) for n in near)
+    near_chips = "".join('<a class="chip" href="%s">%s %s</a>' % (combo_path(s, n), esc(s["short"]), esc(n["name"])) for n in near)
     first_section = s["sections"][0]
     out += f"""<section>
   <div class="wrap layout">
@@ -834,10 +878,11 @@ def build_combo(s, c, si, ci):
   </div>
 </section>
 """
-    out += faq_block(faq, "%s %s : vos questions" % (s["short"], c["a"]))
+    out += zones_section(current=c, service=s, cls="alt")
+    out += faq_block(faq, "%s %s : vos questions" % (s["short"], c["a"]), cls="")
     out += contact_section(path, "%s %s : contactez-nous" % (s["short"], c["a"]), service=s["short"], city=c["name"])
     out += footer()
-    write_page(path, out, "0.7")
+    write_page(path, out, "0.7" if c["core"] else "0.6")
 
 
 def build_city(c):
@@ -903,6 +948,7 @@ def build_city(c):
   </div>
 </section>
 """
+    out += zones_section(current=c)
     out += process_section()
     out += faq_block(faq, "Plombier %s : vos questions" % c["a"])
     out += contact_section(path, "Un plombier %s ? Contactez-nous" % c["a"], city=c["name"])
@@ -924,6 +970,7 @@ def build_prestations():
   <p>En cas de sinistre, nous recherchons l'origine de la fuite, la réparons et vous remettons les justificatifs attendus par votre assureur habitation. <a href="/{ASSURANCE_PAGE['slug']}/">Découvrir notre accompagnement dégât des eaux</a>.</p>
 </div></section>
 """
+    out += zones_section()
     out += process_section()
     out += contact_section(path)
     out += footer()
@@ -982,7 +1029,8 @@ def build_assurance():
   </div>
 </section>
 """
-    out += faq_block(faq, "Dégât des eaux et assurance : vos questions")
+    out += zones_section(cls="alt")
+    out += faq_block(faq, "Dégât des eaux et assurance : vos questions", cls="")
     out += contact_section(path, "Un dégât des eaux ? Contactez-nous", service="Dégât des eaux / assurance")
     out += footer()
     write_page(path, out, "0.9")
@@ -998,7 +1046,7 @@ def build_zones():
     out += page_hero(crumbs, "Nos zones d'intervention dans le Var", "Basés à <b>Vidauban</b>, nous intervenons 24h/24 dans tout le centre Var. Délais indicatifs depuis notre base, hors trafic.", ["Artisan local", "Délai annoncé à l'appel", "7j/7"])
     rows = ""
     for c in CITIES:
-        links = " · ".join('<a href="%s">%s</a>' % (combo_path(s, c), esc(s["short"])) for s in SERVICES) if c["core"] else '<a href="%s">Toutes les prestations</a>' % city_path(c)
+        links = " · ".join('<a href="%s">%s</a>' % (combo_path(s, c), esc(s["short"])) for s in SERVICES)
         rows += '<tr><td><a href="%s"><strong>Plombier %s</strong></a></td><td>%s</td><td>%s</td><td>%s</td></tr>' % (city_path(c), esc(c["name"]), c["cp"], delay_label(c), links)
     out += f"""<section>
   <div class="wrap">
@@ -1067,7 +1115,8 @@ def build_tarifs():
 </section>
 """
     out += insurers_section("alt")
-    out += faq_block(faq, "Questions sur nos tarifs", cls="")
+    out += zones_section()
+    out += faq_block(faq, "Questions sur nos tarifs")
     out += contact_section(path, "Obtenez votre devis gratuit")
     out += footer()
     write_page(path, out, "0.8")
@@ -1095,7 +1144,8 @@ def build_about():
 """
     out += f'<div class="alt" style="padding:56px 0"><div class="wrap">{stats_block()}</div></div>'
     out += insurers_section()
-    out += reviews_section("alt")
+    out += zones_section(cls="alt")
+    out += reviews_section()
     out += contact_section(path)
     out += footer()
     write_page(path, out, "0.6")
@@ -1153,6 +1203,7 @@ def build_guides():
     out += header(path)
     out += page_hero(crumbs, "Conseils de plombier", "Nos guides pratiques pour réagir face à une panne, entretenir votre installation et éviter les mauvaises surprises.")
     out += guides_teaser(GUIDES, "Tous nos guides")
+    out += zones_section(cls="alt")
     out += contact_section(path)
     out += footer()
     write_page(path, out, "0.6")
@@ -1192,6 +1243,38 @@ def build_guides():
         write_page(gp, out, "0.6")
 
 
+def build_plan():
+    path = "/plan-du-site/"
+    crumbs = [("Accueil", "/"), ("Plan du site", path)]
+    out = head("Plan du site — %s, plombier dans le Var" % B.NAME,
+               "Plan du site de %s : toutes les prestations de plomberie, toutes les communes desservies et tous les guides pratiques." % B.NAME,
+               path, [business_schema(), breadcrumb_schema(crumbs)])
+    out += header(path)
+    out += page_hero(crumbs, "Plan du site", "Toutes les pages du site, classées par thème.")
+    def ul(items):
+        return "<ul>%s</ul>" % "".join('<li><a href="%s">%s</a></li>' % (h, esc(t)) for t, h in items)
+    main_pages = [("Accueil", "/"), ("Prestations", "/prestations/"), ("Zones d'intervention", "/zones-intervention/"),
+                  ("Tarifs", "/tarifs/"), ("À propos", "/a-propos/"), ("Conseils", "/conseils/"), ("FAQ", "/faq/"),
+                  ("Contact & devis", "/contact/"), ("Mentions légales", "/mentions-legales/"), ("Confidentialité", "/politique-confidentialite/")]
+    svc = [(s["name"], service_path(s)) for s in SERVICES] + [(ASSURANCE_PAGE["name"], "/%s/" % ASSURANCE_PAGE["slug"])]
+    cities = [("Plombier %s (%s)" % (c["name"], c["cp"]), city_path(c)) for c in CITIES]
+    guides = [(g["h1"], guide_path(g)) for g in GUIDES]
+    out += f"""<section><div class="wrap">
+  <div class="sitemap-cols">
+    <div><h2>Pages principales</h2>{ul(main_pages)}<h2 style="margin-top:24px">Guides pratiques</h2>{ul(guides)}</div>
+    <div><h2>Prestations</h2>{ul(svc)}</div>
+    <div><h2>Communes</h2>{ul(cities)}</div>
+  </div>
+</div></section>
+<section class="alt"><div class="wrap">
+  <div class="sec-head"><h2>Prestations par commune</h2></div>
+  <div class="sitemap-cols">{"".join('<div><h2>%s</h2>%s</div>' % (esc(s["short"]), ul([("%s %s" % (s["short"], c["name"]), combo_path(s, c)) for c in CITIES])) for s in SERVICES)}</div>
+</div></section>
+"""
+    out += footer("/contact/")
+    write_page(path, out, "0.3")
+
+
 def build_legal():
     path = "/mentions-legales/"
     crumbs = [("Accueil", "/"), ("Mentions légales", path)]
@@ -1226,7 +1309,14 @@ def build_legal():
     out += f"""<section><div class="wrap text-block prose">
   <h2>Données collectées</h2><p>Via nos formulaires, nous collectons les informations que vous saisissez : nom, téléphone, e-mail, commune, type de besoin et message. Elles servent uniquement à vous recontacter et à traiter votre demande. Elles ne sont ni vendues ni cédées.</p>
   <h2>Durée de conservation</h2><p>Les demandes sans suite sont supprimées au plus tard 3 ans après le dernier contact. Les factures sont conservées pendant la durée légale.</p>
-  <h2>Cookies</h2><p>Avec votre accord, le site utilise la balise Google Ads pour mesurer l'efficacité de nos annonces (appels et demandes de devis). Sans accord, aucun cookie publicitaire n'est déposé. Vous pouvez modifier votre choix à tout moment via le lien « Cookies » en bas de page.</p>
+  <h2>Cookies et mode de consentement</h2>
+  <p>Lors de votre première visite, un bandeau vous permet de <strong>tout accepter</strong>, <strong>tout refuser</strong> ou de <strong>personnaliser</strong> vos choix. Tant que vous n'avez pas choisi, aucun cookie publicitaire n'est déposé.</p>
+  <ul>
+    <li><strong>Cookies nécessaires</strong> : mémorisation de votre choix dans votre navigateur. Toujours actifs.</li>
+    <li><strong>Mesure publicitaire (Google Ads)</strong> : savoir quelles annonces génèrent des appels et des demandes de devis.</li>
+    <li><strong>Personnalisation des annonces</strong> : affichage d'annonces adaptées sur les services Google.</li>
+  </ul>
+  <p>Le site utilise le mode de consentement de Google (Consent Mode v2) : si vous refusez, la balise Google n'enregistre aucun cookie publicitaire et n'envoie que des signaux anonymes, sans identifiant. Votre choix est conservé 6 mois, puis vous est redemandé. Vous pouvez le modifier à tout moment via le lien « Cookies » en bas de chaque page.</p>
   <h2>Vos droits</h2><p>Vous disposez d'un droit d'accès, de rectification, d'effacement et d'opposition sur vos données. Écrivez-nous à <a href="mailto:{B.EMAIL}">{B.EMAIL}</a>. Vous pouvez également saisir la CNIL (www.cnil.fr).</p>
 </div></section>
 """
@@ -1309,6 +1399,8 @@ def build_llms():
     lines += ["", "## Zones d'intervention", ""]
     for c in CITIES:
         lines.append("- [Plombier %s (%s)](%s%s) : %s" % (c["name"], c["cp"], SITE, city_path(c), delay_sentence(c)))
+    lines += ["", "Chaque prestation existe aussi en page dédiée par commune, selon le modèle %s/{prestation}-{commune}/ (ex. %s%s, %s%s). Liste complète : %s/plan-du-site/" % (
+        SITE, SITE, combo_path(SERVICES[2], CITIES[1]), SITE, combo_path(SERVICES[0], CITIES[7]), SITE)]
     lines += ["", "## Guides pratiques", ""]
     for g in GUIDES:
         lines.append("- [%s](%s%s) : %s" % (g["h1"], SITE, guide_path(g), g["excerpt"]))
@@ -1373,14 +1465,14 @@ def main():
     build_zones()
     for ci, c in enumerate(CITIES):
         build_city(c)
-        if c["core"]:
-            for si, s in enumerate(SERVICES):
-                build_combo(s, c, si, ci)
+        for si, s in enumerate(SERVICES):
+            build_combo(s, c, si, ci)
     build_tarifs()
     build_about()
     build_faq_page()
     build_contact()
     build_guides()
+    build_plan()
     build_legal()
     build_404()
     build_robots()
