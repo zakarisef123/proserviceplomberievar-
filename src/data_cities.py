@@ -1,0 +1,163 @@
+# -*- coding: utf-8 -*-
+"""Communes desservies. `core=True` : une page par prestation est générée pour la commune.
+Les délais sont indicatifs, depuis Vidauban, hors trafic."""
+
+CITIES = [
+    {
+        "name": "Vidauban", "slug": "vidauban", "cp": "83550", "a": "à Vidauban", "de": "de Vidauban",
+        "delay": 0, "core": True,
+        "intro": "Notre base est à Vidauban : c'est ici que nous intervenons le plus vite, souvent dans l'heure. Centre du village, quartiers résidentiels, maisons de la plaine et domaines viticoles le long de l'Argens, nous connaissons les installations du secteur.",
+        "context": "À Vidauban, le parc de logements mêle maisons de village anciennes, où l'on rencontre encore des canalisations vieillissantes, et villas plus récentes avec chauffe-eau, piscines et arrosage. Être sur place nous permet d'intervenir sans délai de route et de revenir facilement si une pièce doit être commandée.",
+        "near": ["taradeau", "le-cannet-des-maures", "les-arcs-sur-argens", "le-muy", "la-garde-freinet", "le-thoronet"],
+    },
+    {
+        "name": "Le Muy", "slug": "le-muy", "cp": "83490", "a": "au Muy", "de": "du Muy",
+        "delay": 15, "core": True,
+        "intro": "Le Muy est à environ 15 minutes de Vidauban par la DN7. Au pied du rocher de Roquebrune, la commune compte de nombreux lotissements et maisons individuelles que nous dépannons régulièrement.",
+        "context": "Au Muy, beaucoup de maisons individuelles sont équipées de chauffe-eau électriques de grande capacité et de réseaux enterrés jusqu'au portail : les recherches de fuite après compteur et les remplacements de ballon y sont fréquents. L'accès rapide par la DN7 et l'autoroute A8 nous permet d'y être vite.",
+        "near": ["vidauban", "les-arcs-sur-argens", "la-motte", "roquebrune-sur-argens", "puget-sur-argens", "trans-en-provence"],
+    },
+    {
+        "name": "Les Arcs-sur-Argens", "slug": "les-arcs-sur-argens", "cp": "83460", "a": "aux Arcs-sur-Argens", "de": "des Arcs-sur-Argens",
+        "delay": 15, "core": True,
+        "intro": "Les Arcs-sur-Argens, avec son village médiéval et sa gare Les Arcs-Draguignan, se trouve à environ 15 minutes de Vidauban. Nous y intervenons aussi bien dans le vieux village que dans les quartiers résidentiels et les domaines viticoles.",
+        "context": "Dans le village ancien des Arcs, les ruelles étroites et les maisons de village imposent souvent des réseaux d'évacuation anciens et encastrés : nous privilégions la détection précise avant d'ouvrir. Dans les quartiers plus récents, ce sont surtout les chauffe-eau, les WC et la robinetterie qui nous occupent.",
+        "near": ["taradeau", "vidauban", "le-muy", "draguignan", "trans-en-provence", "lorgues"],
+    },
+    {
+        "name": "Le Cannet-des-Maures", "slug": "le-cannet-des-maures", "cp": "83340", "a": "au Cannet-des-Maures", "de": "du Cannet-des-Maures",
+        "delay": 15, "core": True,
+        "intro": "Le Cannet-des-Maures, dans la plaine des Maures près de la jonction des autoroutes A8 et A57, est à environ 15 minutes de Vidauban. Nous y dépannons particuliers, propriétaires de résidences secondaires et petites entreprises.",
+        "context": "Au Cannet-des-Maures, les habitations sont souvent dispersées, avec des réseaux d'eau enterrés sur de longues distances et parfois un assainissement individuel : une fuite ou un bouchon peut se situer loin de la maison. Nous venons équipés pour chercher méthodiquement.",
+        "near": ["le-luc", "vidauban", "le-thoronet", "les-mayons", "gonfaron", "la-garde-freinet"],
+    },
+    {
+        "name": "Le Luc", "slug": "le-luc", "cp": "83340", "a": "au Luc", "de": "du Luc",
+        "delay": 20, "core": True,
+        "intro": "Le Luc (Le Luc-en-Provence), sur la DN7 entre Vidauban et Brignoles, est à environ 20 minutes de notre base. Centre ancien, lotissements et zones d'activité : nous y intervenons tous les jours de l'année.",
+        "context": "Au Luc, le centre ancien concentre des immeubles et maisons de ville aux colonnes d'évacuation communes, où les bouchons et les dégâts des eaux entre voisins sont fréquents. Dans les quartiers pavillonnaires, nous intervenons surtout sur les chauffe-eau, les fuites et la rénovation de salles de bain.",
+        "near": ["le-cannet-des-maures", "gonfaron", "les-mayons", "le-thoronet", "vidauban", "pignans"],
+    },
+    {
+        "name": "La Garde-Freinet", "slug": "la-garde-freinet", "cp": "83680", "a": "à La Garde-Freinet", "de": "de La Garde-Freinet",
+        "delay": 20, "core": True,
+        "intro": "Village perché au cœur du massif des Maures, La Garde-Freinet est à environ 20 minutes de Vidauban par la route des Maures. Nous y intervenons dans le village comme dans les maisons isolées de la forêt.",
+        "context": "À La Garde-Freinet, beaucoup de maisons sont isolées, desservies par des pistes, avec des installations parfois anciennes et des résidences secondaires inoccupées une partie de l'année. Une fuite peut y passer inaperçue longtemps : nous conseillons de couper l'eau au départ et de faire vérifier l'installation avant la saison.",
+        "near": ["vidauban", "le-cannet-des-maures", "les-mayons", "grimaud", "le-muy", "sainte-maxime"],
+    },
+    {
+        "name": "Gonfaron", "slug": "gonfaron", "cp": "83590", "a": "à Gonfaron", "de": "de Gonfaron",
+        "delay": 25, "core": True,
+        "intro": "Gonfaron, village provençal au pied du massif des Maures, se trouve à environ 25 minutes de Vidauban. Nous y assurons les dépannages urgents comme les travaux de plomberie planifiés.",
+        "context": "À Gonfaron, entre maisons de village et villas en périphérie, nous intervenons aussi bien pour des fuites sur des réseaux anciens que pour le remplacement de chauffe-eau entartrés, l'eau étant calcaire dans le secteur.",
+        "near": ["le-luc", "les-mayons", "pignans", "le-cannet-des-maures", "la-garde-freinet", "vidauban"],
+    },
+    {
+        "name": "Draguignan", "slug": "draguignan", "cp": "83300", "a": "à Draguignan", "de": "de Draguignan",
+        "delay": 25, "core": True,
+        "intro": "Draguignan, sous-préfecture du Var, est à environ 25 minutes de Vidauban. Centre historique autour de la tour de l'Horloge, quartiers résidentiels, immeubles et maisons individuelles : nous y intervenons 7j/7.",
+        "context": "À Draguignan, nous intervenons beaucoup en appartement : colonnes d'évacuation communes, dégâts des eaux entre voisins, chauffe-eau en placard. Dans ces situations, nous fournissons les éléments nécessaires au constat amiable et coordonnons si besoin avec le syndic.",
+        "near": ["trans-en-provence", "flayosc", "les-arcs-sur-argens", "lorgues", "la-motte", "taradeau"],
+    },
+    # ---- Communes secondaires (page commune uniquement)
+    {
+        "name": "Taradeau", "slug": "taradeau", "cp": "83460", "a": "à Taradeau", "de": "de Taradeau",
+        "delay": 10, "core": False,
+        "intro": "Taradeau, petit village viticole entre Vidauban et Les Arcs, est à une dizaine de minutes de notre base : c'est l'une des communes où nous arrivons le plus vite.",
+        "context": "À Taradeau, nous intervenons dans le village et dans les maisons et domaines alentour, souvent alimentés par de longues canalisations enterrées. Fuites après compteur, chauffe-eau et débouchages représentent l'essentiel de nos interventions.",
+        "near": ["vidauban", "les-arcs-sur-argens", "lorgues", "le-thoronet"],
+    },
+    {
+        "name": "Lorgues", "slug": "lorgues", "cp": "83510", "a": "à Lorgues", "de": "de Lorgues",
+        "delay": 20, "core": False,
+        "intro": "Lorgues, village provençal réputé pour sa collégiale et ses ruelles, est à environ 20 minutes de Vidauban par Taradeau.",
+        "context": "À Lorgues, les maisons de village anciennes et les nombreuses bastides en campagne demandent des interventions adaptées : réseaux anciens, chauffe-eau éloignés, fosses et évacuations longues.",
+        "near": ["taradeau", "le-thoronet", "les-arcs-sur-argens", "draguignan", "flayosc"],
+    },
+    {
+        "name": "Le Thoronet", "slug": "le-thoronet", "cp": "83340", "a": "au Thoronet", "de": "du Thoronet",
+        "delay": 20, "core": False,
+        "intro": "Le Thoronet, connu pour son abbaye cistercienne, est à environ 20 minutes de Vidauban. Nous y dépannons les habitants du village et des hameaux alentour.",
+        "context": "Au Thoronet, l'habitat est dispersé et souvent entouré de nature : canalisations enterrées, puits, arrosage et chauffe-eau sont les sujets les plus courants de nos interventions.",
+        "near": ["le-cannet-des-maures", "le-luc", "lorgues", "vidauban", "taradeau"],
+    },
+    {
+        "name": "Les Mayons", "slug": "les-mayons", "cp": "83340", "a": "aux Mayons", "de": "des Mayons",
+        "delay": 25, "core": False,
+        "intro": "Les Mayons, petit village du massif des Maures, est à environ 25 minutes de Vidauban. Nous y intervenons malgré l'éloignement, avec un délai annoncé au téléphone.",
+        "context": "Aux Mayons, les maisons isolées et les résidences secondaires sont nombreuses : fuites non détectées pendant l'absence des occupants et chauffe-eau à remplacer sont des interventions fréquentes.",
+        "near": ["gonfaron", "le-luc", "le-cannet-des-maures", "la-garde-freinet"],
+    },
+    {
+        "name": "Trans-en-Provence", "slug": "trans-en-provence", "cp": "83720", "a": "à Trans-en-Provence", "de": "de Trans-en-Provence",
+        "delay": 20, "core": False,
+        "intro": "Trans-en-Provence, traversée par la Nartuby, est à environ 20 minutes de Vidauban, entre Les Arcs, La Motte et Draguignan.",
+        "context": "À Trans-en-Provence, nous intervenons dans le vieux village comme dans les quartiers résidentiels : débouchages, recherche de fuite et remplacement de chauffe-eau sont nos demandes les plus fréquentes.",
+        "near": ["draguignan", "la-motte", "les-arcs-sur-argens", "le-muy"],
+    },
+    {
+        "name": "La Motte", "slug": "la-motte", "cp": "83920", "a": "à La Motte", "de": "de La Motte",
+        "delay": 20, "core": False,
+        "intro": "La Motte, commune viticole entre Le Muy et Draguignan, est à environ 20 minutes de Vidauban.",
+        "context": "À La Motte, l'habitat est majoritairement composé de maisons individuelles avec jardin : canalisations enterrées, arrosage, chauffe-eau de grande capacité et salles de bain à rénover.",
+        "near": ["le-muy", "trans-en-provence", "draguignan", "les-arcs-sur-argens"],
+    },
+    {
+        "name": "Flayosc", "slug": "flayosc", "cp": "83780", "a": "à Flayosc", "de": "de Flayosc",
+        "delay": 30, "core": False,
+        "intro": "Flayosc, village perché à l'ouest de Draguignan, est à environ 30 minutes de Vidauban. Le délai exact vous est communiqué lors de l'appel.",
+        "context": "À Flayosc, entre village ancien et nombreuses villas sur les collines, nous intervenons pour les fuites, les débouchages, les chauffe-eau et les projets de rénovation.",
+        "near": ["draguignan", "lorgues", "trans-en-provence"],
+    },
+    {
+        "name": "Roquebrune-sur-Argens", "slug": "roquebrune-sur-argens", "cp": "83520", "a": "à Roquebrune-sur-Argens", "de": "de Roquebrune-sur-Argens",
+        "delay": 25, "core": False,
+        "intro": "Roquebrune-sur-Argens, de son village perché jusqu'au littoral des Issambres, est à environ 25 minutes de Vidauban par Le Muy.",
+        "context": "À Roquebrune-sur-Argens, nous intervenons dans les résidences principales comme dans les résidences secondaires et les copropriétés : fuites, dégâts des eaux, débouchages et chauffe-eau.",
+        "near": ["le-muy", "puget-sur-argens", "frejus", "sainte-maxime"],
+    },
+    {
+        "name": "Puget-sur-Argens", "slug": "puget-sur-argens", "cp": "83480", "a": "à Puget-sur-Argens", "de": "de Puget-sur-Argens",
+        "delay": 25, "core": False,
+        "intro": "Puget-sur-Argens, entre Le Muy et Fréjus le long de la DN7, est à environ 25 minutes de Vidauban.",
+        "context": "À Puget-sur-Argens, l'habitat pavillonnaire domine : recherches de fuite, chauffe-eau et installations sanitaires sont nos interventions les plus fréquentes.",
+        "near": ["le-muy", "roquebrune-sur-argens", "frejus"],
+    },
+    {
+        "name": "Fréjus", "slug": "frejus", "cp": "83600", "a": "à Fréjus", "de": "de Fréjus",
+        "delay": 35, "core": False,
+        "intro": "Fréjus, de la vieille ville à Port-Fréjus et Saint-Aygulf, est à environ 35 minutes de Vidauban par l'A8. Nous y intervenons sur rendez-vous et en urgence, avec un délai annoncé à l'appel.",
+        "context": "À Fréjus, les appartements en copropriété et les résidences secondaires représentent une grande part de nos interventions : dégâts des eaux entre voisins, chauffe-eau, fuites et rénovation de salles de bain.",
+        "near": ["puget-sur-argens", "saint-raphael", "roquebrune-sur-argens"],
+    },
+    {
+        "name": "Saint-Raphaël", "slug": "saint-raphael", "cp": "83700", "a": "à Saint-Raphaël", "de": "de Saint-Raphaël",
+        "delay": 40, "core": False,
+        "intro": "Saint-Raphaël, de Boulouris à Agay, est à environ 40 minutes de Vidauban. Pour les travaux planifiés comme pour les urgences, le délai vous est donné au téléphone.",
+        "context": "À Saint-Raphaël, nous intervenons principalement en appartement et en villa : rénovation de salles de bain, remplacement de chauffe-eau et recherche de fuite.",
+        "near": ["frejus", "puget-sur-argens"],
+    },
+    {
+        "name": "Sainte-Maxime", "slug": "sainte-maxime", "cp": "83120", "a": "à Sainte-Maxime", "de": "de Sainte-Maxime",
+        "delay": 35, "core": False,
+        "intro": "Sainte-Maxime, sur le golfe de Saint-Tropez, est à environ 35 minutes de Vidauban via Le Muy. Nous y intervenons notamment pour les résidences secondaires.",
+        "context": "À Sainte-Maxime, de nombreuses villas et appartements sont occupés une partie de l'année : vérification avant la saison, fuites découvertes au retour et chauffe-eau à remplacer sont des demandes fréquentes.",
+        "near": ["grimaud", "le-muy", "roquebrune-sur-argens", "la-garde-freinet"],
+    },
+    {
+        "name": "Grimaud", "slug": "grimaud", "cp": "83310", "a": "à Grimaud", "de": "de Grimaud",
+        "delay": 35, "core": False,
+        "intro": "Grimaud, du village perché à Port-Grimaud, est à environ 35 minutes de Vidauban par La Garde-Freinet.",
+        "context": "À Grimaud, nous intervenons dans les maisons de village, les villas et les résidences secondaires : fuites, chauffe-eau, débouchages et rénovations de salles de bain.",
+        "near": ["la-garde-freinet", "sainte-maxime"],
+    },
+    {
+        "name": "Pignans", "slug": "pignans", "cp": "83790", "a": "à Pignans", "de": "de Pignans",
+        "delay": 30, "core": False,
+        "intro": "Pignans, au pied de Notre-Dame-des-Anges, est à environ 30 minutes de Vidauban par la DN7.",
+        "context": "À Pignans, nous intervenons pour les dépannages urgents et les travaux planifiés : fuites, débouchages, chauffe-eau et installation sanitaire.",
+        "near": ["gonfaron", "le-luc"],
+    },
+]
+
+CITY_BY_SLUG = {c["slug"]: c for c in CITIES}
