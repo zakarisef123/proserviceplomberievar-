@@ -23,7 +23,18 @@ OUT = os.path.join(ROOT, "public")
 SRC_ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 TODAY = date.today().isoformat()
 SITE = B.SITE_URL.rstrip("/")
-ASSET_VERSION = TODAY.replace("-", "")
+def _file_hash(*names):
+    import hashlib
+    h = hashlib.md5()
+    for n in names:
+        with open(os.path.join(SRC_ASSETS, n), "rb") as f:
+            h.update(f.read())
+    return h.hexdigest()[:10]
+
+
+# Version des fichiers CSS/JS calculée à partir de leur contenu : chaque modification
+# change l'URL, ce qui force les navigateurs à recharger la nouvelle version.
+ASSET_VERSION = _file_hash("style.css", "main.js")
 
 SERVICE_BY_SLUG = {s["slug"]: s for s in SERVICES}
 CORE_CITIES = [c for c in CITIES if c["core"]]
