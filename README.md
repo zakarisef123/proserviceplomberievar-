@@ -65,7 +65,7 @@ puis ajouter une notification e-mail vers proservice83@hotmail.fr.
 ## À compléter
 
 Dans `src/data_business.py` :
-- `SITE_URL` : le nom de domaine définitif (sert aux URL canoniques, au sitemap, à robots.txt et à llms.txt)
+- `SITE_URL` : l'adresse du site (actuellement https://pro-service83plomberie.netlify.app), à remplacer par le nom de domaine définitif (sert aux URL canoniques, au sitemap, à robots.txt et à llms.txt)
 - `SIRET`, `ADDRESS_STREET`, `RESPONSABLE_PUBLICATION` : obligatoires dans les mentions légales
 - `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` : codes de validation Search Console / Bing Webmaster Tools
 - `ASSURANCE_DECENNALE` : passer à `True` si l'entreprise a une décennale et une RC pro à jour
