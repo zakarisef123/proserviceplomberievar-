@@ -102,3 +102,16 @@ GOOGLE_BUSINESS_URL = ""
 GOOGLE_REVIEW_URL = ""
 # Autres profils officiels (Facebook, PagesJaunes, Instagram…), sous forme de liste d'URL.
 SAME_AS = []
+
+# Grille tarifaire selon l'heure (page d'accueil). Heure de Paris.
+# Journée : lun-sam de RATE_DAY_START à RATE_EVENING_START ; soirée : lun-sam jusqu'à RATE_NIGHT_START ;
+# nuit : de RATE_NIGHT_START à RATE_DAY_START, plus dimanches et jours fériés toute la journée.
+RATE_DAY_START = 8
+RATE_EVENING_START = 18
+RATE_NIGHT_START = 22
+# (identifiant, libellé, coefficient appliqué aux prix « à partir de »)
+RATE_PERIODS = [
+    ("jour", "Journée", 1.0),
+    ("soir", "Soirée", 1.25),
+    ("nuit", "Nuit, dimanche & jours fériés", 1.5),
+]

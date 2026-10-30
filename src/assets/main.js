@@ -183,3 +183,65 @@ function gtagReportConversion_Formulaire(url) {
     });
   });
 })();
+
+/* Grille tarifaire selon l'heure : créneau en cours (heure de Paris, dimanches et jours fériés) */
+(function(){
+  var table = document.querySelector('.rate-table');
+  if(!table){ return; }
+  var DAY = +table.getAttribute('data-day'), EVE = +table.getAttribute('data-evening'), NIGHT = +table.getAttribute('data-night');
+  var labels = {};
+  document.querySelectorAll('.period-tab').forEach(function(b){ labels[b.getAttribute('data-period')] = b.querySelector('b').textContent; });
+
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function easter(y){
+    var a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4,
+        f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30,
+        i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451),
+        month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+    return Date.UTC(y, month - 1, day);
+  }
+  function isHoliday(y, m, d){
+    if(['1-1', '5-1', '5-8', '7-14', '8-15', '11-1', '11-11', '12-25'].indexOf(m + '-' + d) >= 0){ return true; }
+    var diff = Math.round((Date.UTC(y, m - 1, d) - easter(y)) / 86400000);
+    return diff === 1 || diff === 39 || diff === 50; /* lundi de Pâques, Ascension, lundi de Pentecôte */
+  }
+  function parisNow(){
+    var parts = {};
+    new Intl.DateTimeFormat('fr-FR', {timeZone: 'Europe/Paris', year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: 'numeric', minute: 'numeric', hourCycle: 'h23'}).formatToParts(new Date()).forEach(function(p){ parts[p.type] = +p.value; });
+    parts.weekday = new Date(Date.UTC(parts.year, parts.month - 1, parts.day)).getUTCDay();
+    return parts;
+  }
+  function currentPeriod(t){
+    if(t.weekday === 0 || isHoliday(t.year, t.month, t.day)){ return 'nuit'; }
+    if(t.hour >= DAY && t.hour < EVE){ return 'jour'; }
+    if(t.hour >= EVE && t.hour < NIGHT){ return 'soir'; }
+    return 'nuit';
+  }
+  function show(period){
+    table.setAttribute('data-active', period);
+    document.querySelectorAll('.period-tab').forEach(function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-period') === period ? 'true' : 'false');
+    });
+  }
+  var chosen = null;
+  function refresh(){
+    var t = parisNow(), now = currentPeriod(t);
+    table.setAttribute('data-now', now);
+    document.querySelectorAll('.period-tab').forEach(function(b){ b.classList.toggle('is-now', b.getAttribute('data-period') === now); });
+    var box = document.querySelector('[data-price-now]');
+    if(box){
+      box.hidden = false;
+      box.querySelector('[data-now-time]').textContent = pad(t.hour) + 'h' + pad(t.minute);
+      var lbl = labels[now] || now;
+      box.querySelector('[data-now-label]').textContent = 'tarif « ' + lbl.toLowerCase() + ' »';
+    }
+    if(!chosen){ show(now); }
+  }
+  document.querySelectorAll('.period-tab').forEach(function(b){
+    b.addEventListener('click', function(){ chosen = b.getAttribute('data-period'); show(chosen); });
+  });
+  refresh();
+  setInterval(refresh, 60000);
+})();
+

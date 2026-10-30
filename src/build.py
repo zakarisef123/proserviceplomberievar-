@@ -813,6 +813,59 @@ def services_grid(city=None):
     return '<div class="svc-grid">%s</div>' % "".join(cards)
 
 
+def rate_hours(pid):
+    d, e, n = B.RATE_DAY_START, B.RATE_EVENING_START, B.RATE_NIGHT_START
+    return {"jour": "Lun–sam · %dh–%dh" % (d, e), "soir": "Lun–sam · %dh–%dh" % (e, n),
+            "nuit": "%dh–%dh · dimanche · jours fériés" % (n, d)}[pid]
+
+
+def rate_price(base, coef):
+    import math
+    return "dès\u00a0%d\u00a0€" % math.floor(base * coef + 0.5)
+
+
+def pricing_section(cls="alt"):
+    """Grille tarifaire selon l'heure : prix de départ par créneau, créneau en cours mis en avant par main.js."""
+    priced = [s for s in SERVICES if s["price_min"]]
+    quoted = [s for s in SERVICES if not s["price_min"] and s["price_label"] == "sur devis"]
+    tabs = "".join(
+        '<button type="button" class="period-tab" data-period="%s" aria-pressed="%s"><b>%s</b><span>%s</span><em>%s</em></button>'
+        % (pid, "true" if i == 0 else "false", esc(label), rate_hours(pid), "tarif de base" if coef == 1 else "+%d\u00a0%%" % round((coef - 1) * 100))
+        for i, (pid, label, coef) in enumerate(B.RATE_PERIODS))
+    head_cells = "".join(
+        '<th data-p="%s"><span class="th-label">%s</span><span class="th-hours">%s</span><span class="now-flag">En ce moment</span></th>' % (pid, esc(label), rate_hours(pid))
+        for pid, label, coef in B.RATE_PERIODS)
+    rows = ""
+    for s in priced:
+        cells = "".join('<td data-p="%s">%s</td>' % (pid, rate_price(s["price_min"], coef)) for pid, label, coef in B.RATE_PERIODS)
+        rows += '<tr><th scope="row"><a href="%s">%s</a></th>%s</tr>' % (service_path(s), esc(s["short"]), cells)
+    if quoted:
+        rows += '<tr class="quoted"><th scope="row">%s</th><td colspan="%d">sur devis gratuit</td></tr>' % (
+            " · ".join('<a href="%s">%s</a>' % (service_path(s), esc(s["short"])) for s in quoted), len(B.RATE_PERIODS))
+    majorations = " ; ".join("%s (%s) : %s" % (label.lower(), rate_hours(pid), "tarif de base" if coef == 1 else "+%d %%" % round((coef - 1) * 100))
+                             for pid, label, coef in B.RATE_PERIODS)
+    return f"""<section class="{cls} pricing" id="tarifs-horaires">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="pill pill-orange sec-badge">Tarifs selon l'heure</div>
+      <h2>Nos tarifs en ce moment</h2>
+      <p>Prix de départ d'une intervention courante, selon le jour et l'heure. Le prix exact est toujours annoncé au téléphone et confirmé avant les travaux.</p>
+    </div>
+    <p class="price-now" data-price-now hidden><span class="dot dot-pulse"></span>Il est <b data-now-time></b> à Vidauban : <b data-now-label></b> en vigueur.</p>
+    <div class="period-tabs" role="group" aria-label="Choisir un créneau">{tabs}</div>
+    <div class="rate-wrap">
+      <table class="rate-table" data-active="{B.RATE_PERIODS[0][0]}" data-day="{B.RATE_DAY_START}" data-evening="{B.RATE_EVENING_START}" data-night="{B.RATE_NIGHT_START}">
+        <thead><tr><th scope="col">Prestation</th>{head_cells}</tr></thead>
+        <tbody>{rows}</tbody>
+      </table>
+    </div>
+    <p class="rate-note">Majorations : {majorations}. Heure de Paris. Prix « à partir de » pour une intervention courante ; le montant exact dépend de la situation et vous est communiqué avant le déplacement. <a href="/tarifs/">Voir tous nos tarifs</a>.</p>
+    <div class="center" style="margin-top:22px"><a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} Prix exact au {B.PHONE}</a></div>
+  </div>
+</section>
+"""
+
+
 def stats_block():
     stats = [
         ('<path d="M3 17 9 11 13 15 21 7M21 7h-5M21 7v5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>', B.YEARS, "Années d'expérience", "Depuis %d" % B.SINCE),
@@ -954,6 +1007,7 @@ def build_home():
     {services_grid()}
   </div>
 </section>
+{pricing_section()}
 <div class="alt" style="padding:0 0 10px"><div class="wrap">{stats_block()}</div></div>
 <section class="alt">
   <div class="wrap text-block prose">
@@ -1656,6 +1710,7 @@ def build_llms():
              "- Base : %s (%s), %s" % (B.BASE_CITY, B.BASE_CP, B.DEPARTEMENT),
              "- Expérience : depuis %d, plus de %s interventions, note moyenne %s, %s de clients satisfaits" % (B.SINCE, B.INTERVENTIONS, B.RATING, B.SATISFACTION),
              "- Tarifs : fuite d'eau dès 79 €, réparation de canalisation dès 89 €, débouchage dès 99 €, chauffe-eau / installation sanitaire / salle de bain sur devis. Diagnostic téléphonique et devis gratuits. Supplément éventuel nuit, week-end et jours fériés annoncé avant le déplacement.",
+             "- Majorations horaires (heure de Paris) : " + " ; ".join("%s (%s) %s" % (label, rate_hours(pid), "tarif de base" if coef == 1 else "+%d %%" % round((coef - 1) * 100)) for pid, label, coef in B.RATE_PERIODS) + ".",
              "- Engagements : prix annoncé avant le déplacement, devis validé avant les travaux, facture détaillée, travaux garantis.",
              "- Assurance : factures acceptées par les assureurs habitation (%s), selon les garanties du contrat." % ", ".join(n for n, _ in B.INSURERS),
              "- Communes desservies : %s." % ", ".join("%s (%s, %s)" % (c["name"], c["cp"], delay_label(c)) for c in CITIES),
