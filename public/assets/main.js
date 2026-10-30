@@ -184,13 +184,15 @@ function gtagReportConversion_Formulaire(url) {
   });
 })();
 
-/* Grille tarifaire selon l'heure : créneau en cours (heure de Paris, dimanches et jours fériés) */
+/* Tarifs selon l'heure : créneau en cours (heure de Paris, dimanches et jours fériés au tarif de nuit) */
 (function(){
-  var table = document.querySelector('.rate-table');
-  if(!table){ return; }
-  var DAY = +table.getAttribute('data-day'), EVE = +table.getAttribute('data-evening'), NIGHT = +table.getAttribute('data-night');
-  var labels = {};
-  document.querySelectorAll('.period-tab').forEach(function(b){ labels[b.getAttribute('data-period')] = b.querySelector('b').textContent; });
+  var card = document.querySelector('.rate-card');
+  if(!card){ return; }
+  var DAY = +card.getAttribute('data-day'), EVE = +card.getAttribute('data-evening'), NIGHT = +card.getAttribute('data-night');
+  var tabs = card.querySelectorAll('.period-tab');
+  var names = {};
+  tabs.forEach(function(b){ names[b.getAttribute('data-period')] = b.querySelector('b').textContent.toLowerCase(); });
+  var box = card.querySelector('[data-price-now]');
 
   function pad(n){ return (n < 10 ? '0' : '') + n; }
   function easter(y){
@@ -210,38 +212,34 @@ function gtagReportConversion_Formulaire(url) {
     new Intl.DateTimeFormat('fr-FR', {timeZone: 'Europe/Paris', year: 'numeric', month: 'numeric', day: 'numeric',
       hour: 'numeric', minute: 'numeric', hourCycle: 'h23'}).formatToParts(new Date()).forEach(function(p){ parts[p.type] = +p.value; });
     parts.weekday = new Date(Date.UTC(parts.year, parts.month - 1, parts.day)).getUTCDay();
+    parts.holiday = isHoliday(parts.year, parts.month, parts.day);
     return parts;
   }
   function currentPeriod(t){
-    if(t.weekday === 0 || isHoliday(t.year, t.month, t.day)){ return 'nuit'; }
+    if(t.weekday === 0 || t.holiday){ return 'nuit'; }
     if(t.hour >= DAY && t.hour < EVE){ return 'jour'; }
     if(t.hour >= EVE && t.hour < NIGHT){ return 'soir'; }
     return 'nuit';
   }
-  function show(period){
-    table.setAttribute('data-active', period);
-    document.querySelectorAll('.period-tab').forEach(function(b){
-      b.setAttribute('aria-pressed', b.getAttribute('data-period') === period ? 'true' : 'false');
-    });
-  }
+  function clock(t){ return t.hour + 'h' + (t.minute ? pad(t.minute) : ''); }
   var chosen = null;
-  function refresh(){
-    var t = parisNow(), now = currentPeriod(t);
-    table.setAttribute('data-now', now);
-    document.querySelectorAll('.period-tab').forEach(function(b){ b.classList.toggle('is-now', b.getAttribute('data-period') === now); });
-    var box = document.querySelector('[data-price-now]');
-    if(box){
-      box.hidden = false;
-      box.querySelector('[data-now-time]').textContent = pad(t.hour) + 'h' + pad(t.minute);
-      var lbl = labels[now] || now;
-      box.querySelector('[data-now-label]').textContent = 'tarif « ' + lbl.toLowerCase() + ' »';
+  function render(){
+    var t = parisNow(), now = currentPeriod(t), shown = chosen || now;
+    card.setAttribute('data-active', shown);
+    card.setAttribute('data-now', now);
+    tabs.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-period') === shown ? 'true' : 'false'); });
+    if(!box){ return; }
+    var when = 'Il est ' + clock(t);
+    if(t.hour >= DAY && (t.weekday === 0 || t.holiday)){ when = t.holiday ? 'Jour férié' : 'Nous sommes dimanche'; }
+    if(shown === now){
+      box.textContent = when + ' : vous voyez le tarif de ' + names[now] + '.';
+    } else {
+      box.textContent = 'Vous voyez le tarif de ' + names[shown] + '. ' + when + ' : tarif de ' + names[now] + ' en ce moment.';
     }
-    if(!chosen){ show(now); }
   }
-  document.querySelectorAll('.period-tab').forEach(function(b){
-    b.addEventListener('click', function(){ chosen = b.getAttribute('data-period'); show(chosen); });
+  tabs.forEach(function(b){
+    b.addEventListener('click', function(){ chosen = b.getAttribute('data-period'); render(); });
   });
-  refresh();
-  setInterval(refresh, 60000);
+  render();
+  setInterval(render, 60000);
 })();
-

@@ -113,5 +113,5 @@ RATE_NIGHT_START = 22
 RATE_PERIODS = [
     ("jour", "Journée", 1.0),
     ("soir", "Soirée", 1.25),
-    ("nuit", "Nuit, dimanche & jours fériés", 1.5),
+    ("nuit", "Nuit", 1.5),
 ]
