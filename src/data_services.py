@@ -6,7 +6,7 @@ SERVICES = [
     {
         "slug": "plombier-urgence-24h-var",
         "image": 'degat-des-eaux.jpg',
-        "image_alt": "Dégât des eaux : fuite d'eau qui traverse un plafond",
+        "image_alt": "Sol de cuisine inondé après une fuite d'eau",
         "combo": "plombier-urgence",
         "name": "Plombier urgence 24h/24",
         "short": "Urgence plomberie 24h/24",
@@ -139,7 +139,7 @@ SERVICES = [
     {
         "slug": "debouchage-canalisation-var",
         "image": 'debouchage-wc.jpg',
-        "image_alt": 'Débouchage de WC et de canalisation',
+        "image_alt": 'Débouchage de WC avec une pompe à déboucher',
         "combo": "debouchage",
         "name": "Débouchage WC & canalisation",
         "short": "Débouchage",
@@ -268,7 +268,7 @@ SERVICES = [
     {
         "slug": "installation-sanitaire-var",
         "image": 'installation-sanitaire.jpg',
-        "image_alt": 'Plombier installant un lavabo dans une salle de bain',
+        "image_alt": 'WC suspendu et bidet installés dans une salle de bain',
         "combo": "installation-sanitaire",
         "name": "Installation sanitaire & robinetterie",
         "short": "Installation sanitaire",
@@ -385,7 +385,7 @@ SERVICES = [
     {
         "slug": "renovation-salle-de-bain-var",
         "image": 'renovation-salle-de-bain.jpg',
-        "image_alt": 'Salle de bain rénovée',
+        "image_alt": 'Salle de bain rénovée avec double vasque, douche et baignoire',
         "combo": "renovation-salle-de-bain",
         "name": "Rénovation de salle de bain",
         "short": "Rénovation salle de bain",
@@ -447,7 +447,7 @@ ASSURANCE_PAGE = {
     "slug": "plombier-degat-des-eaux-assurance-var",
     "name": "Dégât des eaux & assurance",
     "image": "plombier-devis-client.jpg",
-    "image_alt": "Plombier présentant la facture et le descriptif de l'intervention à une cliente",
+    "image_alt": "Plombier présentant le descriptif de l'intervention à un client",
 }
 
 SERVICE_ICONS = {

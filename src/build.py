@@ -974,7 +974,7 @@ def build_home():
     </div>
     </div>
     <div class="hero-media">
-      <img src="/assets/img/plombier-devis-client.jpg" alt="Plombier présentant le devis à une cliente avant l'intervention" width="560" height="560" fetchpriority="high">
+      <img src="/assets/img/plombier-devis-client.jpg" alt="Plombier présentant le devis à un client avant l'intervention" width="560" height="560" fetchpriority="high">
       <div class="hero-tag"><b>Sur place</b><span>Devis annoncé avant travaux</span></div>
     </div>
   </div>
@@ -1222,7 +1222,7 @@ def build_prestations():
                "Toutes nos prestations de plomberie dans le Var : urgence 24h/24, recherche de fuite, débouchage, chauffe-eau, canalisation, installation sanitaire, salle de bain.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Nos prestations de plomberie dans le Var", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement, de Vidauban à Draguignan.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à une cliente")
+    out += page_hero(crumbs, "Nos prestations de plomberie dans le Var", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement, de Vidauban à Draguignan.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à un client")
     out += trust_marquee()
     out += f"""<section><div class="wrap">{services_grid()}</div></section>
 <section class="alt"><div class="wrap text-block prose">
