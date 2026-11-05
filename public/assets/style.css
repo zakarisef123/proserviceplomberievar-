@@ -666,7 +666,7 @@ button.hero-devis{background:none; border:none; cursor:pointer; font-family:inhe
 }
 
 /* ---------- Photo de fond du héros d'accueil (vue du Var) ---------- */
-.hero-photo .hero-bg{position:absolute; inset:-12px; width:calc(100% + 24px); height:calc(100% + 24px); max-width:none; object-fit:cover; filter:saturate(1.1); z-index:0;}
+.hero-photo .hero-bg{position:absolute; inset:0; width:100%; height:100%; max-width:none; object-fit:cover; filter:saturate(1.1); z-index:0;}
 .hero-photo::before{content:""; position:absolute; inset:0; z-index:1;
   background:radial-gradient(ellipse 700px 500px at 90% 0%, rgba(255,255,255,0.08), transparent 60%),
              linear-gradient(100deg, rgba(44,26,77,0.92) 0%, rgba(58,33,104,0.80) 45%, rgba(74,42,134,0.62) 100%);}
