@@ -73,7 +73,7 @@ SERVICES = [
     {
         "slug": "recherche-de-fuite-var",
         "image": 'recherche-fuite.jpg',
-        "image_alt": "Plombier réparant une fuite d'eau sous un évier",
+        "image_alt": "Appareil de détection de fuite utilisé par un plombier",
         "combo": "recherche-fuite",
         "name": "Fuite d'eau & recherche de fuite",
         "short": "Fuite d'eau",
@@ -201,7 +201,7 @@ SERVICES = [
     {
         "slug": "chauffe-eau-var",
         "image": 'chauffe-eau.jpg',
-        "image_alt": "Plombier en intervention sur un appareil de production d'eau chaude",
+        "image_alt": "Chauffe-eau électrique installé dans une buanderie",
         "combo": "chauffe-eau",
         "name": "Chauffe-eau : dépannage & remplacement",
         "short": "Chauffe-eau",
@@ -328,7 +328,7 @@ SERVICES = [
     {
         "slug": "reparation-canalisation-var",
         "image": 'debouchage-regard.jpg',
-        "image_alt": "Intervention sur une canalisation et un regard d'évacuation",
+        "image_alt": "Canalisation percée qui fuit au niveau d'un raccord",
         "combo": "reparation-canalisation",
         "name": "Réparation & remplacement de canalisation",
         "short": "Dépannage canalisation",
