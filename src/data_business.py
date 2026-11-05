@@ -2,7 +2,7 @@
 """Informations sur l'entreprise. Modifier ici puis relancer `python3 src/build.py`."""
 
 # Adresse publique du site (sans slash final). À remplacer par le nom de domaine définitif.
-SITE_URL = "https://pro-service83plomberie.netlify.app"
+SITE_URL = "https://pro-service83.com"
 
 NAME = "PRO SERVICE 83"
 LEGAL_NAME = "PRO SERVICE 83"
