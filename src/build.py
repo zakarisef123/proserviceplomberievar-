@@ -950,16 +950,17 @@ HOME_FAQ = [
 
 def build_home():
     path = "/"
-    title = "Plombier Vidauban & Var 24h/24 — PRO SERVICE 83, dépannage 7j/7"
-    desc = "Plombier à Vidauban et dans le Var, 24h/24 et 7j/7 : fuite d'eau, débouchage, chauffe-eau, canalisation, salle de bain. Prix annoncé avant intervention. ☎ 06 75 93 19 04"
+    title = "Plombier dans le Var (83) 24h/24 — PRO SERVICE 83, dépannage 7j/7"
+    desc = "Plombier dans tout le Var, 24h/24 et 7j/7 : fuite d'eau, débouchage, chauffe-eau, canalisation, salle de bain. Prix annoncé avant intervention. ☎ 06 75 93 19 04"
     website = {"@context": "https://schema.org", "@type": "WebSite", "@id": SITE + "/#site", "name": B.NAME, "url": SITE + "/", "inLanguage": "fr-FR", "publisher": {"@id": SITE + "/#entreprise"}}
     out = head(title, desc, path, [business_schema(), website, faq_schema(HOME_FAQ)])
     out += header(path)
-    out += f"""<section class="hero hero-split">
+    out += f"""<section class="hero hero-split hero-photo">
+  <img class="hero-bg" src="/assets/img/hero-var.jpg" alt="" aria-hidden="true" fetchpriority="high">
   <div class="wrap hero-inner">
     <div class="hero-text">
-    <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>Artisan plombier · Vidauban &amp; tout le Var (83)</span></div>
-    <h1>Votre plombier à Vidauban<br><span class="accent">et dans tout le Var, 24h/24</span></h1>
+    <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>Artisan plombier · Tout le Var (83)</span></div>
+    <h1>Votre plombier<br><span class="accent">dans tout le Var, 24h/24</span></h1>
     <p class="lead">Fuite d'eau, canalisation bouchée, chauffe-eau en panne ? <b>Un artisan local vous répond en direct, jour et nuit, 7j/7</b>, et intervient avec un prix annoncé avant de commencer. Plus de {B.YEARS.rstrip("+")} ans d'expérience, travail soigné, facture acceptée par les assurances.</p>
     <a href="tel:{B.PHONE_TEL}" class="hero-cta">
       <span class="num">{phone_icon(24, True)} {B.PHONE}</span>
@@ -974,7 +975,7 @@ def build_home():
     </div>
     </div>
     <div class="hero-media">
-      <img src="/assets/img/plombier-devis-client.jpg" alt="Plombier présentant le devis à une cliente avant l'intervention" width="560" height="560" fetchpriority="high">
+      <img src="/assets/img/plombier-devis-client.jpg" alt="Plombier présentant le devis à un client avant l'intervention" width="560" height="560" fetchpriority="high">
       <div class="hero-tag"><b>Sur place</b><span>Devis annoncé avant travaux</span></div>
     </div>
   </div>
@@ -1222,7 +1223,7 @@ def build_prestations():
                "Toutes nos prestations de plomberie dans le Var : urgence 24h/24, recherche de fuite, débouchage, chauffe-eau, canalisation, installation sanitaire, salle de bain.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Nos prestations de plomberie dans le Var", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement, de Vidauban à Draguignan.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à une cliente")
+    out += page_hero(crumbs, "Nos prestations de plomberie dans le Var", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement, de Vidauban à Draguignan.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à un client")
     out += trust_marquee()
     out += f"""<section><div class="wrap">{services_grid()}</div></section>
 <section class="alt"><div class="wrap text-block prose">

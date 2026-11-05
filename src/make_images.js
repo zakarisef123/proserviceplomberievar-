@@ -8,7 +8,7 @@ const icon = (pad) => `<html><body style="margin:0;background:#fff;display:flex;
 const og = `<html><head><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"></head>
 <body style="margin:0;width:1200px;height:630px;font-family:Poppins,sans-serif;color:#fff;background:radial-gradient(ellipse 700px 500px at 90% 0%,rgba(255,255,255,.12),transparent 60%),linear-gradient(155deg,#4a2a86 0%,#2c1a4d 100%);display:flex;flex-direction:column;justify-content:center;padding:0 80px;box-sizing:border-box">
 <div style="display:flex;align-items:center;gap:18px;margin-bottom:34px"><div style="width:64px;height:64px;background:#fff;border-radius:14px;padding:8px;box-sizing:border-box">${mark}</div><div style="font-size:30px;font-weight:800;letter-spacing:.02em">PRO SERVICE 83</div></div>
-<div style="font-size:64px;font-weight:800;line-height:1.08;margin-bottom:22px">Plombier à Vidauban<br><span style="color:#ffb877">et dans tout le Var, 24h/24</span></div>
+<div style="font-size:64px;font-weight:800;line-height:1.08;margin-bottom:22px">Votre plombier<br><span style="color:#ffb877">dans tout le Var, 24h/24</span></div>
 <div style="font-size:26px;opacity:.88;margin-bottom:34px">Fuite d'eau · Débouchage · Chauffe-eau · Salle de bain</div>
 <div style="display:inline-flex;align-self:flex-start;background:#f37b1e;border-radius:20px;padding:16px 30px;font-size:38px;font-weight:700">☎ 06 75 93 19 04</div></body></html>`;
 (async () => {
