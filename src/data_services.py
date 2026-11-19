@@ -17,7 +17,7 @@ SERVICES = [
         "title": "Plombier urgence 24h/24 dans le Var — nuit, week-end, jours fériés",
         "meta": "Plombier d'urgence dans le Var 24h/24 et 7j/7 : fuite, dégât des eaux, WC bouché, chauffe-eau en panne. Tarif annoncé avant déplacement. ☎ 06 75 93 19 04",
         "h1": "Plombier d'urgence 24h/24 et 7j/7 dans le Var",
-        "lead": "Fuite importante, dégât des eaux, WC bouché, plus d'eau chaude : un plombier vous répond <b>jour et nuit, week-end et jours fériés compris</b>, depuis Vidauban vers tout le centre Var.",
+        "lead": "Fuite importante, dégât des eaux, WC bouché, plus d'eau chaude : un plombier vous répond <b>jour et nuit, week-end et jours fériés compris</b>, partout dans le Var (83).",
         "checks": ["Réponse immédiate au téléphone", "Prix annoncé avant de partir", "Facture pour l'assurance"],
         "card_desc": "Fuite, dégât des eaux, panne : un plombier joignable jour et nuit, week-end et jours fériés compris.",
         "card_checks": ["Disponible 7j/7", "Tarif confirmé avant déplacement"],
@@ -47,7 +47,7 @@ SERVICES = [
         ],
         "faq": [
             ("Combien coûte un plombier en urgence la nuit ou le dimanche ?", "Le prix dépend de la nature de l'intervention et de l'horaire. Un supplément peut s'appliquer la nuit, le week-end et les jours fériés : il vous est annoncé au téléphone avant le déplacement, puis le prix total est confirmé sur place avant de commencer."),
-            ("En combien de temps un plombier peut-il arriver ?", "Depuis notre base de Vidauban, comptez environ 15 minutes pour Le Muy, Les Arcs ou Le Cannet-des-Maures, 20 minutes pour Le Luc et 25 minutes pour Draguignan, hors trafic. Le délai précis vous est donné au moment de l'appel."),
+            ("En combien de temps un plombier peut-il arriver ?", "Selon votre commune, comptez de 15 minutes (Le Muy, Les Arcs, Le Cannet-des-Maures) à environ une heure (Toulon et son agglomération), hors trafic. Le délai précis vous est donné au moment de l'appel."),
             ("Que faire si je n'arrive pas à couper l'eau ?", "Cherchez le robinet général près du compteur d'eau (regard extérieur, garage, placard technique). S'il est bloqué, ne forcez pas avec un outil : vous risquez de le casser. Appelez-nous, nous vous guidons au téléphone."),
             ("Intervenez-vous pour les dégâts des eaux pris en charge par l'assurance ?", "Oui. Nous recherchons l'origine de la fuite, la réparons et vous remettons une facture détaillée et un descriptif de la cause, utiles pour votre déclaration et le constat amiable dégât des eaux."),
         ],
@@ -55,7 +55,7 @@ SERVICES = [
         "combo_title": "Plombier urgence {city} ({cp}) — 24h/24, 7j/7",
         "combo_meta": "Plombier d'urgence {a} 24h/24 et 7j/7 : fuite, dégât des eaux, WC bouché, chauffe-eau. {delay_txt}. Prix annoncé avant déplacement. ☎ 06 75 93 19 04",
         "combo_intros": [
-            "Une fuite qui inonde la cuisine, un WC qui déborde, un chauffe-eau qui lâche un soir de week-end : {a}, vous pouvez joindre un plombier à toute heure au <b>06 75 93 19 04</b>. Nous partons de Vidauban et le délai d'arrivée vous est donné dès l'appel.",
+            "Une fuite qui inonde la cuisine, un WC qui déborde, un chauffe-eau qui lâche un soir de week-end : {a}, vous pouvez joindre un plombier à toute heure au <b>06 75 93 19 04</b>. Le délai d'arrivée vous est donné dès l'appel.",
             "Besoin d'un plombier tout de suite {a} ? Notre ligne est ouverte jour et nuit, dimanches et jours fériés compris. Vous décrivez la situation, on vous annonce le prix et le délai, puis un plombier part avec le matériel adapté.",
             "Habitants {de}, gardez ce numéro : <b>06 75 93 19 04</b>. En cas d'urgence plomberie, un artisan du secteur vous répond directement, sans plateforme ni centre d'appel, et intervient rapidement avec un prix annoncé à l'avance.",
         ],
@@ -122,7 +122,7 @@ SERVICES = [
         "combo_meta": "Fuite d'eau {a} ? Recherche de fuite sans casse inutile et réparation dès 79 €. Justificatifs pour l'assurance. {delay_txt}. ☎ 06 75 93 19 04",
         "combo_intros": [
             "Compteur qui tourne, auréole au plafond, facture d'eau qui grimpe : {a}, nous localisons l'origine de la fuite avec méthode, puis nous la réparons, à partir de 79 €.",
-            "Une fuite d'eau {a} doit être traitée vite : elle abîme les murs, les sols et votre budget. Nous intervenons depuis Vidauban pour trouver la fuite sans casser inutilement et la réparer durablement.",
+            "Une fuite d'eau {a} doit être traitée vite : elle abîme les murs, les sols et votre budget. Nous intervenons rapidement pour trouver la fuite sans casser inutilement et la réparer durablement.",
             "Vous suspectez une fuite dans votre maison ou votre appartement {a} ? Avant d'ouvrir un mur, nous cherchons. Contrôle des équipements, détection thermique ou acoustique : l'objectif est de trouver la fuite du premier coup.",
         ],
         "combo_points": [
@@ -185,7 +185,7 @@ SERVICES = [
         "combo_intros": [
             "WC bouché, évier qui déborde, douche qui ne se vide plus : {a}, nous débouchons vos canalisations avec du matériel professionnel, sans produits corrosifs, à partir de 99 €.",
             "Une canalisation bouchée {a} ne se règle pas toujours à la ventouse. Pompe professionnelle, démontage du siphon, furet manuel ou motorisé : nous choisissons l'outil adapté au bouchon.",
-            "Vous cherchez un débouchage rapide {a} ? Nous intervenons 7j/7 depuis Vidauban pour les WC, éviers, lavabos, douches, baignoires et canalisations, avec un prix confirmé avant de commencer.",
+            "Vous cherchez un débouchage rapide {a} ? Nous intervenons 7j/7 pour les WC, éviers, lavabos, douches, baignoires et canalisations, avec un prix confirmé avant de commencer.",
         ],
         "combo_points": [
             "Débouchage WC et toilettes",

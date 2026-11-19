@@ -1,9 +1,13 @@
-/* PRO SERVICE 83 — scripts partagés (menu mobile, formulaire, consentement cookies) */
+/* PROSERVICE 83 — scripts partagés (menu mobile, formulaire, consentement cookies) */
 
-/* Conversions Google Ads */
-function gtagReportConversion_Appel(url) {
+/* Conversions Google Ads (libellés définis dans src/data_business.py, injectés dans window.PS83_CONV) */
+function ps83Conversion(label, url) {
+  if (!label || typeof gtag !== 'function') {
+    if (typeof(url) != 'undefined') { window.location = url; }
+    return false;
+  }
   gtag('event', 'conversion', {
-    'send_to': 'AW-18380568336/kUUYCLWxwfocEJDuxLxE',
+    'send_to': label,
     'event_callback': function() {
       if (typeof(url) != 'undefined') {
         window.location = url;
@@ -13,16 +17,12 @@ function gtagReportConversion_Appel(url) {
   return false;
 }
 
+function gtagReportConversion_Appel(url) {
+  return ps83Conversion((window.PS83_CONV || {}).call, url);
+}
+
 function gtagReportConversion_Formulaire(url) {
-  gtag('event', 'conversion', {
-    'send_to': 'AW-18380568336/BAvQCP2rjuAcEJDuxLxE',
-    'event_callback': function() {
-      if (typeof(url) != 'undefined') {
-        window.location = url;
-      }
-    }
-  });
-  return false;
+  return ps83Conversion((window.PS83_CONV || {}).form, url);
 }
 
 (function(){
@@ -123,7 +123,7 @@ function gtagReportConversion_Formulaire(url) {
         btn.textContent = original;
         if(status){
           status.className = 'form-status err';
-          status.textContent = 'L’envoi a échoué. Appelez-nous au 06 75 93 19 04 ou écrivez à proservice83@hotmail.fr.';
+          status.textContent = 'L’envoi a échoué. Appelez-nous au 06 75 93 19 04 ou écrivez à proservice83@hotmail.com.';
         }
       });
     });

@@ -1,4 +1,4 @@
-# PRO SERVICE 83 — site web du plombier à Vidauban (Var)
+# PROSERVICE 83 — site web du plombier à Vidauban (Var)
 
 Site statique multipage, optimisé pour le référencement local (SEO) et pour les assistants IA (llms.txt).
 
@@ -7,12 +7,13 @@ Site statique multipage, optimisé pour le référencement local (SEO) et pour l
 ```
 src/
   build.py            générateur du site (Python 3, sans dépendance)
-  data_business.py    coordonnées, chiffres clés, assureurs, avis, URL du site
+  data_business.py    URL du site, identité légale (Kbis), assurances, médiateur, tarifs, Google Ads, avis
   data_services.py    les 7 prestations (textes, FAQ, prix)
-  data_cities.py      les 22 communes desservies (textes, délais, voisines)
+  data_cities.py      les 29 communes desservies (textes, délais, voisines)
   data_guides.py      les guides pratiques (rubrique Conseils)
   assets/             CSS, JS, favicon, images
   make_images.js      régénère les PNG (og-image, logo, favicon) avec Playwright
+  make_webp.py        crée les variantes WebP des photos (assets/img/webp/, nécessite Pillow)
 public/               site généré, publié tel quel (ne pas modifier à la main)
 netlify.toml          configuration Netlify (dossier publié, en-têtes)
 ```
@@ -20,25 +21,26 @@ netlify.toml          configuration Netlify (dossier publié, en-têtes)
 ## Modifier le site
 
 1. Modifier les textes dans `src/data_*.py`.
-2. Régénérer : `python3 src/build.py`
+2. Régénérer : `python3 src/build.py` (après un changement de photo : `python3 src/make_webp.py` d'abord).
+   La fin du build liste les informations encore « À compléter » (mentions légales, tarifs, conversions, délais).
 3. Commiter `src/` **et** `public/`, puis pousser.
 
-## Pages générées (200 pages indexables)
+## Pages générées (256 pages indexables)
 
 - Accueil, Prestations, Zones d'intervention, Tarifs, À propos, FAQ, Contact, Conseils, Plan du site
 - 7 pages de service + 1 page « dégât des eaux & assurance »
-- 22 pages « Plombier + commune »
-- 154 pages « service + commune » (7 services × 22 communes)
+- 29 pages « Plombier + commune » (dont Toulon et son agglomération)
+- 203 pages « service + commune » (7 services × 29 communes)
 - 7 guides pratiques
 - Mentions légales, confidentialité (noindex), 404
 
 Chaque page affiche la section « Un plombier proche de chez vous » avec le temps d'arrivée pour chaque commune
 (délais modifiables dans `src/data_cities.py`).
 
-## Éléments repris du site « L'Artisan Plombier Girondin »
+## Fonctionnalités
 
 Menus déroulants, héros avec photo, bandeau de confiance défilant, bandeau « Une urgence plomberie ? »,
-logos des 38 assureurs défilants (`src/assets/assurances/`), cartes de service avec photo et boutons
+encart « Facture détaillée acceptée par votre assureur », cartes de service avec photo et boutons
 « Appeler / Demander un devis », fenêtre « Demander un devis » (formulaire `devis-express`),
 garanties, « Nous pouvons aussi vous aider pour », bandeau d'appel, page `/merci/` (conversion Google Ads),
 case de consentement RGPD sur les formulaires. Galerie de chantiers prête : remplir `REALISATIONS`
@@ -60,7 +62,7 @@ Bandeau « Tout accepter / Tout refuser / Personnaliser » relié au Google Cons
 
 Trois formulaires Netlify Forms : `devis` (bas de chaque page), `rappel` (colonne latérale des pages de service et de commune) et `devis-express` (fenêtre « Demander un devis »). Après envoi, le visiteur arrive sur `/merci/`.
 Activer la détection des formulaires dans Netlify : *Project configuration → Forms → Enable form detection*,
-puis ajouter une notification e-mail vers proservice83@hotmail.fr.
+puis ajouter une notification e-mail vers proservice83@hotmail.com.
 
 ## À compléter
 
@@ -70,3 +72,14 @@ Dans `src/data_business.py` :
 - `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` : codes de validation Search Console / Bing Webmaster Tools
 - `ASSURANCE_DECENNALE` : passer à `True` si l'entreprise a une décennale et une RC pro à jour
 - `GOOGLE_BUSINESS_URL`, `GOOGLE_REVIEW_URL`, `SAME_AS` : fiche Google, lien « laisser un avis », autres profils
+
+## Formulaires (Netlify Forms)
+
+Les formulaires `devis`, `devis-express` et `rappel` sont reçus par Netlify Forms : la détection des
+formulaires doit être activée dans Netlify (Project configuration > Forms). Au déploiement, Netlify retire
+l'attribut `data-netlify="true"` du HTML publié : son absence dans le code source en ligne est donc normale.
+
+## Avis clients
+
+La section « Avis » n'apparaît que si `REVIEWS` (dans `src/data_business.py`) contient des avis réels,
+chacun avec le lien vers sa source (fiche Google, etc.).

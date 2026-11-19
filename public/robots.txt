@@ -1,4 +1,4 @@
-# robots.txt — PRO SERVICE 83, plombier à Vidauban (Var)
+# robots.txt — PROSERVICE 83, plombier dans tout le Var (83)
 # Tout le site est ouvert aux moteurs de recherche et aux assistants IA.
 
 User-agent: *
