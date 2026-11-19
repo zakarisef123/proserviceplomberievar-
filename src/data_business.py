@@ -11,9 +11,9 @@ SITE_URL = "https://pro-service83.com"
 # ---------------------------------------------------------------- identité (Kbis)
 # NAME : nom affiché partout (titres, textes, JSON-LD « name »).
 # LEGAL_NAME : dénomination exacte du Kbis (mentions légales, JSON-LD « legalName »).
-# À aligner sur l'orthographe exacte du Kbis dès qu'elle est confirmée.
-NAME = "PRO SERVICE 83"
-LEGAL_NAME = "PRO SERVICE 83"
+# Orthographe exacte du Kbis : « PROSERVICE 83 ».
+NAME = "PROSERVICE 83"
+LEGAL_NAME = "PROSERVICE 83"
 LEGAL_FORM = ""            # ex. "SASU au capital de 1 000 €" ou "Entreprise individuelle"
 SIRET = ""                 # 14 chiffres, ex. "123 456 789 00012"
 RCS_RM = ""                # ex. "RCS Draguignan 123 456 789" ou "RM 123 456 789 (CMA Var)"
@@ -30,12 +30,12 @@ RC_PRO = {"assureur": "", "contrat": "", "zone": ""}
 # Médiateur de la consommation (obligatoire pour un professionnel qui travaille avec des particuliers).
 MEDIATEUR = {"nom": "", "site": ""}  # ex. {"nom": "CM2C", "site": "https://www.cm2c.net"}
 
-TAGLINE = "Artisan plombier à Vidauban — dépannage 24h/24 dans le Var"
+TAGLINE = "Artisan plombier dans tout le Var (83) — dépannage 24h/24"
 PHONE = "06 75 93 19 04"
 PHONE_TEL = "+33675931904"
 # Adresse e-mail publique (contact, JSON-LD). Idéalement une adresse sur le domaine,
 # ex. contact@pro-service83.com, à créer avant de la mettre ici.
-EMAIL = "proservice83@hotmail.fr"
+EMAIL = "proservice83@hotmail.com"
 BASE_CITY = "Vidauban"
 BASE_CP = "83550"
 REGION = "Provence-Alpes-Côte d'Azur"

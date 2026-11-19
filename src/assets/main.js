@@ -1,4 +1,4 @@
-/* PRO SERVICE 83 — scripts partagés (menu mobile, formulaire, consentement cookies) */
+/* PROSERVICE 83 — scripts partagés (menu mobile, formulaire, consentement cookies) */
 
 /* Conversions Google Ads (libellés définis dans src/data_business.py, injectés dans window.PS83_CONV) */
 function ps83Conversion(label, url) {
@@ -123,7 +123,7 @@ function gtagReportConversion_Formulaire(url) {
         btn.textContent = original;
         if(status){
           status.className = 'form-status err';
-          status.textContent = 'L’envoi a échoué. Appelez-nous au 06 75 93 19 04 ou écrivez à proservice83@hotmail.fr.';
+          status.textContent = 'L’envoi a échoué. Appelez-nous au 06 75 93 19 04 ou écrivez à proservice83@hotmail.com.';
         }
       });
     });

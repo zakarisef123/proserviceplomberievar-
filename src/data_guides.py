@@ -141,7 +141,7 @@ GUIDES = [
             "<li><strong>Demandez une facture détaillée</strong>, indispensable pour l'assurance.</li>"
             "<li><strong>Consultez les avis</strong> de clients, en particulier ceux qui détaillent l'intervention et le prix.</li></ol>"
             "<h2>Notre engagement</h2>"
-            f"<p>Chez {NAME}, nous sommes un artisan installé à Vidauban. Vous nous joignez en direct au 06 75 93 19 04. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement, confirmé sur place avant les travaux, et une facture détaillée vous est remise. Si une intervention n'est pas nécessaire, nous vous le disons. <a href=\"/a-propos/\">Découvrez notre charte de confiance</a>.</p>"
+            f"<p>Chez {NAME}, nous sommes un artisan local qui intervient dans tout le Var. Vous nous joignez en direct au 06 75 93 19 04. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement, confirmé sur place avant les travaux, et une facture détaillée vous est remise. Si une intervention n'est pas nécessaire, nous vous le disons. <a href=\"/a-propos/\">Découvrez notre charte de confiance</a>.</p>"
             "<div class=\"callout info\">En cas de litige avec un professionnel, vous pouvez signaler la pratique sur le site SignalConso de la DGCCRF.</div>",
     },
     {

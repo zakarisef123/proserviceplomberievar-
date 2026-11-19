@@ -1,4 +1,4 @@
-# PRO SERVICE 83 — site web du plombier à Vidauban (Var)
+# PROSERVICE 83 — site web du plombier à Vidauban (Var)
 
 Site statique multipage, optimisé pour le référencement local (SEO) et pour les assistants IA (llms.txt).
 
@@ -62,7 +62,7 @@ Bandeau « Tout accepter / Tout refuser / Personnaliser » relié au Google Cons
 
 Trois formulaires Netlify Forms : `devis` (bas de chaque page), `rappel` (colonne latérale des pages de service et de commune) et `devis-express` (fenêtre « Demander un devis »). Après envoi, le visiteur arrive sur `/merci/`.
 Activer la détection des formulaires dans Netlify : *Project configuration → Forms → Enable form detection*,
-puis ajouter une notification e-mail vers proservice83@hotmail.fr.
+puis ajouter une notification e-mail vers proservice83@hotmail.com.
 
 ## À compléter
 
