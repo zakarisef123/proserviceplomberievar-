@@ -268,22 +268,22 @@ Q : Combien coûte une intervention de plombier ?
 R : Les tarifs démarrent à 79 € pour une fuite, 89 € pour une réparation de canalisation et 99 € pour un débouchage, en journée. Le prix exact dépend de l'intervention et de l'horaire ; il est toujours annoncé au téléphone et confirmé sur place avant les travaux. Voir nos tarifs.
 
 Q : Intervenez-vous la nuit, le week-end et les jours fériés ?
-R : Oui, un plombier est joignable 24h/24 et 7j/7 au 06 75 93 19 04. Un supplément horaire peut s'appliquer la nuit, le week-end et les jours fériés : il vous est communiqué avant le déplacement.
+R : Oui, un plombier est joignable 24h/24 et 7j/7 au 06 75 93 19 04, jours fériés compris. Prix TTC en journée (lun-sam, 8h – 18h), majorés de 25 % le soir (18h – 22h), de 50 % la nuit (22h – 8h) et de 50 % les dimanches et jours fériés. La majoration est toujours annoncée avant le déplacement.
 
 Q : Dans quelles communes intervenez-vous ?
-R : Nous sommes basés à Vidauban et intervenons dans tout le centre Var : Le Muy, Les Arcs-sur-Argens, Le Cannet-des-Maures, Le Luc, La Garde-Freinet, Gonfaron, Draguignan, Lorgues, Taradeau, Le Thoronet et au-delà. Voir toutes les communes.
+R : Nous sommes basés à Vidauban et intervenons dans tout le centre Var : Le Muy, Les Arcs-sur-Argens, Le Cannet-des-Maures, Le Luc, La Garde-Freinet, Gonfaron, Draguignan, Lorgues, Taradeau, Le Thoronet, mais aussi Fréjus, Saint-Raphaël, Toulon et son agglomération (La Seyne-sur-Mer, La Garde, La Valette-du-Var, Hyères, Six-Fours-les-Plages, Ollioules). Voir toutes les communes.
 
 Q : Le devis est-il gratuit ?
 R : Oui, le diagnostic téléphonique et le devis sur place sont gratuits et sans engagement.
 
 Q : Vos factures sont-elles acceptées par les assurances ?
-R : Oui. Nous remettons une facture détaillée et un descriptif de la cause de la fuite. Nos clients se font rembourser auprès de leur assureur habitation (AXA, Allianz, MAIF, MACIF, MAAF, Matmut, Groupama, Generali, Crédit Agricole, Crédit Mutuel, etc.), selon les garanties de leur contrat.
+R : Oui. Nous remettons une facture détaillée et un descriptif de la cause de la fuite. Nos clients se font rembourser auprès de leur assureur habitation, selon les garanties de leur contrat.
 
 Q : Faites-vous de la recherche de fuite ?
 R : Oui, nous réalisons la détection de fuite (visuelle, thermique ou acoustique selon le cas) puis la réparation, en limitant la casse au strict nécessaire.
 
 Q : En combien de temps arrivez-vous ?
-R : Depuis Vidauban, comptez environ 15 minutes pour Le Muy, Les Arcs ou Le Cannet-des-Maures, 20 minutes pour Le Luc ou La Garde-Freinet, 25 minutes pour Gonfaron ou Draguignan, hors trafic. Le délai précis est donné à l'appel.
+R : Depuis notre base de Vidauban, comptez environ 15 minutes pour Le Muy, Les Arcs-sur-Argens ou Le Cannet-des-Maures, 20 minutes pour Le Luc ou La Garde-Freinet, 25 minutes pour Gonfaron ou Draguignan, 35 minutes pour Fréjus, 40 minutes pour Saint-Raphaël, 45 minutes pour Hyères, 50 minutes pour Toulon, hors trafic. Ces délais sont indicatifs : le délai précis vous est donné au moment de l'appel, avant tout déplacement.
 
 Q : Allez-vous devoir casser du carrelage ou un mur ?
 R : Nous privilégions toujours les méthodes les moins invasives (détection thermique ou acoustique, contrôle de pression) et n'ouvrons que si c'est vraiment nécessaire, uniquement à l'endroit de la fuite et avec votre accord.
@@ -406,13 +406,13 @@ Depuis notre base de Vidauban, comptez environ 25 minutes pour arriver à Puget-
 
 ### Plombier Fréjus (83600)
 
-Fréjus, de la vieille ville à Port-Fréjus et Saint-Aygulf, est à environ 35 minutes de Vidauban par l'A8. Nous y intervenons sur rendez-vous et en urgence, avec un délai annoncé à l'appel.
+Fréjus, de la vieille ville à Port-Fréjus, Fréjus-Plage, la Tour de Mare et Saint-Aygulf, jusqu'aux Issambres, est à environ 35 minutes de Vidauban par l'A8, hors trafic. Nous y intervenons sur rendez-vous et en urgence, avec un délai annoncé à l'appel.
 À Fréjus, les appartements en copropriété et les résidences secondaires représentent une grande part de nos interventions : dégâts des eaux entre voisins, chauffe-eau, fuites et rénovation de salles de bain.
 Depuis notre base de Vidauban, comptez environ 35 minutes pour arriver à Fréjus, hors trafic. Le délai précis vous est donné au moment de l'appel.
 
 ### Plombier Saint-Raphaël (83700)
 
-Saint-Raphaël, de Boulouris à Agay, est à environ 40 minutes de Vidauban. Pour les travaux planifiés comme pour les urgences, le délai vous est donné au téléphone.
+Saint-Raphaël, du centre-ville à Valescure, Boulouris, Agay et Anthéor, est à environ 40 minutes de Vidauban, hors trafic. Pour les travaux planifiés comme pour les urgences, le délai vous est donné au téléphone.
 À Saint-Raphaël, nous intervenons principalement en appartement et en villa : rénovation de salles de bain, remplacement de chauffe-eau et recherche de fuite.
 Depuis notre base de Vidauban, comptez environ 40 minutes pour arriver à Saint-Raphaël, hors trafic. Le délai précis vous est donné au moment de l'appel.
 
@@ -433,6 +433,48 @@ Depuis notre base de Vidauban, comptez environ 35 minutes pour arriver à Grimau
 Pignans, au pied de Notre-Dame-des-Anges, est à environ 30 minutes de Vidauban par la DN7.
 À Pignans, nous intervenons pour les dépannages urgents et les travaux planifiés : fuites, débouchages, chauffe-eau et installation sanitaire.
 Depuis notre base de Vidauban, comptez environ 30 minutes pour arriver à Pignans, hors trafic. Le délai précis vous est donné au moment de l'appel.
+
+### Plombier Toulon (83000)
+
+Toulon, préfecture du Var, est à environ 50 minutes de Vidauban par l'A57, hors trafic. Nous intervenons dans tous les quartiers : Le Mourillon, Le Cap Brun, Le Port et le centre-ville, Pont-du-Las, Saint-Jean-du-Var, La Rode, Les Routes et Valbertrand.
+À Toulon, une grande partie de nos interventions a lieu en appartement : immeubles anciens du centre et du Port aux colonnes d'évacuation communes, résidences du Mourillon et du Cap Brun, maisons de Saint-Jean-du-Var, de La Rode, des Routes ou de Valbertrand. Dégâts des eaux entre voisins, chauffe-eau en placard et débouchages sont nos demandes les plus fréquentes ; nous fournissons les éléments utiles au constat amiable et au syndic.
+Depuis notre base de Vidauban, comptez environ 50 minutes pour arriver à Toulon, hors trafic. Le délai précis vous est donné au moment de l'appel.
+
+### Plombier La Seyne-sur-Mer (83500)
+
+La Seyne-sur-Mer, du centre-ville à Tamaris, aux Sablettes et à Mar-Vivo, est à environ 55 minutes de Vidauban via Toulon, hors trafic.
+À La Seyne-sur-Mer, nous intervenons dans les immeubles du centre comme dans les villas de Tamaris et des Sablettes : fuites, dégâts des eaux, chauffe-eau et débouchages, avec un air marin qui use plus vite la robinetterie.
+Depuis notre base de Vidauban, comptez environ 55 minutes pour arriver à La Seyne-sur-Mer, hors trafic. Le délai précis vous est donné au moment de l'appel.
+
+### Plombier La Garde (83130)
+
+La Garde, entre Toulon et La Valette-du-Var, est à environ 45 minutes de Vidauban par l'A57, hors trafic.
+À La Garde, entre le vieux village, les quartiers pavillonnaires et les résidences proches de l'université, nous intervenons surtout pour des fuites, des chauffe-eau et des installations sanitaires.
+Depuis notre base de Vidauban, comptez environ 45 minutes pour arriver à La Garde, hors trafic. Le délai précis vous est donné au moment de l'appel.
+
+### Plombier La Valette-du-Var (83160)
+
+La Valette-du-Var, au pied du Coudon, est à environ 45 minutes de Vidauban par l'A57, hors trafic.
+À La Valette-du-Var, l'habitat mêle maisons individuelles, résidences et commerces : recherches de fuite, chauffe-eau et débouchages sont nos interventions les plus fréquentes.
+Depuis notre base de Vidauban, comptez environ 45 minutes pour arriver à La Valette-du-Var, hors trafic. Le délai précis vous est donné au moment de l'appel.
+
+### Plombier Hyères (83400)
+
+Hyères, de la vieille ville à Costebelle, L'Ayguade et la presqu'île de Giens, est à environ 45 minutes de Vidauban par l'A57 et l'A570, hors trafic.
+À Hyères, de nombreuses villas et résidences secondaires sont occupées une partie de l'année : fuites découvertes au retour, chauffe-eau entartrés et rénovations de salle de bain sont des demandes fréquentes.
+Depuis notre base de Vidauban, comptez environ 45 minutes pour arriver à Hyères, hors trafic. Le délai précis vous est donné au moment de l'appel.
+
+### Plombier Six-Fours-les-Plages (83140)
+
+Six-Fours-les-Plages, du Brusc au Cap Sicié, est à environ 60 minutes de Vidauban via Toulon, hors trafic.
+À Six-Fours-les-Plages, l'habitat est surtout pavillonnaire, avec beaucoup de résidences secondaires : fuites, chauffe-eau et installations sanitaires sont nos interventions les plus courantes.
+Depuis notre base de Vidauban, comptez environ 60 minutes pour arriver à Six-Fours-les-Plages, hors trafic. Le délai précis vous est donné au moment de l'appel.
+
+### Plombier Ollioules (83190)
+
+Ollioules, entre Toulon et les gorges d'Ollioules, est à environ 55 minutes de Vidauban, hors trafic.
+À Ollioules, entre maisons de village et villas en périphérie, nous intervenons pour les dépannages urgents comme pour les travaux planifiés : fuites, débouchages, chauffe-eau et salle de bain.
+Depuis notre base de Vidauban, comptez environ 55 minutes pour arriver à Ollioules, hors trafic. Le délai précis vous est donné au moment de l'appel.
 
 ## Fuite d'eau : les 7 bons réflexes en attendant le plombier
 
