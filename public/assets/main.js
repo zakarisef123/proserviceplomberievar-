@@ -17,11 +17,19 @@ function ps83Conversion(label, url) {
   return false;
 }
 
+/* Événements Google Tag Manager (balises de conversion Google Ads dans GTM) */
+function ps83Event(name) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({event: name, page_path: location.pathname});
+}
+
 function gtagReportConversion_Appel(url) {
+  ps83Event('clic_appel');
   return ps83Conversion((window.PS83_CONV || {}).call, url);
 }
 
 function gtagReportConversion_Formulaire(url) {
+  ps83Event('envoi_formulaire');
   return ps83Conversion((window.PS83_CONV || {}).form, url);
 }
 

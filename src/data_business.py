@@ -46,9 +46,13 @@ YEARS = "12+"
 
 # ---------------------------------------------------------------- Google Ads
 GTAG_ID = "AW-18380568336"
+# Google Tag Manager : balises de conversion Google Ads (événements clic_appel / envoi_formulaire).
+GTM_ID = "GTM-54ZL3CHF"
 # Libellés de conversion complets (« AW-…/LIBELLÉ »). Vide = aucune conversion envoyée.
-CONV_CALL = "AW-18380568336/kUUYCLWxwfocEJDuxLxE"   # clic sur un numéro (conversion secondaire)
-CONV_FORM = "AW-18380568336/BAvQCP2rjuAcEJDuxLxE"   # formulaire envoyé (page /merci/)
+# Conversions désormais envoyées par Google Tag Manager (GTM_ID ci-dessous) : laisser vides pour
+# éviter le double comptage. Anciennes valeurs : call kUUYCLWxwfocEJDuxLxE / form BAvQCP2rjuAcEJDuxLxE.
+CONV_CALL = ""   # clic sur un numéro (conversion secondaire)
+CONV_FORM = ""   # formulaire envoyé (page /merci/)
 # Appels depuis le site (numéro de transfert Google, durée minimale 60 s) : libellé de l'action
 # « Appels vers un numéro de téléphone sur votre site Web », ex. "AW-18380568336/AbCdEf".
 # Vide = numéro affiché tel quel, sans numéro de transfert.

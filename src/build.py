@@ -299,6 +299,12 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
         verif += '<meta name="google-site-verification" content="%s">\n' % esc(B.GOOGLE_SITE_VERIFICATION)
     if B.BING_SITE_VERIFICATION:
         verif += '<meta name="msvalidate.01" content="%s">\n' % esc(B.BING_SITE_VERIFICATION)
+    gtm_tag = ""
+    if getattr(B, "GTM_ID", ""):
+        # Google Tag Manager (conversions Google Ads). Chargé après le Consent Mode par défaut ci-dessus.
+        gtm_tag = ("<!-- Google Tag Manager -->\n<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});"
+                   "var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;"
+                   "j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','%s');</script>\n") % B.GTM_ID
     phone_fwd = ""
     if B.CONV_CALL_FORWARDING:
         # Appels depuis le site : Google remplace le numéro affiché par un numéro de transfert
@@ -352,7 +358,7 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
   window.PS83_CONV = {{call: '{B.CONV_CALL}', form: '{B.CONV_FORM}'}};{phone_fwd}
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id={B.GTAG_ID}"></script>
-
+{gtm_tag}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -1911,7 +1917,7 @@ def main():
     print("%d pages indexables générées dans %s" % (len(PAGES), OUT))
     if not B.SIRET:
         WARNINGS.append("SIRET absent du pied de page et du JSON-LD")
-    if not (B.CONV_CALL and B.CONV_FORM):
+    if not (B.CONV_CALL and B.CONV_FORM) and not getattr(B, "GTM_ID", ""):
         WARNINGS.append("Conversions Google Ads : CONV_CALL / CONV_FORM vides, aucune conversion envoyée")
     if not B.CONV_CALL_FORWARDING:
         WARNINGS.append("Appels depuis le site (numéro de transfert Google, 60 s) : CONV_CALL_FORWARDING vide")
