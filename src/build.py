@@ -847,6 +847,30 @@ def process_section(title="De l'appel à la réparation"):
 """
 
 
+def logo_marquee(items, folder, label, cls=""):
+    """Bandeau défilant de logos (assureurs, marques)."""
+    tiles = "".join('<li class="ins-logo"><img src="/assets/%s/%s" alt="%s" loading="lazy" height="44"></li>' % (folder, fn, esc(n)) for n, fn in items)
+    dup = "".join('<li class="ins-logo" aria-hidden="true"><img src="/assets/%s/%s" alt="" loading="lazy" height="44"></li>' % (folder, fn) for n, fn in items)
+    return '<div class="marquee ins-marquee %s" aria-label="%s"><ul class="marquee-track">%s%s</ul></div>' % (cls, esc(label), tiles, dup)
+
+
+def brands_section(cls=""):
+    if not getattr(B, "BRANDS", None):
+        return ""
+    return f"""<section class="{cls} brands" id="marques">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="pill pill-lav sec-badge">{svc_icon("key", 15)}Toutes marques</div>
+      <h2>Les marques sur lesquelles nous intervenons</h2>
+      <p>Ouverture, dépannage, changement de cylindre ou de serrure : nous intervenons sur les grandes marques de serrurerie, y compris les serrures multipoints et certifiées A2P.</p>
+    </div>
+  </div>
+  {logo_marquee(B.BRANDS, "marques", "Marques de serrures")}
+  <div class="wrap"><p class="logos-legal">Marques et logos cités à titre d'information ; ils appartiennent à leurs propriétaires respectifs.</p></div>
+</section>
+"""
+
+
 def insurers_section(cls=""):
     return f"""<section class="{cls}" id="assurances">
   <div class="wrap">
@@ -855,7 +879,12 @@ def insurers_section(cls=""):
       <h2>Facture détaillée acceptée par votre assureur</h2>
       <p>En cas de sinistre (dégât des eaux, fuite…), la facture détaillée remise après chaque intervention vous permet de faire valoir vos droits auprès de votre assureur habitation.</p>
     </div>
+  </div>
+  {logo_marquee(B.INSURERS, "assurances", "Assureurs habitation")}
+  <div class="wrap">
+    <p class="ins-count">{len(B.INSURERS)} assureurs, mutuelles et banques-assureurs, parmi d'autres</p>
     <p class="ins-note">Nous remettons une facture détaillée et un descriptif de la cause de la fuite, les justificatifs demandés par les assureurs. Remboursement selon les garanties et franchises de votre contrat. <a href="/{ASSURANCE_PAGE['slug']}/" style="color:var(--purple-700);font-weight:600;text-decoration:underline">Dégât des eaux : comment ça marche ?</a></p>
+    <p class="logos-legal">Logos cités à titre d'information : notre facture détaillée est le justificatif demandé par les assureurs habitation, sans partenariat avec ces compagnies. Les marques appartiennent à leurs propriétaires respectifs.</p>
   </div>
 </section>
 """

@@ -105,3 +105,20 @@ RATE_SUNDAY_COEF = 1.5  # dimanches et jours fériés, toute la journée
 DEPLACEMENT = None
 # Taux horaire de main-d'œuvre TTC (nombre) ; None = non affiché.
 TAUX_HORAIRE = None
+
+# Assureurs affichés dans le bandeau défilant (logos dans src/assets/assurances/).
+# Logos cités à titre d'information : la facture détaillée est acceptée par les assureurs habitation.
+INSURERS = [
+    ('AXA', 'axa.jpg'), ('Allianz', 'allianz.png'), ('Generali', 'generali.png'), ('MAIF', 'maif.png'),
+    ('MACIF', 'macif.png'), ('MAAF', 'maaf.png'), ('Matmut', 'matmut.png'), ('Groupama', 'groupama.png'),
+    ('Gan Assurances', 'gan-assurances.png'), ('Amaguiz', 'amaguiz.png'), ('MACSF', 'macsf.png'),
+    ('Direct Assurance', 'direct-assurance.png'), ('Leocare', 'leocare.png'), ('Covéa', 'covea.png'),
+    ('Thélem assurances', 'thelem-assurances.png'), ('La MAE', 'la-mae.png'), ('Swiss Life', 'swiss-life.png'),
+    ('Abeille Assurances', 'abeille-assurances.png'), ('AG2R La Mondiale', 'ag2r-la-mondiale.png'), ('MGEN', 'mgen.png'),
+    ('Hiscox Assurances', 'hiscox-assurances.png'), ('April', 'april.png'), ("L'olivier Assurance", 'lolivier-assurance.png'),
+    ('Assu 2000', 'assu-2000.png'), ('Euro Assurance', 'euro-assurance.png'), ('Acheel', 'acheel.png'), ('Lovys', 'lovys.png'),
+    ('Luko', 'luko.png'), ('Sogessur', 'sogessur.png'), ('Crédit Agricole Assurances', 'credit-agricole-assurances.png'),
+    ('Crédit Mutuel', 'credit-mutuel.png'), ('CIC Assurances', 'cic-assurances.png'), ('BNP Paribas', 'bnp-paribas.png'),
+    ('Société Générale Assurances', 'societe-generale-assurances.png'), ('LCL', 'lcl.png'), ('Banque Populaire', 'banque-populaire.png'),
+    ("Caisse d'Épargne", 'caisse-epargne.png'), ('La Banque Postale Assurances', 'la-banque-postale-assurances.png'),
+]
