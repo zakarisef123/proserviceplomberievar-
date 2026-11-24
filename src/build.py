@@ -364,7 +364,7 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
 {gtm_tag}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Caveat:wght@600&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css?v={ASSET_VERSION}">
 {schema_tags}
 </head>
@@ -532,8 +532,8 @@ def page_hero(crumbs, h1, lead, checks=None, badge=None, image=None, image_alt="
 def trust_items_short():
     items = ["Plus de %s ans d'expérience en plomberie" % B.YEARS.rstrip("+"), "Disponible 24h/24 et 7j/7",
              "Prix annoncé avant toute intervention", "Devis gratuit, sans engagement",
-             "Facture détaillée acceptée par votre assureur", "Artisan local,",
-             "Intervention", "Travaux garantis"]
+             "Facture détaillée acceptée par votre assureur", "Artisan du coin, joignable en direct",
+             "Sur place en 15 à 40 min", "Travaux garantis"]
     if B.ASSURANCE_DECENNALE:
         items.insert(1, "Assurance décennale & RC professionnelle")
     return items
@@ -835,20 +835,20 @@ def faq_block(faq, title="Questions fréquentes", sub=None, cls="alt", anchor="f
 """
 
 
-def process_section(title="De l'appel à la réparation"):
+def process_section(title="Comment ça se passe"):
     steps = [
-        ("Appel &amp; diagnostic", "Vous décrivez le problème, nous estimons le type d'intervention et vous annonçons une fourchette de prix, gratuitement."),
-        ("Départ", "Un plombier part avec le matériel adapté. Vous connaissez l'heure d'arrivée estimée."),
-        ("Devis sur place", "Le prix est confirmé et validé avec vous avant de commencer. Vous restez libre de refuser."),
-        ("Intervention &amp; garantie", "Réparation propre, facture détaillée remise, utile pour votre assurance. Travaux garantis."),
+        ("Vous nous appelez", "C'est un artisan qui décroche, pas un standard. Vous expliquez le souci, on vous donne tout de suite une idée du prix, gratuitement."),
+        ("On arrive", "On part avec le bon matériel et on vous dit quand on arrive : en général 15 à 40 minutes."),
+        ("On regarde ensemble", "Sur place, on vous montre le problème et on confirme le prix avant de toucher à quoi que ce soit. Vous restez libre de dire non."),
+        ("On répare et on reste joignable", "Travail propre, facture détaillée pour l'assurance. Un souci après ? Vous gardez notre numéro, on revient."),
     ]
     items = "".join('<div class="proc-item"><div class="n">%d</div><h3>%s</h3><p>%s</p></div>' % (i + 1, t, d) for i, (t, d) in enumerate(steps))
     return f"""<section class="process">
   <div class="wrap">
     <div class="sec-head">
-      <div class="pill pill-orange sec-badge">Déroulé</div>
+      <div class="pill pill-orange sec-badge">Sans surprise</div>
       <h2>{title}</h2>
-      <p>Quatre étapes claires, pour un tarif annoncé avant toute intervention.</p>
+      <p>Simplement, comme on aimerait qu'on travaille chez nous.</p>
     </div>
     <div class="proc-list">{items}</div>
   </div>
@@ -876,6 +876,27 @@ def brands_section(cls=""):
   </div>
   {logo_marquee(B.BRANDS, "marques", "Marques de serrures")}
   <div class="wrap"><p class="logos-legal">Marques et logos cités à titre d'information ; ils appartiennent à leurs propriétaires respectifs.</p></div>
+</section>
+"""
+
+
+def artisan_word():
+    """« Le mot de l'artisan » : ton personnel, signature manuscrite (aucun fait inventé)."""
+    return f"""<section class="artisan-word">
+  <div class="wrap aw-grid">
+    <div class="aw-text">
+      <div class="pill pill-lav sec-badge">Le mot de l'artisan</div>
+      <h2>Ici, c'est un artisan du coin qui vous répond</h2>
+      <blockquote>
+        <p>Quand vous nous appelez, vous ne tombez pas sur un centre d'appel à l'autre bout de la France. Vous tombez sur nous, à Vidauban.</p>
+        <p>On connaît les maisons du coin, leurs vieilles canalisations, l'eau calcaire qui use les chauffe-eau. On vous dit franchement ce qui doit être réparé, et ce qui peut attendre.</p>
+        <p>Un client content, c'est un voisin qui nous recommande. Alors on prend le temps d'expliquer, on annonce le prix avant de commencer, et on fait le travail comme si c'était chez nous.</p>
+      </blockquote>
+      <p class="aw-sign">À bientôt,<span>l'équipe Proservice</span></p>
+      <a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} {B.PHONE}</a>
+    </div>
+    <div class="aw-photo">{picture("plombier-intervention-var.jpg", "Artisan plombier au travail", 452, 452, "(max-width: 900px) 100vw, 452px", attrs=' loading="lazy"')}</div>
+  </div>
 </section>
 """
 
@@ -1115,7 +1136,7 @@ def build_home():
     <div class="hero-text">
     <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>Artisan plombier</span></div>
     <h1>Artisan plombier<br><span class="accent">24h/24 et 7j/7</span></h1>
-    <p class="lead">Fuite d'eau, canalisation bouchée, chauffe-eau en panne ? <b>Un artisan local vous répond en direct, jour et nuit, 7j/7</b>, et intervient avec un prix annoncé avant de commencer. Plus de {B.YEARS.rstrip("+")} ans d'expérience, travail soigné, facture détaillée acceptée par votre assureur.</p>
+    <p class="lead">Une fuite, un WC bouché, plus d'eau chaude ? Vous appelez, c'est <b>un artisan du coin qui décroche</b>, pas un standard. On vous dit le prix avant de venir, on répare proprement, et on reste joignable après. C'est comme ça qu'on travaille depuis {B.SINCE}.</p>
     <a href="tel:{B.PHONE_TEL}" class="hero-cta">
       <span class="num">{phone_icon(24, True)} {B.PHONE}</span>
       <span class="sub">Appel direct, disponible 24/7</span>
@@ -1149,6 +1170,7 @@ def build_home():
   </div>
 </section>
 """
+    out += artisan_word()
     out += pricing_section()
     out += f"""<div class="alt" style="padding:0 0 10px"><div class="wrap">{stats_block()}</div></div>
 <section class="alt">
@@ -1172,7 +1194,7 @@ def build_home():
   </div>
 </section>
 """
-    out += process_section("Simple, clair, sans surprise")
+    out += process_section()
     out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons tous les jours, 24h/24.")
     out += realisations_section(cls="alt")
     out += reviews_section("alt" if not B.REALISATIONS else "")
@@ -1319,7 +1341,7 @@ def city_hero(c, crumbs):
     {crumbs_html(crumbs)}
     <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>{esc(delay_txt(c))} · {c["cp"]}</span></div>
     <h1>Votre plombier<br><span class="accent">{c["a"]}, 24h/24</span></h1>
-    <p class="lead">Fuite d'eau, canalisation bouchée, chauffe-eau en panne ? <b>Un artisan plombier vous répond en direct, jour et nuit, 7j/7</b>, et intervient {c["a"]} avec un prix annoncé avant de commencer. Plus de {B.YEARS.rstrip("+")} ans d'expérience, facture détaillée acceptée par votre assureur.</p>
+    <p class="lead">Une fuite, un WC bouché, plus d'eau chaude ? Vous appelez, c'est <b>un artisan du coin qui décroche</b>, pas un standard. On vous dit le prix avant de venir, on arrive {c["a"]} en 15 à 40 minutes, et on répare proprement.</p>
     <a href="tel:{B.PHONE_TEL}" class="hero-cta">
       <span class="num">{phone_icon(24, True)} {B.PHONE}</span>
       <span class="sub">Appel direct, disponible 24/7</span>
@@ -1401,11 +1423,12 @@ def build_city(c):
   </div>
 </section>
 """
+    out += artisan_word()
     out += pricing_section()
     out += '<div class="alt" style="padding:0 0 10px"><div class="wrap">%s</div></div>' % stats_block()
     out += charter_section()
     out += guarantees_section("alt")
-    out += process_section("Simple, clair, sans surprise")
+    out += process_section()
     out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons %s et dans les communes voisines, tous les jours, 24h/24." % c["a"])
     out += zones_section(current=c)
     out += realisations_section(cls="alt")
@@ -1726,7 +1749,7 @@ def build_merci():
     out += header(path)
     out += f"""<section class="page-hero"><div class="wrap merci">
   <div class="merci-icon">✓</div>
-  <h1>Merci, votre demande est bien envoyée</h1>
+  <h1>Merci, on a bien reçu votre demande</h1>
   <p class="lead">Un plombier de {B.NAME} vous rappelle rapidement (sous 1 h en journée). <b>Pour une urgence, n'attendez pas : appelez directement le {B.PHONE}.</b></p>
   <div class="actions"><a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} {B.PHONE}</a><a href="/" class="btn btn-ghost">Retour à l'accueil</a></div>
 </div></section>
