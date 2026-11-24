@@ -62,9 +62,13 @@ Bandeau « Tout accepter / Tout refuser / Personnaliser » relié au Google Cons
 
 ## Formulaires
 
-Trois formulaires (`devis`, `rappel`, `devis-express`) envoyés par **FormSubmit** directement par e-mail à `FORM_EMAIL`
-(`src/data_business.py`). Après envoi, le visiteur arrive sur `/merci/` (conversion Google Ads).
-**Première mise en ligne** : envoyer une demande test, puis cliquer sur le lien « Activate Form » reçu par e-mail.
+Trois formulaires (`devis`, `rappel`, `devis-express`), **double envoi** :
+1. **Netlify Forms** : chaque demande est enregistrée dans Netlify (*Project → Forms*). Activer la détection des formulaires
+   (*Project configuration → Forms → Enable form detection*) et une notification e-mail vers `FORM_EMAIL`
+   (*Forms → Form notifications → Add notification → Email*).
+2. **FormSubmit** : e-mail direct à `FORM_EMAIL`. À la première demande, cliquer sur le lien « Activate Form » reçu par e-mail.
+
+Après envoi, le visiteur arrive sur `/merci/` (conversion Google Ads). Si les deux services échouent, envoi classique vers FormSubmit.
 
 ## À compléter
 

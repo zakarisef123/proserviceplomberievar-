@@ -107,29 +107,36 @@ function gtagReportConversion_Formulaire(url) {
     });
   }
 
-  /* Formulaires de devis : envoi par FormSubmit (e-mail direct), en arrière-plan, puis page merci.
-     Si FormSubmit tarde (plus de 20 s), refuse ou est injoignable, le formulaire est envoyé de façon
-     classique (page FormSubmit puis retour sur /merci/ grâce au champ _next) : la demande n'est jamais perdue. */
+  /* Formulaires de devis : double envoi.
+     1) Netlify Forms (même site, rapide) : la demande est enregistrée dans Netlify (+ e-mail si la notification est activée).
+     2) FormSubmit (e-mail direct vers FORM_EMAIL), en parallèle.
+     Dès qu'un des deux a reçu la demande : page /merci/. Si les deux échouent : envoi classique vers FormSubmit. */
   document.querySelectorAll('form.quote').forEach(function(form){
     form.addEventListener('submit', function(e){
       e.preventDefault();
       var btn = form.querySelector('button[type="submit"]');
       btn.disabled = true;
       btn.textContent = 'Envoi en cours…';
+      var fd = new FormData(form);
       var done = false;
+      var merci = function(){ if(done){ return; } done = true; btn.textContent = 'Demande envoyée ✓'; window.location.href = '/merci/'; };
       var classique = function(){ if(done){ return; } done = true; HTMLFormElement.prototype.submit.call(form); };
-      var timer = setTimeout(classique, 20000);
-      var url = form.getAttribute('action').replace('formsubmit.co/', 'formsubmit.co/ajax/');
-      fetch(url, { method: 'POST', headers: {'Accept': 'application/json'}, body: new FormData(form) })
-        .then(function(res){ return res.json().catch(function(){ return {}; }).then(function(data){
-          if(!res.ok || String(data.success) !== 'true'){ throw new Error(data.message || res.status); }
-        }); })
-        .then(function(){
-          if(done){ return; } done = true; clearTimeout(timer);
-          btn.textContent = 'Demande envoyée ✓';
-          window.location.href = '/merci/';
-        })
-        .catch(function(){ clearTimeout(timer); classique(); });
+      var ok = function(p){ return p.then(function(){ return true; }, function(){ return false; }); };
+      var viaNetlify = ok(fetch('/', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: new URLSearchParams(fd).toString() }).then(function(res){ if(!res.ok){ throw new Error(res.status); } }));
+      var viaFormSubmit = ok(fetch(form.getAttribute('action').replace('formsubmit.co/', 'formsubmit.co/ajax/'),
+        { method: 'POST', headers: {'Accept': 'application/json'}, body: fd, keepalive: true })
+        .then(function(res){ return res.json().catch(function(){ return {}; }).then(function(d){
+          if(!res.ok || String(d.success) !== 'true'){ throw new Error(d.message || res.status); } }); }));
+      var attendre = function(ms){ return new Promise(function(r){ setTimeout(function(){ r(false); }, ms); }); };
+      viaNetlify.then(function(nOk){
+        if(nOk){
+          /* Enregistrée chez Netlify : on laisse quelques secondes à FormSubmit pour envoyer l'e-mail. */
+          Promise.race([viaFormSubmit, attendre(6000)]).then(merci);
+        } else {
+          Promise.race([viaFormSubmit, attendre(20000)]).then(function(fOk){ fOk ? merci() : classique(); });
+        }
+      });
     });
   });
 
