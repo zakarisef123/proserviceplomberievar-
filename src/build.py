@@ -887,7 +887,7 @@ def reviews_section(cls="", city=None):
 def services_grid(city=None):
     cards = []
     for s in SERVICES:
-        href = combo_path(s, city) if city else service_path(s)
+        href = combo_path(s, city) if city and not city.get("extra") else service_path(s)
         title = s["short"] + (" " + city["a"] if city else "")
         checks = "".join('<div class="check-row"><span class="check-circle la">✓</span>%s</div>' % esc(c) for c in s["card_checks"])
         cards.append(f"""<article class="svc-card has-img">
