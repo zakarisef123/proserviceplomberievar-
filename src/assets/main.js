@@ -107,35 +107,29 @@ function gtagReportConversion_Formulaire(url) {
     });
   }
 
-  /* Formulaires de devis : envoi par FormSubmit (e-mail direct), en arrière-plan, puis page merci */
+  /* Formulaires de devis : envoi par FormSubmit (e-mail direct), en arrière-plan, puis page merci.
+     Si FormSubmit tarde (plus de 20 s), refuse ou est injoignable, le formulaire est envoyé de façon
+     classique (page FormSubmit puis retour sur /merci/ grâce au champ _next) : la demande n'est jamais perdue. */
   document.querySelectorAll('form.quote').forEach(function(form){
     form.addEventListener('submit', function(e){
       e.preventDefault();
       var btn = form.querySelector('button[type="submit"]');
-      var status = form.querySelector('.form-status');
-      var original = btn.textContent;
       btn.disabled = true;
       btn.textContent = 'Envoi en cours…';
+      var done = false;
+      var classique = function(){ if(done){ return; } done = true; HTMLFormElement.prototype.submit.call(form); };
+      var timer = setTimeout(classique, 20000);
       var url = form.getAttribute('action').replace('formsubmit.co/', 'formsubmit.co/ajax/');
-      fetch(url, {
-        method: 'POST',
-        headers: {'Accept': 'application/json'},
-        body: new FormData(form)
-      }).then(function(res){
-        return res.json().catch(function(){ return {}; }).then(function(data){
-          if(!res.ok || String(data.success) === 'false'){ throw new Error(res.status); }
-        });
-      }).then(function(){
-        btn.textContent = 'Demande envoyée ✓';
-        window.location.href = '/merci/';
-      }).catch(function(){
-        btn.disabled = false;
-        btn.textContent = original;
-        if(status){
-          status.className = 'form-status err';
-          status.textContent = 'L’envoi a échoué. Appelez-nous au 06 75 93 19 04 ou écrivez à proservice83contact@gmail.com.';
-        }
-      });
+      fetch(url, { method: 'POST', headers: {'Accept': 'application/json'}, body: new FormData(form) })
+        .then(function(res){ return res.json().catch(function(){ return {}; }).then(function(data){
+          if(!res.ok || String(data.success) !== 'true'){ throw new Error(data.message || res.status); }
+        }); })
+        .then(function(){
+          if(done){ return; } done = true; clearTimeout(timer);
+          btn.textContent = 'Demande envoyée ✓';
+          window.location.href = '/merci/';
+        })
+        .catch(function(){ clearTimeout(timer); classique(); });
     });
   });
 
