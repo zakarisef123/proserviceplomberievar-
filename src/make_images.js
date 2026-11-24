@@ -9,9 +9,8 @@ const icon = (pad) => `<html><body style="margin:0;background:#111;display:flex;
 const og = `<html><head><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"></head>
 <body style="margin:0;width:1200px;height:630px;font-family:'Space Grotesk',sans-serif;color:#fff;background:#111;border-bottom:18px solid #1fa2ff;display:flex;flex-direction:column;justify-content:center;padding:0 80px;box-sizing:border-box">
 <div style="display:flex;align-items:center;gap:18px;margin-bottom:34px"><div style="width:72px;height:72px">${mark}</div><div><div style="font-size:36px;font-weight:700;letter-spacing:-.02em">Proservice</div><div style="font-size:15px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#1fa2ff">Plomberie · Var</div></div></div>
-<div style="font-size:64px;font-weight:800;line-height:1.08;margin-bottom:22px">Votre plombier<br><span style="color:#1fa2ff">dans tout le Var, 24h/24</span></div>
-<div style="font-size:26px;opacity:.88;margin-bottom:34px">Fuite d'eau · Débouchage · Chauffe-eau · Salle de bain</div>
-<div style="display:inline-flex;align-self:flex-start;background:#1fa2ff;color:#111;border-radius:10px;padding:16px 30px;font-size:38px;font-weight:700">☎ 06 75 93 19 04</div></body></html>`;
+<div style="font-size:64px;font-weight:800;line-height:1.08;margin-bottom:22px">Artisan plombier<br><span style="color:#1fa2ff">24h/24 et 7j/7</span></div>
+<div style="font-size:26px;opacity:.88;margin-bottom:34px">Fuite d'eau · Débouchage · Chauffe-eau · Salle de bain</div></body></html>`;
 (async () => {
   const browser = await chromium.launch();
   const shot = async (html, w, h, file) => {

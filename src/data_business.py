@@ -30,7 +30,7 @@ RC_PRO = {"assureur": "", "contrat": "", "zone": ""}
 # Médiateur de la consommation (obligatoire pour un professionnel qui travaille avec des particuliers).
 MEDIATEUR = {"nom": "", "site": ""}  # ex. {"nom": "CM2C", "site": "https://www.cm2c.net"}
 
-TAGLINE = "Artisan plombier dans tout le Var (83) — dépannage 24h/24"
+TAGLINE = "Artisan plombier dans le Var (83) — dépannage 24h/24"
 PHONE = "06 75 93 19 04"
 PHONE_TEL = "+33675931904"
 # Adresse e-mail publique (contact, JSON-LD).
