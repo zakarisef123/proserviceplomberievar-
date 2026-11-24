@@ -343,9 +343,10 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#111111">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png?v=2" sizes="32x32" type="image/png">
+<link rel="shortcut icon" href="/favicon.ico?v=2">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="manifest" href="/site.webmanifest">
 
 <!-- Google tag (gtag.js) + Consent Mode v2 -->
@@ -1126,9 +1127,9 @@ def build_home():
   </div>
 </section>
 """
+    out += insurers_section("ins-top")
     out += trust_marquee()
     out += urgent_band()
-    out += pricing_section()
     out += f"""<section id="services">
   <div class="wrap">
     <div class="sec-head">
@@ -1139,7 +1140,9 @@ def build_home():
     {services_grid()}
   </div>
 </section>
-<div class="alt" style="padding:0 0 10px"><div class="wrap">{stats_block()}</div></div>
+"""
+    out += pricing_section()
+    out += f"""<div class="alt" style="padding:0 0 10px"><div class="wrap">{stats_block()}</div></div>
 <section class="alt">
   <div class="wrap text-block prose">
     <h2>Un plombier de confiance dans tout le Var depuis {B.SINCE}</h2>
@@ -1162,7 +1165,6 @@ def build_home():
 </section>
 """
     out += process_section("Simple, clair, sans surprise")
-    out += insurers_section("alt")
     out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons dans tout le Var (83), tous les jours, 24h/24.")
     out += realisations_section(cls="alt")
     out += reviews_section("alt" if not B.REALISATIONS else "")
@@ -1349,9 +1351,9 @@ def build_city(c):
     out += header(path)
     lead = "Fuite d'eau, débouchage, chauffe-eau, canalisation, installation sanitaire : un artisan plombier intervient <b>%s 24h/24 et 7j/7</b>, avec un prix annoncé avant de partir." % c["a"]
     out += city_hero(c, crumbs)
+    out += insurers_section("ins-top")
     out += trust_marquee()
     out += urgent_band()
-    out += pricing_section()
     near_html = "".join('<a class="chip" href="%s">Plombier %s <span class="d">%s</span></a>' % (city_path(n), esc(n["name"]), delay_label(n)) for n in near)
     out += f"""<section>
   <div class="wrap layout">
@@ -1391,11 +1393,11 @@ def build_city(c):
   </div>
 </section>
 """
+    out += pricing_section()
     out += '<div class="alt" style="padding:0 0 10px"><div class="wrap">%s</div></div>' % stats_block()
     out += charter_section()
     out += guarantees_section("alt")
     out += process_section("Simple, clair, sans surprise")
-    out += insurers_section("alt")
     out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons %s et dans les communes voisines, tous les jours, 24h/24." % c["a"])
     out += zones_section(current=c)
     out += realisations_section(cls="alt")
@@ -1979,7 +1981,7 @@ def build_llms():
 
 def build_static():
     shutil.copytree(SRC_ASSETS, os.path.join(OUT, "assets"), dirs_exist_ok=True)
-    for name in ("favicon.svg", "favicon-32.png", "apple-touch-icon.png"):
+    for name in ("favicon.svg", "favicon-32.png", "favicon.ico", "apple-touch-icon.png"):
         src = os.path.join(SRC_ASSETS, name)
         if os.path.exists(src):
             shutil.copy(src, os.path.join(OUT, name))
