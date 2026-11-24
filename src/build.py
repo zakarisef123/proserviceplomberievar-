@@ -676,7 +676,8 @@ def form_hidden(form_name):
     """Champs cachés FormSubmit : objet de l'e-mail, mise en forme, retour vers /merci/ sans JavaScript."""
     labels = {"devis": "Demande de devis", "devis-express": "Demande de devis (fenêtre)", "rappel": "Demande de rappel"}
     subject = "%s — %s — site %s" % (labels.get(form_name, "Demande"), B.NAME, B.FORM_SITE_LABEL)
-    return ('<input type="hidden" name="formulaire" value="%s">'
+    return ('<input type="hidden" name="form-name" value="%s">' % form_name +
+            '<input type="hidden" name="formulaire" value="%s">'
             '<input type="hidden" name="_subject" value="%s">'
             '<input type="hidden" name="_template" value="table">'
             '<input type="hidden" name="_captcha" value="false">'
@@ -694,7 +695,7 @@ def quote_modal():
     <span class="pill pill-orange" id="quote-service-label">Demande de devis</span>
     <h2 id="quote-title">Demander un devis gratuit</h2>
     <p class="modal-sub">Réponse rapide. Pour une urgence, appelez le <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>.</p>
-    <form class="quote" name="devis-express" method="POST" action="{FORM_ACTION}" style="padding:0">
+    <form class="quote" name="devis-express" method="POST" action="{FORM_ACTION}" data-netlify="true" netlify-honeypot="_honey" style="padding:0">
       {form_hidden("devis-express")}
       <input type="hidden" name="page" value="">
       <input type="hidden" name="besoin" value="Demande de devis" id="quote-service-input">
@@ -740,7 +741,7 @@ def contact_section(path, title="Besoin d'un plombier maintenant ?", service=Non
         </div>
       </div>
     </div>
-    <form class="quote" name="devis" method="POST" action="{FORM_ACTION}">
+    <form class="quote" name="devis" method="POST" action="{FORM_ACTION}" data-netlify="true" netlify-honeypot="_honey">
       {form_hidden("devis")}
       <input type="hidden" name="page" value="{esc(path)}">
       <p class="hp"><label>Ne pas remplir : <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
@@ -797,7 +798,7 @@ def quick_form(path, service=None, city=None, title="Rappel rapide"):
     return f"""<div class="side-card" id="rappel">
   <h2>{title}</h2>
   <p style="color:var(--gray-600)">Laissez votre numéro, un plombier vous rappelle au plus vite.</p>
-  <form class="quote" name="rappel" method="POST" action="{FORM_ACTION}" style="padding:0">
+  <form class="quote" name="rappel" method="POST" action="{FORM_ACTION}" data-netlify="true" netlify-honeypot="_honey" style="padding:0">
     {form_hidden("rappel")}
     <input type="hidden" name="page" value="{esc(path)}">
     <p class="hp"><label>Ne pas remplir : <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
