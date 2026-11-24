@@ -343,9 +343,10 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#111111">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png?v=2" sizes="32x32" type="image/png">
+<link rel="shortcut icon" href="/favicon.ico?v=2">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 <link rel="manifest" href="/site.webmanifest">
 
 <!-- Google tag (gtag.js) + Consent Mode v2 -->
@@ -1980,7 +1981,7 @@ def build_llms():
 
 def build_static():
     shutil.copytree(SRC_ASSETS, os.path.join(OUT, "assets"), dirs_exist_ok=True)
-    for name in ("favicon.svg", "favicon-32.png", "apple-touch-icon.png"):
+    for name in ("favicon.svg", "favicon-32.png", "favicon.ico", "apple-touch-icon.png"):
         src = os.path.join(SRC_ASSETS, name)
         if os.path.exists(src):
             shutil.copy(src, os.path.join(OUT, name))
