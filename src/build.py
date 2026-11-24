@@ -219,7 +219,7 @@ def business_schema():
         "foundingDate": str(B.SINCE),
         "address": address,
         "geo": {"@type": "GeoCoordinates", "latitude": B.GEO[0], "longitude": B.GEO[1]},
-        "areaServed": area,
+        "areaServed": area + [{"@type": "AdministrativeArea", "name": "Var (83)"}],
         "openingHoursSpecification": [{
             "@type": "OpeningHoursSpecification",
             "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -435,7 +435,7 @@ def footer(form_anchor="#devis"):
     <div class="foot-cols">
       <div>
         <a class="logo" href="/">{LOGO_SVG.replace('class="logo-mark"', 'class="logo-mark" width="34" height="34"')}<span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · 24h/24</span></span></a>
-        <p class="foot-about">Artisan plombier indépendant depuis {B.SINCE}. Dépannage <b>24h/24 et 7j/7</b> : fuite, débouchage, chauffe-eau, sanitaire, salle de bain.</p>
+        <p class="foot-about">Artisan plombier indépendant depuis {B.SINCE}. Dépannage <b>24h/24 et 7j/7</b> dans le <b>Var (83)</b> : fuite, débouchage, chauffe-eau, sanitaire, salle de bain.</p>
         <p class="foot-about"><a href="tel:{B.PHONE_TEL}"><b>{B.PHONE}</b></a><br><a href="mailto:{B.EMAIL}">{B.EMAIL}</a></p>
       </div>
       <div><h2>Prestations</h2><ul>{svc_links}</ul></div>
@@ -1083,7 +1083,7 @@ def trust_list_html():
 HOME_FAQ = [
     ("Combien coûte une intervention de plombier ?", "Nos prix TTC en journée : " + prices_summary() + ". Le prix exact dépend de l'intervention et de l'horaire ; il est toujours annoncé au téléphone et confirmé sur place avant les travaux. <a href=\"/tarifs/\">Voir nos tarifs</a>."),
     ("Intervenez-vous la nuit, le week-end et les jours fériés ?", "Oui, un plombier est joignable 24h/24 et 7j/7 au 06 75 93 19 04, jours fériés compris. " + majorations_sentence() + " La majoration est toujours annoncée avant le déplacement."),
-    ("Dans quelles communes intervenez-vous ?", "Dans notre secteur, sur les 153 communes du département. <a href=\"/zones-intervention/\">Voir toutes les communes</a>."),
+    ("Dans quelles communes intervenez-vous ?", "Dans les 153 communes du Var (83). <a href=\"/zones-intervention/\">Voir toutes les communes</a>."),
     ("Le devis est-il gratuit ?", "Oui, le diagnostic téléphonique et le devis sur place sont gratuits et sans engagement."),
     ("Vos factures sont-elles acceptées par les assurances ?", "Oui. Nous remettons une facture détaillée et un descriptif de la cause de la fuite. Nos clients se font rembourser auprès de leur assureur habitation, selon les garanties de leur contrat."),
     ("Faites-vous de la recherche de fuite ?", "Oui, nous réalisons la détection de fuite (visuelle, thermique ou acoustique selon le cas) puis la réparation, en limitant la casse au strict nécessaire."),
@@ -1148,7 +1148,7 @@ def build_home():
 <section class="alt">
   <div class="wrap text-block prose">
     <h2>Un plombier de confiance depuis {B.SINCE}</h2>
-    <p><strong>{B.NAME}</strong> est une entreprise artisanale de plomberie qui intervient 24h/24 et 7j/7. Depuis {B.SINCE}, nous dépannons et équipons les particuliers, propriétaires, locataires, gestionnaires de résidences secondaires et petites entreprises de tout le département.</p>
+    <p><strong>{B.NAME}</strong> est une entreprise artisanale de plomberie qui intervient dans le Var (83), 24h/24 et 7j/7. Depuis {B.SINCE}, nous dépannons et équipons les particuliers, propriétaires, locataires, gestionnaires de résidences secondaires et petites entreprises de tout le département.</p>
     <p>Notre métier, c'est de régler vos problèmes de plomberie <strong>rapidement, proprement et au juste prix</strong>. Une fuite sous l'évier un dimanche, un WC bouché un soir de fête, un chauffe-eau qui lâche en plein hiver : vous joignez directement un plombier au <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>, sans plateforme ni centre d'appel. Il vous écoute, vous aide à sécuriser la situation et vous annonce une fourchette de prix <strong>avant</strong> de prendre la route.</p>
     <p>Nous intervenons sur l'ensemble de la plomberie de la maison : <a href="/recherche-de-fuite-var/">recherche et réparation de fuite</a>, <a href="/debouchage-canalisation-var/">débouchage de WC et de canalisations</a>, <a href="/chauffe-eau-var/">dépannage et remplacement de chauffe-eau</a>, <a href="/reparation-canalisation-var/">réparation de canalisations</a>, <a href="/installation-sanitaire-var/">installation sanitaire et robinetterie</a> et <a href="/renovation-salle-de-bain-var/">rénovation de salle de bain</a>. Pour les sinistres, nous fournissons les <a href="/{ASSURANCE_PAGE['slug']}/">justificatifs demandés par votre assurance</a>.</p>
     <p>Ce qui nous distingue ? Des engagements simples et tenus : un prix annoncé à l'avance, un devis validé avant les travaux, aucune intervention inutile et une facture détaillée. Des engagements tenus à chaque intervention, de jour comme de nuit.</p>
@@ -1374,7 +1374,7 @@ def build_city(c):
         <li><strong>Rénovation de salle de bain</strong> : douche à l'italienne, remplacement de baignoire, aménagement PMR.</li>
       </ul>
       <h2>Pourquoi faire appel à nous {c["a"]} ?</h2>
-      <p>Vous parlez directement à un artisan plombier local, pas à une plateforme. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement puis validé avec vous avant les travaux. Nous ne proposons que les interventions utiles et vous remettons une facture détaillée. Nous intervenons depuis {B.SINCE}.</p>
+      <p>Vous parlez directement à un artisan plombier local, pas à une plateforme. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement puis validé avec vous avant les travaux. Nous ne proposons que les interventions utiles et vous remettons une facture détaillée. Nous intervenons dans le Var depuis {B.SINCE}.</p>
       <h2>Communes voisines {c["de"]}</h2>
       <p>Nous intervenons aussi dans les communes proches :</p>
       <div class="chips">{near_html}</div>
@@ -1512,7 +1512,7 @@ def build_zones():
     {zone_cards(CORE_CITIES)}
     <div class="sec-head" style="margin-top:56px"><h2>Autres communes desservies</h2></div>
     {zone_cards([c for c in CITIES if not c["core"]])}
-    <div class="sec-head" style="margin-top:56px"><h2>Toutes les communes de la région ({len(ALL_CITIES)})</h2><p>Chaque commune a sa page. Délais estimés hors trafic, confirmés au téléphone avant tout déplacement.</p></div>
+    <div class="sec-head" style="margin-top:56px"><h2>Toutes les communes du Var ({len(ALL_CITIES)})</h2><p>Chaque commune a sa page. Délais estimés hors trafic, confirmés au téléphone avant tout déplacement.</p></div>
     {sector_blocks()}
   </div>
 </section>
