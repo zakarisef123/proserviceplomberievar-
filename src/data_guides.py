@@ -28,7 +28,7 @@ GUIDES = [
             "<p>En appartement, une fuite chez vous peut couler chez le voisin du dessous, et inversement. Prévenez-le rapidement. Si la fuite semble venir des parties communes (colonne, toiture), informez le syndic ou le gestionnaire de l'immeuble.</p>"
             "<h2>7. Appelez un plombier et déclarez le sinistre</h2>"
             "<p>Un plombier localise la fuite, la répare et vous remet une facture détaillée ainsi qu'un descriptif de la cause, les documents attendus par votre assureur. Déclarez ensuite le dégât des eaux à votre assurance habitation dans les <strong>5 jours ouvrés</strong> qui suivent sa découverte, et remplissez si besoin un constat amiable dégât des eaux avec les autres personnes concernées.</p>"
-            "<p>Notre guide <a href=\"/conseils/degat-des-eaux-assurance/\">dégât des eaux et assurance</a> détaille ces démarches.</p>",
+            "<p>Mon guide <a href=\"/conseils/degat-des-eaux-assurance/\">dégât des eaux et assurance</a> détaille ces démarches.</p>",
     },
     {
         "slug": "wc-bouche-que-faire",
@@ -112,9 +112,9 @@ GUIDES = [
             "<li>les factures ou devis de remise en état des biens et des embellissements ;</li>"
             "<li>le constat amiable, le cas échéant.</li></ul>"
             "<h2>Le rôle du plombier</h2>"
-            f"<p>Le plombier n'est pas l'expert de l'assurance, mais son intervention est déterminante : c'est lui qui établit l'origine de la fuite, la répare et rédige les documents qui serviront de base au dossier. Chez {NAME}, nous remettons systématiquement une facture détaillée et un descriptif clair de la cause, que nos clients transmettent à leur assureur habitation pour se faire rembourser selon leur contrat.</p>"
+            f"<p>Le plombier n'est pas l'expert de l'assurance, mais son intervention est déterminante : c'est lui qui établit l'origine de la fuite, la répare et rédige les documents qui serviront de base au dossier. Chez {NAME}, je remets systématiquement une facture détaillée et un descriptif clair de la cause, que mes clients transmettent à leur assureur habitation pour se faire rembourser selon leur contrat.</p>"
             "<h2>Et la facture d'eau ?</h2>"
-            "<p>Si la fuite se trouvait sur une canalisation après le compteur, vous pouvez peut-être bénéficier du plafonnement de votre facture d'eau prévu par la loi Warsmann. Consultez notre guide <a href=\"/conseils/fuite-apres-compteur-loi-warsmann/\">fuite après compteur et loi Warsmann</a>.</p>",
+            "<p>Si la fuite se trouvait sur une canalisation après le compteur, vous pouvez peut-être bénéficier du plafonnement de votre facture d'eau prévu par la loi Warsmann. Consultez mon guide <a href=\"/conseils/fuite-apres-compteur-loi-warsmann/\">fuite après compteur et loi Warsmann</a>.</p>",
     },
     {
         "slug": "choisir-plombier-eviter-arnaques",
@@ -133,15 +133,15 @@ GUIDES = [
             "<li><strong>La pression au paiement</strong> : exigence de payer immédiatement, en espèces, un montant jamais annoncé.</li></ul>"
             "<h2>Ce que la loi impose au professionnel</h2>"
             "<p>Pour les prestations de dépannage, de réparation et d'entretien dans le bâtiment, la réglementation impose au professionnel d'informer le client <strong>avant</strong> l'intervention de ses taux horaires, frais de déplacement et conditions de prix. Au-delà de 150 € TTC estimés, il doit remettre un <strong>devis écrit détaillé</strong> avant d'exécuter les travaux. À la fin, une facture détaillée doit vous être remise.</p>"
-            "<h2>Nos conseils pour choisir</h2>"
+            "<h2>Mes conseils pour choisir</h2>"
             "<ol><li><strong>Préférez un artisan réellement local</strong>, joignable directement, dont vous pouvez vérifier la zone d'intervention.</li>"
             "<li><strong>Demandez une estimation au téléphone</strong> : un professionnel sérieux sait donner une fourchette pour une panne décrite clairement, et annonce les éventuels suppléments de nuit ou de week-end.</li>"
             "<li><strong>Exigez le devis avant les travaux</strong> et lisez-le. Vous avez le droit de refuser.</li>"
             "<li><strong>Méfiez-vous des urgences fabriquées</strong> : en cas de doute, coupez l'eau et prenez le temps d'un second avis.</li>"
             "<li><strong>Demandez une facture détaillée</strong>, indispensable pour l'assurance.</li>"
             "<li><strong>Consultez les avis</strong> de clients, en particulier ceux qui détaillent l'intervention et le prix.</li></ol>"
-            "<h2>Notre engagement</h2>"
-            f"<p>Chez {NAME}, nous sommes un artisan local qui intervient 24h/24. Vous nous joignez en direct au 06 75 93 19 04. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement, confirmé sur place avant les travaux, et une facture détaillée vous est remise. Si une intervention n'est pas nécessaire, nous vous le disons. <a href=\"/a-propos/\">Découvrez notre charte de confiance</a>.</p>"
+            "<h2>Mon engagement</h2>"
+            f"<p>Chez {NAME}, je suis un artisan local qui intervient 24h/24. Vous me joignez en direct au 06 75 93 19 04. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement, confirmé sur place avant les travaux, et une facture détaillée vous est remise. Si une intervention n'est pas nécessaire, me vous le dis. <a href=\"/a-propos/\">Découvrez ma charte de confiance</a>.</p>"
             "<div class=\"callout info\">En cas de litige avec un professionnel, vous pouvez signaler la pratique sur le site SignalConso de la DGCCRF.</div>",
     },
     {
@@ -186,7 +186,7 @@ GUIDES = [
             "<li>Sont exclues les fuites dues aux <strong>appareils ménagers, équipements sanitaires ou de chauffage</strong> : chasse d'eau qui fuit, robinet qui goutte, groupe de sécurité de chauffe-eau, par exemple.</li>"
             "<li>Vous fournissez, dans le délai d'<strong>un mois</strong> suivant l'information du service des eaux, une <strong>attestation d'une entreprise de plomberie</strong> indiquant que la fuite a été réparée, avec la date de réparation et la localisation de la fuite.</li></ul>"
             "<h2>Le rôle du plombier</h2>"
-            f"<p>Le plombier intervient à deux niveaux : il <strong>localise</strong> la fuite, ce qui permet de savoir si elle est sur une canalisation (éligible) ou sur un équipement (non éligible), puis il la <strong>répare</strong> et rédige l'attestation demandée par le service des eaux. Chez {NAME}, nous fournissons ce document avec la facture.</p>"
+            f"<p>Le plombier intervient à deux niveaux : il <strong>localise</strong> la fuite, ce qui permet de savoir si elle est sur une canalisation (éligible) ou sur un équipement (non éligible), puis il la <strong>répare</strong> et rédige l'attestation demandée par le service des eaux. Chez {NAME}, je fournis ce document avec la facture.</p>"
             "<h2>Comment détecter une fuite après compteur ?</h2>"
             "<p>Fermez tous les robinets et équipements, relevez l'index du compteur, n'utilisez pas d'eau pendant une à deux heures et relevez-le de nouveau. S'il a avancé, une fuite existe. Vérifiez d'abord les chasses d'eau (une goutte de colorant dans le réservoir : si la couleur apparaît dans la cuvette sans tirer la chasse, le mécanisme fuit). Si tout est sec, la fuite est probablement sur une canalisation.</p>"
             "<div class=\"callout info\">Conservez tous les courriers du service des eaux et notez la date à laquelle vous avez été informé : le délai d'un mois court à partir de cette information.</div>",
