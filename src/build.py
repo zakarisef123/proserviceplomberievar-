@@ -192,7 +192,7 @@ LOGO_SVG = '<svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><circl
 # ---------------------------------------------------------------- données structurées
 def business_schema():
     area = [{"@type": "City", "name": c["name"], "postalCode": c["cp"]} for c in CITIES]
-    area.append({"@type": "AdministrativeArea", "name": "Var (83)"})
+    area.append({"@type": "AdministrativeArea", "name": "Provence"})
     address = {
         "@type": "PostalAddress",
         "addressLocality": B.ADDRESS_CITY,
@@ -208,7 +208,7 @@ def business_schema():
         "@id": SITE + "/#entreprise",
         "name": B.NAME,
         "legalName": B.LEGAL_NAME,
-        "description": "Artisan plombier intervenant dans le Var (83). Dépannage plomberie 24h/24 et 7j/7 : fuite d'eau, recherche de fuite, débouchage, chauffe-eau, canalisations, installation sanitaire et rénovation de salle de bain.",
+        "description": "Artisan plombier intervenant. Dépannage plomberie 24h/24 et 7j/7 : fuite d'eau, recherche de fuite, débouchage, chauffe-eau, canalisations, installation sanitaire et rénovation de salle de bain.",
         "url": SITE + "/",
         "telephone": B.PHONE_TEL,
         "email": B.EMAIL,
@@ -219,7 +219,7 @@ def business_schema():
         "foundingDate": str(B.SINCE),
         "address": address,
         "geo": {"@type": "GeoCoordinates", "latitude": B.GEO[0], "longitude": B.GEO[1]},
-        "areaServed": area,
+        "areaServed": area + [{"@type": "AdministrativeArea", "name": "Var (83)"}],
         "openingHoursSpecification": [{
             "@type": "OpeningHoursSpecification",
             "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -277,7 +277,7 @@ def service_schema(name, desc, path, area_name, price_min=None):
         "description": desc,
         "url": abs_url(path),
         "provider": {"@id": SITE + "/#entreprise"},
-        "areaServed": {"@type": "City" if area_name != "Var (83)" else "AdministrativeArea", "name": area_name},
+        "areaServed": {"@type": "City" if area_name != "Provence" else "AdministrativeArea", "name": area_name},
         "availableChannel": {"@type": "ServiceChannel", "servicePhone": B.PHONE_TEL},
     }
     if price_min:
@@ -406,7 +406,7 @@ def header(path):
   <div class="wrap headbar">
     <a class="logo" href="/" aria-label="{B.NAME}, accueil">
       {LOGO_SVG}
-      <span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · Var</span></span>
+      <span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · 24h/24</span></span>
     </a>
     <nav class="main" aria-label="Navigation principale">{links}</nav>
     <a href="tel:{B.PHONE_TEL}" class="call-pill">
@@ -434,7 +434,7 @@ def footer(form_anchor="#devis"):
   <div class="wrap">
     <div class="foot-cols">
       <div>
-        <a class="logo" href="/">{LOGO_SVG.replace('class="logo-mark"', 'class="logo-mark" width="34" height="34"')}<span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · Var</span></span></a>
+        <a class="logo" href="/">{LOGO_SVG.replace('class="logo-mark"', 'class="logo-mark" width="34" height="34"')}<span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · 24h/24</span></span></a>
         <p class="foot-about">Artisan plombier indépendant depuis {B.SINCE}. Dépannage <b>24h/24 et 7j/7</b> dans le <b>Var (83)</b> : fuite, débouchage, chauffe-eau, sanitaire, salle de bain.</p>
         <p class="foot-about"><a href="tel:{B.PHONE_TEL}"><b>{B.PHONE}</b></a><br><a href="mailto:{B.EMAIL}">{B.EMAIL}</a></p>
       </div>
@@ -451,7 +451,7 @@ def footer(form_anchor="#devis"):
       </ul></div>
     </div>
     <div class="foot-bottom">
-      <span>© {date.today().year} {B.LEGAL_NAME} — Artisan plombier dans le Var (83){" · SIRET " + B.SIRET if B.SIRET else ""}{" · " + B.RCS_RM if B.RCS_RM else ""}.</span>
+      <span>© {date.today().year} {B.LEGAL_NAME} — Artisan plombier{" · SIRET " + B.SIRET if B.SIRET else ""}{" · " + B.RCS_RM if B.RCS_RM else ""}.</span>
       <span><a href="/mentions-legales/">Mentions légales</a> · <a href="/politique-confidentialite/">Confidentialité</a> · <button type="button" data-consent="open">Cookies</button></span>
     </div>
   </div>
@@ -541,8 +541,8 @@ def page_hero(crumbs, h1, lead, checks=None, badge=None, image=None, image_alt="
 def trust_items_short():
     items = ["Plus de %s ans d'expérience en plomberie" % B.YEARS.rstrip("+"), "Disponible 24h/24 et 7j/7",
              "Prix annoncé avant toute intervention", "Devis gratuit, sans engagement",
-             "Facture détaillée acceptée par votre assureur", "Artisan local, dans le Var",
-             "Intervention dans le Var (83)", "Travaux garantis"]
+             "Facture détaillée acceptée par votre assureur", "Artisan local,",
+             "Intervention", "Travaux garantis"]
     if B.ASSURANCE_DECENNALE:
         items.insert(1, "Assurance décennale & RC professionnelle")
     return items
@@ -566,7 +566,7 @@ def urgent_band():
 """
 
 
-def cta_band(title="Une fuite, une panne, un projet ?", text="Un artisan plombier joignable 24h/24 et 7j/7 dans le Var (83)."):
+def cta_band(title="Une fuite, une panne, un projet ?", text="Un artisan plombier joignable 24h/24 et 7j/7."):
     return f"""<section class="cta-band"><div class="wrap cta-inner">
   <div><h2>{title}</h2><p>{text}</p></div>
   <div class="cta-actions">
@@ -579,10 +579,10 @@ def cta_band(title="Une fuite, une panne, un projet ?", text="Un artisan plombie
 
 def guarantees_section(cls="alt"):
     cards = [
-        ("Plus de %s ans d'expérience" % B.YEARS.rstrip("+"), "Un plombier de métier, en activité dans le Var depuis %d, qui a déjà rencontré à peu près toutes les pannes." % B.SINCE),
+        ("Plus de %s ans d'expérience" % B.YEARS.rstrip("+"), "Un plombier de métier, en activité depuis %d, qui a déjà rencontré à peu près toutes les pannes." % B.SINCE),
         ("Prix annoncé avant travaux", "Diagnostic d'abord, prix ensuite, intervention seulement avec votre accord. Aucune mauvaise surprise."),
         ("Facture pour l'assurance", "Facture détaillée remise systématiquement, reconnue par les assureurs habitation en cas de sinistre."),
-        ("Artisan local, 24h/24", "Un seul numéro, un plombier qui connaît le Var et qui reste votre interlocuteur après l'intervention."),
+        ("Artisan local, 24h/24", "Un seul numéro, un plombier qui connaît notre secteur et qui reste votre interlocuteur après l'intervention."),
     ]
     if B.ASSURANCE_DECENNALE:
         cards[3] = ("Artisan assuré", "Assurance décennale et responsabilité civile professionnelle, garantie sur la prestation réalisée.")
@@ -635,7 +635,7 @@ def realisations_section(limit=6, cls=""):
     <div class="sec-head">
       <div class="pill pill-lav sec-badge">Réalisations</div>
       <h2>Nos chantiers en images</h2>
-      <p>Quelques interventions réalisées dans le Var.</p>
+      <p>Quelques interventions réalisées.</p>
     </div>
     <div class="ch-grid">{cards}</div>
     {more}
@@ -663,7 +663,7 @@ def service_options(selected=None):
 def city_options(selected=None):
     opts = ['<option value="">Choisir…</option>']
     opts += ['<option%s>%s</option>' % (" selected" if c["name"] == selected else "", esc(c["name"])) for c in sorted(ALL_CITIES, key=lambda c: c["name"])]
-    opts.append("<option>Autre commune du Var</option>")
+    opts.append("<option>Autre commune de la région</option>")
     return "".join(opts)
 
 
@@ -722,7 +722,7 @@ def contact_section(path, title="Besoin d'un plombier maintenant ?", service=Non
         </div>
         <div class="cinfo">
           <div class="icon-sq">{svc_icon("shield", 18)}</div>
-          <div><b>Var (83)</b><span>Diagnostic téléphonique et devis gratuits</span></div>
+          <div><b>Provence</b><span>Diagnostic téléphonique et devis gratuits</span></div>
         </div>
       </div>
     </div>
@@ -1019,7 +1019,7 @@ def zones_section(current=None, service=None, cls=""):
     </div>
     <div class="zone-note">
       <span class="pill pill-orange">Hors zone ?</span>
-      <h3>Nous couvrons le Var</h3>
+      <h3>Nous couvrons notre secteur</h3>
       <p>Les délais ci-contre sont indicatifs, hors trafic. Pour une commune qui n'y figure pas, le délai précis est donné au téléphone, avant tout déplacement.</p>
       <a href="tel:{B.PHONE_TEL}" class="btn btn-purple">{phone_icon(18, True)} Vérifier mon secteur</a>
       <a href="/zones-intervention/" class="btn btn-outline">Toutes nos zones d'intervention</a>
@@ -1030,7 +1030,7 @@ def zones_section(current=None, service=None, cls=""):
 
 
 def sector_blocks():
-    """Toutes les communes du Var, regroupées par secteur (intercommunalité)."""
+    """Toutes les communes de la région, regroupées par secteur (intercommunalité)."""
     out = ""
     for key, (lab, lab_de, desc) in SECTORS.items():
         cs = sorted([c for c in ALL_CITIES if c.get("sector") == key], key=lambda c: c["name"])
@@ -1067,7 +1067,7 @@ def trust_items():
         ("Devis validé avant les travaux", "Le prix est confirmé sur place et vous le validez avant que nous commencions. Vous restez libre de refuser."),
         ("Pas de travaux inutiles", "Si une réparation suffit, nous ne remplaçons pas. Si l'intervention peut attendre, nous vous le disons."),
         ("Facture détaillée", "Déplacement, main-d'œuvre et pièces détaillés : un document clair, accepté par les assureurs habitation."),
-        ("Un artisan local, joignable en direct", "Pas de plateforme ni de centre d'appel : vous parlez directement à un plombier du Var."),
+        ("Un artisan local, joignable en direct", "Pas de plateforme ni de centre d'appel : vous parlez directement à un plombier de la région."),
         ("Travaux garantis", "Nos interventions sont garanties. En cas de souci, nous revenons."),
         ("Chantier propre", "Protection des sols, nettoyage en fin d'intervention et évacuation des anciennes pièces."),
         ("Ponctualité et transparence", "Un imprévu ? Nous vous prévenons à l'avance, avec un nouvel horaire."),
@@ -1083,7 +1083,7 @@ def trust_list_html():
 HOME_FAQ = [
     ("Combien coûte une intervention de plombier ?", "Nos prix TTC en journée : " + prices_summary() + ". Le prix exact dépend de l'intervention et de l'horaire ; il est toujours annoncé au téléphone et confirmé sur place avant les travaux. <a href=\"/tarifs/\">Voir nos tarifs</a>."),
     ("Intervenez-vous la nuit, le week-end et les jours fériés ?", "Oui, un plombier est joignable 24h/24 et 7j/7 au 06 75 93 19 04, jours fériés compris. " + majorations_sentence() + " La majoration est toujours annoncée avant le déplacement."),
-    ("Dans quelles communes intervenez-vous ?", "Dans le Var (83), sur les 153 communes du département. <a href=\"/zones-intervention/\">Voir toutes les communes</a>."),
+    ("Dans quelles communes intervenez-vous ?", "Dans les 153 communes du Var (83). <a href=\"/zones-intervention/\">Voir toutes les communes</a>."),
     ("Le devis est-il gratuit ?", "Oui, le diagnostic téléphonique et le devis sur place sont gratuits et sans engagement."),
     ("Vos factures sont-elles acceptées par les assurances ?", "Oui. Nous remettons une facture détaillée et un descriptif de la cause de la fuite. Nos clients se font rembourser auprès de leur assureur habitation, selon les garanties de leur contrat."),
     ("Faites-vous de la recherche de fuite ?", "Oui, nous réalisons la détection de fuite (visuelle, thermique ou acoustique selon le cas) puis la réparation, en limitant la casse au strict nécessaire."),
@@ -1107,7 +1107,7 @@ def build_home():
   {picture("hero-var.jpg", "", 1980, 1320, "100vw", cls="hero-bg", attrs=' aria-hidden="true" fetchpriority="high"')}
   <div class="wrap hero-inner">
     <div class="hero-text">
-    <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>Artisan plombier · Var (83)</span></div>
+    <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>Artisan plombier</span></div>
     <h1>Artisan plombier<br><span class="accent">24h/24 et 7j/7</span></h1>
     <p class="lead">Fuite d'eau, canalisation bouchée, chauffe-eau en panne ? <b>Un artisan local vous répond en direct, jour et nuit, 7j/7</b>, et intervient avec un prix annoncé avant de commencer. Plus de {B.YEARS.rstrip("+")} ans d'expérience, travail soigné, facture détaillée acceptée par votre assureur.</p>
     <a href="tel:{B.PHONE_TEL}" class="hero-cta">
@@ -1136,8 +1136,8 @@ def build_home():
   <div class="wrap">
     <div class="sec-head">
       <div class="pill pill-purple sec-badge">{svc_icon("shield", 15)}Services professionnels</div>
-      <h2>Nos services de plomberie dans le Var</h2>
-      <p>Un artisan plombier à votre service pour l'urgence comme pour les travaux, 24h/24 et 7j/7, dans le Var (83).</p>
+      <h2>Nos services de plomberie</h2>
+      <p>Un artisan plombier à votre service pour l'urgence comme pour les travaux, 24h/24 et 7j/7,.</p>
     </div>
     {services_grid()}
   </div>
@@ -1147,8 +1147,8 @@ def build_home():
     out += f"""<div class="alt" style="padding:0 0 10px"><div class="wrap">{stats_block()}</div></div>
 <section class="alt">
   <div class="wrap text-block prose">
-    <h2>Un plombier de confiance dans le Var depuis {B.SINCE}</h2>
-    <p><strong>{B.NAME}</strong> est une entreprise artisanale de plomberie qui intervient dans le <strong>Var (83)</strong>. Depuis {B.SINCE}, nous dépannons et équipons les particuliers, propriétaires, locataires, gestionnaires de résidences secondaires et petites entreprises de tout le département.</p>
+    <h2>Un plombier de confiance depuis {B.SINCE}</h2>
+    <p><strong>{B.NAME}</strong> est une entreprise artisanale de plomberie qui intervient dans le Var (83), 24h/24 et 7j/7. Depuis {B.SINCE}, nous dépannons et équipons les particuliers, propriétaires, locataires, gestionnaires de résidences secondaires et petites entreprises de tout le département.</p>
     <p>Notre métier, c'est de régler vos problèmes de plomberie <strong>rapidement, proprement et au juste prix</strong>. Une fuite sous l'évier un dimanche, un WC bouché un soir de fête, un chauffe-eau qui lâche en plein hiver : vous joignez directement un plombier au <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>, sans plateforme ni centre d'appel. Il vous écoute, vous aide à sécuriser la situation et vous annonce une fourchette de prix <strong>avant</strong> de prendre la route.</p>
     <p>Nous intervenons sur l'ensemble de la plomberie de la maison : <a href="/recherche-de-fuite-var/">recherche et réparation de fuite</a>, <a href="/debouchage-canalisation-var/">débouchage de WC et de canalisations</a>, <a href="/chauffe-eau-var/">dépannage et remplacement de chauffe-eau</a>, <a href="/reparation-canalisation-var/">réparation de canalisations</a>, <a href="/installation-sanitaire-var/">installation sanitaire et robinetterie</a> et <a href="/renovation-salle-de-bain-var/">rénovation de salle de bain</a>. Pour les sinistres, nous fournissons les <a href="/{ASSURANCE_PAGE['slug']}/">justificatifs demandés par votre assurance</a>.</p>
     <p>Ce qui nous distingue ? Des engagements simples et tenus : un prix annoncé à l'avance, un devis validé avant les travaux, aucune intervention inutile et une facture détaillée. Des engagements tenus à chaque intervention, de jour comme de nuit.</p>
@@ -1167,7 +1167,7 @@ def build_home():
 </section>
 """
     out += process_section("Simple, clair, sans surprise")
-    out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons dans le Var (83), tous les jours, 24h/24.")
+    out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons tous les jours, 24h/24.")
     out += realisations_section(cls="alt")
     out += reviews_section("alt" if not B.REALISATIONS else "")
     out += guides_teaser(GUIDES[:3])
@@ -1181,7 +1181,7 @@ def build_service(s, idx):
     path = service_path(s)
     crumbs = [("Accueil", "/"), ("Prestations", "/prestations/"), (s["name"], path)]
     schemas = [business_schema(), breadcrumb_schema(crumbs),
-               service_schema(s["name"], strip_tags(s["lead"]), path, "Var (83)", s["price_min"]),
+               service_schema(s["name"], strip_tags(s["lead"]), path, "Provence", s["price_min"]),
                faq_schema(s["faq"])]
     out = head(s["title"], s["meta"], path, schemas)
     out += header(path)
@@ -1200,7 +1200,7 @@ def build_service(s, idx):
     <article class="prose">
       {sections}
       <h2>{esc(s["short"])} : où intervenons-nous ?</h2>
-      <p>Nous intervenons dans le Var (83). Retrouvez le détail de notre intervention dans votre commune :</p>
+      <p>Nous intervenons dans 153 communes. Retrouvez le détail de notre intervention dans votre commune :</p>
       <div class="chips" style="margin-bottom:14px">{city_chips}</div>
       <p>Nous intervenons aussi dans les communes voisines : </p>
       <div class="chips">{other_chips}</div>
@@ -1241,7 +1241,7 @@ def build_combo(s, c, si, ci):
         ("En combien de temps intervenez-vous %s ?" % c["a"], delay_sentence(c) + " Pour une urgence, appelez le 06 75 93 19 04."),
         sf[v % len(sf)],
         sf[(v + 1) % len(sf)],
-        ("Intervenez-vous aussi autour %s ?" % c["de"], "Oui, nous intervenons également à %s et dans le Var. <a href=\"/zones-intervention/\">Voir toutes nos zones</a>." % near_names),
+        ("Intervenez-vous aussi autour %s ?" % c["de"], "Oui, nous intervenons également à %s et. <a href=\"/zones-intervention/\">Voir toutes nos zones</a>." % near_names),
     ]
     schemas = [business_schema(), breadcrumb_schema(crumbs),
                service_schema("%s %s" % (s["combo_h1"], c["a"]), strip_tags(lead), path, c["name"], s["price_min"]),
@@ -1269,7 +1269,7 @@ def build_combo(s, c, si, ci):
       <p>{"" if s["price_label"].lower().startswith("tarif") else "Tarif : "}<strong>{esc(s["price_label"])}</strong>. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement et confirmé sur place avant les travaux. En fin d'intervention, vous recevez une facture détaillée, acceptée par les assureurs habitation pour vos démarches de remboursement. Prix TTC en journée ; déplacement : {deplacement_txt()}. Majorations : {', '.join('%s %s' % (l[0].lower() + l[1:], v) for l, v in majorations())}, toujours annoncées à l'avance.</p>
       <h2>{first_section[0]}</h2>
       {first_section[1]}
-      <p>Pour tout savoir sur cette prestation, consultez notre page <a href="{service_path(s)}">{esc(s["name"].lower())} dans le Var</a>, ou découvrez <a href="{city_path(c)}">toutes nos interventions de plombier {c["a"]}</a>.</p>
+      <p>Pour tout savoir sur cette prestation, consultez notre page <a href="{service_path(s)}">{esc(s["name"].lower())}</a>, ou découvrez <a href="{city_path(c)}">toutes nos interventions de plombier {c["a"]}</a>.</p>
       <h2>Nous intervenons aussi autour {c["de"]}</h2>
       <div class="chips">{near_chips}</div>
     </article>
@@ -1313,7 +1313,7 @@ def city_hero(c, crumbs):
     {crumbs_html(crumbs)}
     <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>{esc(delay_txt(c))} · {c["cp"]}</span></div>
     <h1>Votre plombier<br><span class="accent">{c["a"]}, 24h/24</span></h1>
-    <p class="lead">Fuite d'eau, canalisation bouchée, chauffe-eau en panne ? <b>Un artisan plombier vous répond en direct, jour et nuit, 7j/7</b>, et intervient {c["a"]} avec un prix annoncé avant de commencer. Plus de {B.YEARS.rstrip("+")} ans d'expérience dans le Var, facture détaillée acceptée par votre assureur.</p>
+    <p class="lead">Fuite d'eau, canalisation bouchée, chauffe-eau en panne ? <b>Un artisan plombier vous répond en direct, jour et nuit, 7j/7</b>, et intervient {c["a"]} avec un prix annoncé avant de commencer. Plus de {B.YEARS.rstrip("+")} ans d'expérience, facture détaillée acceptée par votre assureur.</p>
     <a href="tel:{B.PHONE_TEL}" class="hero-cta">
       <span class="num">{phone_icon(24, True)} {B.PHONE}</span>
       <span class="sub">Appel direct, disponible 24/7</span>
@@ -1346,7 +1346,7 @@ def build_city(c):
         ("Intervenez-vous %s la nuit et le week-end ?" % c["a"], "Oui, nous intervenons 24h/24 et 7j/7, jours fériés compris. " + majorations_sentence() + " La majoration vous est annoncée avant le déplacement."),
         ("Combien coûte un plombier %s ?" % c["a"], "Nos prix TTC en journée : " + prices_summary() + ". Le prix exact dépend de l'intervention et de l'horaire ; il est toujours annoncé au téléphone et confirmé sur place avant les travaux. <a href=\"/tarifs/\">Voir nos tarifs</a>."),
         ("Vos factures sont-elles prises en charge par mon assurance ?", "Nous remettons une facture détaillée et un descriptif de la cause de la fuite, que nos clients transmettent à leur assureur habitation pour se faire rembourser, selon les garanties de leur contrat."),
-        ("Quelles communes desservez-vous autour %s ?" % c["de"], "Nous intervenons notamment à %s, et dans le Var." % ", ".join(n["name"] for n in near)),
+        ("Quelles communes desservez-vous autour %s ?" % c["de"], "Nous intervenons notamment à %s, et." % ", ".join(n["name"] for n in near)),
     ]
     schemas = [business_schema(), breadcrumb_schema(crumbs), faq_schema(faq)]
     out = head(title, desc, path, schemas)
@@ -1414,11 +1414,11 @@ def build_city(c):
 def build_prestations():
     path = "/prestations/"
     crumbs = [("Accueil", "/"), ("Prestations", path)]
-    out = head("Prestations de plomberie dans le Var — " + B.NAME,
-               "Toutes nos prestations de plomberie dans le Var : urgence 24h/24, recherche de fuite, débouchage, chauffe-eau, canalisation, installation sanitaire, salle de bain.",
+    out = head("Prestations de plomberie — " + B.NAME,
+               "Toutes nos prestations de plomberie : urgence 24h/24, recherche de fuite, débouchage, chauffe-eau, canalisation, installation sanitaire, salle de bain.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Nos prestations de plomberie dans le Var", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement, dans le Var.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à un client")
+    out += page_hero(crumbs, "Nos prestations de plomberie", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement,.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à un client")
     out += trust_marquee()
     out += f"""<section><div class="wrap">{services_grid()}</div></section>
 <section class="alt"><div class="wrap text-block prose">
@@ -1444,10 +1444,10 @@ def build_assurance():
         ("Qui paie la recherche de fuite en appartement ?", "Avec la convention IRSI, pour les sinistres de moins de 5 000 € HT, c'est en principe l'assureur de l'occupant du local où les dégâts sont constatés qui organise et prend en charge la recherche de fuite, selon les contrats."),
     ]
     schemas = [business_schema(), breadcrumb_schema(crumbs),
-               service_schema("Recherche de fuite et réparation après dégât des eaux", "Recherche de fuite, réparation et justificatifs pour l'assurance habitation dans le Var.", path, "Var (83)", 79),
+               service_schema("Recherche de fuite et réparation après dégât des eaux", "Recherche de fuite, réparation et justificatifs pour l'assurance habitation.", path, "Provence", 79),
                faq_schema(faq)]
-    out = head("Plombier dégât des eaux & assurance dans le Var — factures acceptées",
-               "Dégât des eaux dans le Var : recherche de fuite, réparation et justificatifs pour votre assurance. ☎ 06 75 93 19 04",
+    out = head("Plombier dégât des eaux & assurance — factures acceptées",
+               "Dégât des eaux : recherche de fuite, réparation et justificatifs pour votre assurance. ☎ 06 75 93 19 04",
                path, schemas)
     out += header(path)
     out += page_hero(crumbs, "Plombier dégât des eaux : on s'occupe aussi des justificatifs pour l'assurance",
@@ -1497,11 +1497,11 @@ def build_assurance():
 def build_zones():
     path = "/zones-intervention/"
     crumbs = [("Accueil", "/"), ("Zones d'intervention", path)]
-    out = head("Zones d'intervention — plombier dans le Var (83) : Toulon, Fréjus, Draguignan…",
-               "Plombier dans le Var (83), intervention 24h/24 : Toulon, La Seyne-sur-Mer, Hyères, Le Muy, Les Arcs, Le Cannet-des-Maures, Le Luc, La Garde-Freinet, Gonfaron, Draguignan, Fréjus, Saint-Raphaël, Toulon, Hyères et plus.",
+    out = head("Zones d'intervention — plombier : Toulon, Fréjus, Draguignan…",
+               "Plombier, intervention 24h/24 : Toulon, La Seyne-sur-Mer, Hyères, Le Muy, Les Arcs, Le Cannet-des-Maures, Le Luc, La Garde-Freinet, Gonfaron, Draguignan, Fréjus, Saint-Raphaël, Toulon, Hyères et plus.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Nos zones d'intervention dans le Var", "Nous intervenons 24h/24 dans le <b>Var (83)</b>. Délais indicatifs hors trafic, confirmés au moment de l'appel.", ["Artisan local", "Délai annoncé à l'appel", "7j/7"])
+    out += page_hero(crumbs, "Nos zones d'intervention", "Nous intervenons 24h/24 dans 153 communes. Délais indicatifs hors trafic, confirmés au moment de l'appel.", ["Artisan local", "Délai annoncé à l'appel", "7j/7"])
     rows = ""
     for c in CITIES:
         links = " · ".join('<a href="%s">%s</a>' % (combo_path(s, c), esc(s["short"])) for s in SERVICES)
@@ -1520,7 +1520,7 @@ def build_zones():
   <div class="wrap">
     <div class="sec-head"><h2>Toutes nos prestations, commune par commune</h2></div>
     <div class="table-scroll"><table class="prices"><thead><tr><th>Commune</th><th>Code postal</th><th>Délai</th><th>Prestations</th></tr></thead><tbody>{rows}</tbody></table></div>
-    <p class="ins-note">Votre commune n'apparaît pas ? Nous couvrons le Var : appelez le {B.PHONE}, nous vous indiquons le délai.</p>
+    <p class="ins-note">Votre commune n'apparaît pas ? Nous couvrons notre secteur : appelez le {B.PHONE}, nous vous indiquons le délai.</p>
   </div>
 </section>
 """
@@ -1540,11 +1540,11 @@ def build_tarifs():
         ("Le devis est-il gratuit ?", "Oui, le diagnostic téléphonique et le devis sur place sont gratuits et sans engagement."),
         ("Puis-je refuser le devis sur place ?", "Oui. Le prix est confirmé avant de commencer et vous restez libre de refuser."),
     ]
-    out = head("Tarifs plombier dans le Var — prix fuite, débouchage, chauffe-eau",
-               "Tarifs de plombier dans le Var : " + prices_summary() + ". Devis gratuit, prix annoncé avant intervention, sans frais cachés.",
+    out = head("Tarifs plombier — prix fuite, débouchage, chauffe-eau",
+               "Tarifs de plombier : " + prices_summary() + ". Devis gratuit, prix annoncé avant intervention, sans frais cachés.",
                path, [business_schema(), breadcrumb_schema(crumbs), faq_schema(faq)])
     out += header(path)
-    out += page_hero(crumbs, "Nos tarifs de plombier dans le Var", "Des <b>prix clairs, annoncés avant le déplacement</b> et confirmés sur place avant les travaux. Pas de mauvaise surprise sur la facture.", ["Devis gratuit", "Sans frais cachés", "Facture détaillée"])
+    out += page_hero(crumbs, "Nos tarifs de plombier", "Des <b>prix clairs, annoncés avant le déplacement</b> et confirmés sur place avant les travaux. Pas de mauvaise surprise sur la facture.", ["Devis gratuit", "Sans frais cachés", "Facture détaillée"])
     def price_cells(price_min, label):
         if not price_min:
             return '<td colspan="3">%s</td>' % esc(label)
@@ -1595,16 +1595,16 @@ def build_tarifs():
 def build_about():
     path = "/a-propos/"
     crumbs = [("Accueil", "/"), ("À propos", path)]
-    out = head("À propos de %s — artisan plombier dans le Var depuis %d" % (B.NAME, B.SINCE),
-               "%s, artisan plombier indépendant présent dans le Var (83) depuis %d : notre histoire, nos engagements et notre charte de confiance." % (B.NAME, B.SINCE),
+    out = head("À propos de %s — artisan plombier depuis %d" % (B.NAME, B.SINCE),
+               "%s, artisan plombier indépendant présent depuis %d : notre histoire, nos engagements et notre charte de confiance." % (B.NAME, B.SINCE),
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Un artisan plombier local, des engagements tenus", "%s est une entreprise artisanale de plomberie présente dans le <b>Var (83) depuis %d</b>. Voici qui nous sommes et comment nous travaillons." % (B.NAME, B.SINCE), ["Plus de %s ans d'expérience" % B.YEARS.rstrip("+"), "Artisan local, dans le Var", "Disponible 24h/24 et 7j/7"])
+    out += page_hero(crumbs, "Un artisan plombier local, des engagements tenus", "%s est une entreprise artisanale de plomberie présente depuis %d</b>. Voici qui nous sommes et comment nous travaillons." % (B.NAME, B.SINCE), ["Plus de %s ans d'expérience" % B.YEARS.rstrip("+"), "Artisan local,", "Disponible 24h/24 et 7j/7"])
     out += f"""<section>
   <div class="wrap text-block prose">
     <h2>Notre histoire</h2>
-    <p>{B.NAME} est né d'une idée simple : proposer aux habitants du Var un plombier <strong>joignable, honnête et efficace</strong>. Depuis {B.SINCE}, nous intervenons au quotidien, du simple joint qui fuit à la rénovation complète de salle de bain.</p>
-    <p>Nous connaissons les installations du secteur : maisons de village aux canalisations anciennes, villas avec réseaux enterrés jusqu'au portail, résidences secondaires du massif des Maures, appartements de Draguignan aux colonnes communes. Et nous connaissons l'eau du Var, souvent calcaire, qui use les chauffe-eau et la robinetterie.</p>
+    <p>{B.NAME} est né d'une idée simple : proposer aux habitants de la région un plombier <strong>joignable, honnête et efficace</strong>. Depuis {B.SINCE}, nous intervenons au quotidien, du simple joint qui fuit à la rénovation complète de salle de bain.</p>
+    <p>Nous connaissons les installations du secteur : maisons de village aux canalisations anciennes, villas avec réseaux enterrés jusqu'au portail, résidences secondaires du massif des Maures, appartements de Draguignan aux colonnes communes. Et nous connaissons l'eau de la région, souvent calcaire, qui use les chauffe-eau et la robinetterie.</p>
     <h2>Pourquoi un artisan local change tout</h2>
     <p>Quand vous cherchez « plombier urgence » sur internet, beaucoup de numéros mènent à des plateformes nationales qui revendent votre appel à un intervenant parfois éloigné, avec des prix difficiles à prévoir. Avec nous, vous appelez directement le plombier qui va intervenir. Il connaît le secteur, il est proche, et il a tout intérêt à bien faire : sa réputation se joue ici, auprès de vos voisins.</p>
     <h2>Notre charte de confiance</h2>
@@ -1626,7 +1626,7 @@ def build_faq_page():
     crumbs = [("Accueil", "/"), ("FAQ", path)]
     groups = [("Général", HOME_FAQ)] + [(s["short"], s["faq"]) for s in SERVICES]
     all_faq = [qa for _, g in groups for qa in g]
-    out = head("FAQ plombier Var — prix, délais, urgence, assurance | " + B.NAME,
+    out = head("FAQ plombier — prix, délais, urgence, assurance | " + B.NAME,
                "Toutes les réponses à vos questions de plomberie : prix, délais d'intervention, urgence de nuit, recherche de fuite, débouchage, chauffe-eau, assurance.",
                path, [business_schema(), breadcrumb_schema(crumbs), faq_schema(all_faq)])
     out += header(path)
@@ -1641,8 +1641,8 @@ def build_faq_page():
 def build_contact():
     path = "/contact/"
     crumbs = [("Accueil", "/"), ("Contact", path)]
-    out = head("Contact & devis gratuit — plombier " + B.NAME + ", le Var (83)",
-               "Contactez " + B.NAME + " : 06 75 93 19 04, 24h/24 et 7j/7, ou demandez un devis gratuit en ligne. Plombier intervenant dans le Var (83).",
+    out = head("Contact & devis gratuit — plombier " + B.NAME + ", notre secteur",
+               "Contactez " + B.NAME + " : 06 75 93 19 04, 24h/24 et 7j/7, ou demandez un devis gratuit en ligne. Plombier intervenant.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
     out += page_hero(crumbs, "Contact et devis gratuit", "Urgence : appelez le <b>%s</b>, 24h/24. Pour un devis, remplissez le formulaire ci-dessous, nous vous rappelons rapidement." % B.PHONE)
@@ -1653,7 +1653,7 @@ def build_contact():
     <ul>
       <li><strong>Téléphone (24h/24, 7j/7)</strong> : <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a></li>
       <li><strong>E-mail</strong> : <a href="mailto:{B.EMAIL}">{B.EMAIL}</a></li>
-      <li><strong>Zone</strong> : le Var (83). <a href="/zones-intervention/">Voir nos zones</a></li>
+      <li><strong>Zone</strong> : notre secteur. <a href="/zones-intervention/">Voir nos zones</a></li>
     </ul>
     <h2>Pour un devis plus rapide</h2>
     <p>Indiquez votre commune, le type de besoin et, si possible, envoyez quelques photos par e-mail (fuite, équipement, pièce à rénover). Nous pourrons vous donner une estimation plus précise dès le premier échange.</p>
@@ -1667,7 +1667,7 @@ def build_contact():
 def build_guides():
     path = "/conseils/"
     crumbs = [("Accueil", "/"), ("Conseils", path)]
-    out = head("Conseils plomberie — guides pratiques d'un plombier du Var",
+    out = head("Conseils plomberie — guides pratiques d'un plombier de la région",
                "Guides pratiques : fuite d'eau, WC bouché, chauffe-eau en panne, dégât des eaux et assurance, eau calcaire, loi Warsmann, éviter les arnaques au dépannage.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
@@ -1696,9 +1696,9 @@ def build_guides():
         out += f"""<section>
   <div class="wrap layout">
     <article class="prose">
-      <p class="meta-line">Par l'équipe {B.NAME}, artisan plombier dans le Var · Mis à jour le {date.today().strftime("%d/%m/%Y")}</p>
+      <p class="meta-line">Par l'équipe {B.NAME}, artisan plombier · Mis à jour le {date.today().strftime("%d/%m/%Y")}</p>
       {g["body"]}
-      <div class="callout"><strong>Besoin d'un plombier ?</strong> Nous intervenons 24h/24 et 7j/7 dans le Var (83). Appelez le <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>.</div>
+      <div class="callout"><strong>Besoin d'un plombier ?</strong> Nous intervenons 24h/24 et 7j/7. Appelez le <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>.</div>
     </article>
     <aside class="side">
       {call_card(None)}
@@ -1744,11 +1744,11 @@ def build_realisations():
         return
     path = "/realisations/"
     crumbs = [("Accueil", "/"), ("Réalisations", path)]
-    out = head("Nos chantiers de plomberie dans le Var — avant / après | %s" % B.NAME,
-               "Photos de chantiers de plomberie réalisés dans le Var : salles de bain, chauffe-eau, canalisations, installations sanitaires.",
+    out = head("Nos chantiers de plomberie — avant / après | %s" % B.NAME,
+               "Photos de chantiers de plomberie réalisés : salles de bain, chauffe-eau, canalisations, installations sanitaires.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Nos chantiers en images", "Avant / après : quelques interventions réalisées par %s dans le Var." % B.NAME)
+    out += page_hero(crumbs, "Nos chantiers en images", "Avant / après : quelques interventions réalisées par %s." % B.NAME)
     out += realisations_section(limit=len(B.REALISATIONS))
     out += contact_section(path)
     out += footer()
@@ -1758,7 +1758,7 @@ def build_realisations():
 def build_plan():
     path = "/plan-du-site/"
     crumbs = [("Accueil", "/"), ("Plan du site", path)]
-    out = head("Plan du site — %s, plombier dans le Var" % B.NAME,
+    out = head("Plan du site — %s, plombier" % B.NAME,
                "Plan du site de %s : toutes les prestations de plomberie, toutes les communes desservies et tous les guides pratiques." % B.NAME,
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
@@ -1830,7 +1830,7 @@ def build_legal():
                                       ("médiateur de la consommation", B.MEDIATEUR.get("nom"))) if not v]
     if missing:
         WARNINGS.append("Mentions légales : " + ", ".join(missing))
-    out = head("Mentions légales — %s" % B.NAME, "Mentions légales du site de %s, artisan plombier dans le Var (83)." % B.NAME, path, [breadcrumb_schema(crumbs)], noindex=True)
+    out = head("Mentions légales — %s" % B.NAME, "Mentions légales du site de %s, artisan plombier." % B.NAME, path, [breadcrumb_schema(crumbs)], noindex=True)
     out += header(path)
     out += page_hero(crumbs, "Mentions légales", "Informations légales relatives au site et à l'entreprise.")
     out += f"""<section><div class="wrap text-block prose">
@@ -1893,7 +1893,7 @@ AI_BOTS = [
 
 def build_robots():
     lines = [
-        "# robots.txt — %s, plombier dans le Var (83)" % B.NAME,
+        "# robots.txt — %s, plombier" % B.NAME,
         "# Tout le site est ouvert aux moteurs de recherche et aux assistants IA.",
         "",
         "User-agent: *",
@@ -1923,15 +1923,15 @@ def build_sitemap():
 
 
 def build_llms():
-    summary = ("%s est un artisan plombier indépendant qui intervient dans le Var (83, France), en activité depuis %d (siège à Vidauban). "
-               "Il intervient 24h/24 et 7j/7 dans le Var pour les urgences et les travaux de plomberie : fuite d'eau et recherche de fuite, "
+    summary = ("%s est un artisan plombier indépendant, en activité depuis %d (siège à Vidauban). "
+               "Il intervient 24h/24 et 7j/7 pour les urgences et les travaux de plomberie : fuite d'eau et recherche de fuite, "
                "débouchage, chauffe-eau, canalisations, installation sanitaire et rénovation de salle de bain. Téléphone : %s." % (B.NAME, B.SINCE, B.PHONE))
-    lines = ["# %s — Plombier dans le Var (83)" % B.NAME, "", "> " + summary, "",
+    lines = ["# %s — Plombier" % B.NAME, "", "> " + summary, "",
              "Informations clés :",
              "- Téléphone (24h/24, 7j/7) : %s" % B.PHONE,
              "- E-mail : %s" % B.EMAIL,
              "- Base : %s (%s), %s" % (B.BASE_CITY, B.BASE_CP, B.DEPARTEMENT),
-             "- Expérience : artisan dans le Var depuis %d (siège à Vidauban)" % B.SINCE,
+             "- Expérience : artisan depuis %d (siège à Vidauban)" % B.SINCE,
              "- Tarifs TTC en journée : " + prices_summary() + ". Diagnostic téléphonique et devis gratuits. " + majorations_sentence(),
              "- Tarifs selon l'heure d'intervention (heure de Paris) : " + " ; ".join("%s %s : %s" % (label.lower(), rate_hours(pid), ", ".join("%s %s" % (sv["short"], rate_price(sv["price_min"], coef)) for sv in SERVICES if sv["price_min"] and sv.get("rate_card") is not False)) for pid, label, coef in B.RATE_PERIODS) + " (prix TTC à partir de). Dimanches et jours fériés : tarif de nuit. Déplacement : " + deplacement_txt() + "." + (" Main-d'œuvre : %s TTC de l'heure." % eur(B.TAUX_HORAIRE) if B.TAUX_HORAIRE else ""),
              "- Engagements : prix annoncé avant le déplacement, devis validé avant les travaux, facture détaillée, travaux garantis.",

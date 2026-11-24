@@ -8,7 +8,7 @@ const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><ci
 const icon = (pad) => `<html><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;width:100vw;height:100vh"><div style="width:${100 - pad * 2}%;height:${100 - pad * 2}%">${iconSvg.replace('<svg ', '<svg style="width:100%;height:100%" ')}</div></body></html>`;
 const og = `<html><head><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"></head>
 <body style="margin:0;width:1200px;height:630px;font-family:'Space Grotesk',sans-serif;color:#fff;background:#111;border-bottom:18px solid #1fa2ff;display:flex;flex-direction:column;justify-content:center;padding:0 80px;box-sizing:border-box">
-<div style="display:flex;align-items:center;gap:18px;margin-bottom:34px"><div style="width:72px;height:72px">${mark}</div><div><div style="font-size:36px;font-weight:700;letter-spacing:-.02em">Proservice</div><div style="font-size:15px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#1fa2ff">Plomberie · Var</div></div></div>
+<div style="display:flex;align-items:center;gap:18px;margin-bottom:34px"><div style="width:72px;height:72px">${mark}</div><div><div style="font-size:36px;font-weight:700;letter-spacing:-.02em">Proservice</div><div style="font-size:15px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#1fa2ff">Plomberie · 24h/24</div></div></div>
 <div style="font-size:64px;font-weight:800;line-height:1.08;margin-bottom:22px">Artisan plombier<br><span style="color:#1fa2ff">24h/24 et 7j/7</span></div>
 <div style="font-size:26px;opacity:.88;margin-bottom:34px">Fuite d'eau · Débouchage · Chauffe-eau · Salle de bain</div></body></html>`;
 (async () => {

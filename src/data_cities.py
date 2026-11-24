@@ -58,7 +58,7 @@ CITIES = [
     {
         "name": "Draguignan", "slug": "draguignan", "cp": "83300", "a": "à Draguignan", "de": "de Draguignan",
         "delay": 25, "core": True, "delay_todo": True,
-        "intro": "Draguignan, sous-préfecture du Var, fait partie de notre zone d'intervention, 24h/24 et 7j/7. Centre historique autour de la tour de l'Horloge, quartiers résidentiels, immeubles et maisons individuelles : nous y intervenons 7j/7.",
+        "intro": "Draguignan, sous-préfecture de la région, fait partie de notre zone d'intervention, 24h/24 et 7j/7. Centre historique autour de la tour de l'Horloge, quartiers résidentiels, immeubles et maisons individuelles : nous y intervenons 7j/7.",
         "context": "À Draguignan, nous intervenons beaucoup en appartement : colonnes d'évacuation communes, dégâts des eaux entre voisins, chauffe-eau en placard. Dans ces situations, nous fournissons les éléments nécessaires au constat amiable et coordonnons si besoin avec le syndic.",
         "near": ["trans-en-provence", "flayosc", "les-arcs-sur-argens", "lorgues", "la-motte", "taradeau"],
     },
@@ -165,7 +165,7 @@ CITIES = [
     {
         "name": "Toulon", "slug": "toulon", "cp": "83000", "a": "à Toulon", "de": "de Toulon",
         "delay": 50, "core": True, "menu": True, "delay_todo": True,
-        "intro": "Toulon, préfecture du Var, fait partie de notre zone d'intervention, 24h/24 et 7j/7. Nous intervenons dans tous les quartiers : Le Mourillon, Le Cap Brun, Le Port et le centre-ville, Pont-du-Las, Saint-Jean-du-Var, La Rode, Les Routes et Valbertrand.",
+        "intro": "Toulon, préfecture de la région, fait partie de notre zone d'intervention, 24h/24 et 7j/7. Nous intervenons dans tous les quartiers : Le Mourillon, Le Cap Brun, Le Port et le centre-ville, Pont-du-Las, Saint-Jean-du-Var, La Rode, Les Routes et Valbertrand.",
         "context": "À Toulon, une grande partie de nos interventions a lieu en appartement : immeubles anciens du centre et du Port aux colonnes d'évacuation communes, résidences du Mourillon et du Cap Brun, maisons de Saint-Jean-du-Var, de La Rode, des Routes ou de Valbertrand. Dégâts des eaux entre voisins, chauffe-eau en placard et débouchages sont nos demandes les plus fréquentes ; nous fournissons les éléments utiles au constat amiable et au syndic.",
         "near": ["la-valette-du-var", "la-garde", "la-seyne-sur-mer", "ollioules", "six-fours-les-plages", "hyeres"],
     },
@@ -235,7 +235,7 @@ CONTEXTS = {
     ],
     "rural": [
         "{a}, beaucoup de maisons sont anciennes, en pierre, parfois isolées, avec un assainissement individuel et des canalisations qui ont vécu. En hiver, le gel peut faire éclater un tuyau exposé : coupez l'eau au compteur et appelez-nous, nous intervenons même loin du village.",
-        "Dans le Haut-Var, l'eau est souvent calcaire et les réseaux longs. {a}, nous intervenons pour des fuites enterrées, des chauffe-eau entartrés et des évacuations bouchées dans les maisons de village comme dans les fermes et résidences secondaires.",
+        "Dans l'arrière-pays, l'eau est souvent calcaire et les réseaux longs. {a}, nous intervenons pour des fuites enterrées, des chauffe-eau entartrés et des évacuations bouchées dans les maisons de village comme dans les fermes et résidences secondaires.",
     ],
     "plaine": [
         "{a}, le parc mêle maisons de village anciennes et lotissements plus récents, avec des réseaux d'eau enterrés jusqu'au portail : recherches de fuite après compteur, remplacements de chauffe-eau et débouchages font partie de nos interventions courantes.",
@@ -245,15 +245,15 @@ CONTEXTS = {
 }
 
 
-# ---------------------------------------------------------------- les 153 communes du Var
-# Les 29 communes ci-dessus ont des textes écrits à la main. Les autres communes du Var
+# ---------------------------------------------------------------- les 153 communes de la région
+# Les 29 communes ci-dessus ont des textes écrits à la main. Les autres communes de la région
 # (data_communes_var.py) reçoivent une page d'accueil locale avec des textes construits à partir
 # de leur secteur, de leur taille et de leurs voisines. Délais estimés : à confirmer.
 from data_communes_var import COMMUNES_VAR  # noqa: E402
 
 SECTORS = {
-    "dracenie": ("la Dracénie", "de la Dracénie", "autour de Draguignan, de la plaine de l'Argens aux villages perchés du Haut-Var"),
-    "coeur-du-var": ("le Cœur du Var", "du Cœur du Var", "dans la plaine des Maures et la vallée de l'Aille, le long de l'A8 et de la DN7"),
+    "dracenie": ("la Dracénie", "de la Dracénie", "autour de Draguignan, de la plaine de l'Argens aux villages perchés du arrière-pays"),
+    "coeur-du-var": ("la plaine des Maures", "de la plaine des Maures", "dans la plaine des Maures et la vallée de l'Aille, le long de l'A8 et de la DN7"),
     "golfe": ("le golfe de Saint-Tropez", "du golfe de Saint-Tropez", "entre les villages perchés des Maures et les stations balnéaires du golfe"),
     "esterel": ("l'agglomération Estérel Côte d'Azur", "de l'agglomération Estérel Côte d'Azur", "entre la basse vallée de l'Argens et le massif de l'Estérel"),
     "maures-littoral": ("le secteur Méditerranée Porte des Maures", "du secteur Méditerranée Porte des Maures", "entre les plages et le massif des Maures, de La Londe au Lavandou"),
@@ -262,7 +262,7 @@ SECTORS = {
     "sud-sainte-baume": ("le Sud Sainte-Baume", "du Sud Sainte-Baume", "entre le littoral de Bandol et Sanary et les villages du Castellet et du Beausset"),
     "provence-verte": ("la Provence Verte", "de la Provence Verte", "autour de Brignoles et Saint-Maximin, entre vignes, forêts et collines"),
     "sainte-baume-nord": ("le pied de la Sainte-Baume", "du pied de la Sainte-Baume", "dans la haute vallée de l'Huveaune, à la limite des Bouches-du-Rhône"),
-    "provence-verdon": ("le Haut-Var, côté Provence Verdon", "du Haut-Var, côté Provence Verdon", "sur les plateaux et dans les villages ruraux entre Barjols et Rians"),
+    "provence-verdon": ("la Provence Verdon", "de la Provence Verdon", "sur les plateaux et dans les villages ruraux entre Barjols et Rians"),
     "lacs-verdon": ("le secteur des lacs et gorges du Verdon", "du secteur des lacs et gorges du Verdon", "du lac de Sainte-Croix aux plateaux de l'Artuby"),
     "verdon-durance": ("la vallée du Verdon et de la Durance", "de la vallée du Verdon et de la Durance", "à la limite des Alpes-de-Haute-Provence"),
     "fayence": ("le pays de Fayence", "du pays de Fayence", "dans les villages perchés entre l'Estérel et les premiers plateaux, autour du lac de Saint-Cassien"),
@@ -284,7 +284,7 @@ def _intro(r, i):
     if r["pop"] >= 15000:
         first = [
             "%s, avec ses quelque %s habitants, est l'une des principales villes %s. Nous y intervenons 24h/24 et 7j/7, en centre-ville comme dans les quartiers résidentiels." % (r["name"], p, lab_de),
-            "Avec environ %s habitants, %s est l'une des grandes communes du Var. Un artisan %s s'y déplace jour et nuit, week-ends et jours fériés compris." % (p, r["name"], TRADE),
+            "Avec environ %s habitants, %s est l'une des grandes communes de la région. Un artisan %s s'y déplace jour et nuit, week-ends et jours fériés compris." % (p, r["name"], TRADE),
         ][i % 2]
     elif r["pop"] >= 3000:
         first = [
@@ -293,7 +293,7 @@ def _intro(r, i):
         ][i % 2]
     else:
         first = [
-            "Même dans un village comme %s (environ %s habitants), vous joignez directement un artisan %s du Var. Nous intervenons dans le village et les hameaux alentour, 24h/24 et 7j/7." % (r["name"], p, TRADE),
+            "Même dans un village comme %s (environ %s habitants), vous joignez directement un artisan %s de la région. Nous intervenons dans le village et les hameaux alentour, 24h/24 et 7j/7." % (r["name"], p, TRADE),
             "%s, petite commune %s d'environ %s habitants, fait partie de notre zone d'intervention. Village, hameaux ou maisons isolées : nous nous déplaçons jour et nuit." % (r["name"], lab_de, p),
         ][i % 2]
     where = ("La commune se trouve à environ %d km de notre base de Vidauban, dans %s, %s." % (r["km"], lab, desc)) if r["km"] >= 3 else ""

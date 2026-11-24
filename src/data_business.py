@@ -30,7 +30,7 @@ RC_PRO = {"assureur": "", "contrat": "", "zone": ""}
 # Médiateur de la consommation (obligatoire pour un professionnel qui travaille avec des particuliers).
 MEDIATEUR = {"nom": "", "site": ""}  # ex. {"nom": "CM2C", "site": "https://www.cm2c.net"}
 
-TAGLINE = "Artisan plombier dans le Var (83) — dépannage 24h/24"
+TAGLINE = "Artisan plombier — dépannage 24h/24"
 PHONE = "06 75 93 19 04"
 PHONE_TEL = "+33675931904"
 # Adresse e-mail publique (contact, JSON-LD).
@@ -61,7 +61,7 @@ CONV_CALL_FORWARDING = ""
 # assurances ci-dessus sont renseignées.
 ASSURANCE_DECENNALE = bool(DECENNALE["assureur"] and RC_PRO["assureur"])
 
-# Photos de chantiers réalisés dans le Var (galerie + page Réalisations, masquées si vide).
+# Photos de chantiers réalisés (galerie + page Réalisations, masquées si vide).
 # Déposer les photos dans src/assets/chantiers/ puis ajouter par exemple :
 # {"image": "salle-de-bain-vidauban.jpg", "title": "Salle de bain rénovée à Vidauban",
 #  "text": "Baignoire remplacée par une douche…", "service": "renovation-salle-de-bain-var"},

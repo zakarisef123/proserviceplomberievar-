@@ -1,4 +1,4 @@
-# robots.txt — PROSERVICE 83, plombier dans le Var (83)
+# robots.txt — PROSERVICE 83, plombier
 # Tout le site est ouvert aux moteurs de recherche et aux assistants IA.
 
 User-agent: *
