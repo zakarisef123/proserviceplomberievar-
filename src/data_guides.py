@@ -82,7 +82,7 @@ GUIDES = [
             "<ul><li><strong>Résistance hors service</strong> : plus d'eau chaude du tout, souvent avec disjonction. La résistance se remplace.</li>"
             "<li><strong>Thermostat défaillant</strong> : eau trop froide ou, au contraire, brûlante. Il se remplace également.</li>"
             "<li><strong>Sécurité de surchauffe déclenchée</strong> : elle coupe la chauffe si la température devient excessive. Il faut en trouver la cause.</li>"
-            "<li><strong>Tartre</strong> : dans le Var, l'eau calcaire recouvre la résistance d'une gangue qui réduit la chauffe et augmente la consommation. Un détartrage s'impose.</li>"
+            "<li><strong>Tartre</strong> :, l'eau calcaire recouvre la résistance d'une gangue qui réduit la chauffe et augmente la consommation. Un détartrage s'impose.</li>"
             "<li><strong>Cuve percée</strong> : de l'eau coule sous le ballon. La cuve ne se répare pas, il faut remplacer le chauffe-eau.</li></ul>"
             "<h2>Réparer ou remplacer ?</h2>"
             "<p>Un chauffe-eau électrique dure en moyenne 10 à 15 ans. S'il a moins de 8 à 10 ans et que la panne concerne une pièce (résistance, thermostat, groupe de sécurité), la réparation est généralement rentable. Au-delà, ou si la cuve est corrodée, le remplacement est souvent plus judicieux, d'autant que les modèles récents sont mieux isolés. Un bon plombier vous présente les deux options avec leur prix.</p>"
@@ -119,7 +119,7 @@ GUIDES = [
     {
         "slug": "choisir-plombier-eviter-arnaques",
         "title": "Plombier de confiance : comment éviter les arnaques au dépannage",
-        "meta": "Faux numéros d'urgence, prix gonflés, travaux inutiles : les arnaques au dépannage plomberie et les règles pour choisir un plombier de confiance dans le Var.",
+        "meta": "Faux numéros d'urgence, prix gonflés, travaux inutiles : les arnaques au dépannage plomberie et les règles pour choisir un plombier de confiance.",
         "h1": "Comment choisir un plombier de confiance et éviter les arnaques",
         "excerpt": "Faux numéros d'urgence, devis absent, prix gonflés : les pratiques à reconnaître et les règles qui vous protègent.",
         "services": ["plombier-urgence-24h-var"],
@@ -141,18 +141,18 @@ GUIDES = [
             "<li><strong>Demandez une facture détaillée</strong>, indispensable pour l'assurance.</li>"
             "<li><strong>Consultez les avis</strong> de clients, en particulier ceux qui détaillent l'intervention et le prix.</li></ol>"
             "<h2>Notre engagement</h2>"
-            f"<p>Chez {NAME}, nous sommes un artisan local qui intervient dans le Var. Vous nous joignez en direct au 06 75 93 19 04. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement, confirmé sur place avant les travaux, et une facture détaillée vous est remise. Si une intervention n'est pas nécessaire, nous vous le disons. <a href=\"/a-propos/\">Découvrez notre charte de confiance</a>.</p>"
+            f"<p>Chez {NAME}, nous sommes un artisan local qui intervient 24h/24. Vous nous joignez en direct au 06 75 93 19 04. Le diagnostic téléphonique est gratuit, le prix est annoncé avant le déplacement, confirmé sur place avant les travaux, et une facture détaillée vous est remise. Si une intervention n'est pas nécessaire, nous vous le disons. <a href=\"/a-propos/\">Découvrez notre charte de confiance</a>.</p>"
             "<div class=\"callout info\">En cas de litige avec un professionnel, vous pouvez signaler la pratique sur le site SignalConso de la DGCCRF.</div>",
     },
     {
         "slug": "eau-calcaire-var-plomberie",
-        "title": "Eau calcaire dans le Var : protéger chauffe-eau, robinets et canalisations",
-        "meta": "Eau calcaire dans le Var : effets sur le chauffe-eau, la robinetterie et les canalisations, réglages, entretien, détartrage et adoucisseur. Les conseils d'un plombier.",
-        "h1": "Eau calcaire dans le Var : protéger votre installation",
+        "title": "Eau calcaire : protéger chauffe-eau, robinets et canalisations",
+        "meta": "Eau calcaire : effets sur le chauffe-eau, la robinetterie et les canalisations, réglages, entretien, détartrage et adoucisseur. Les conseils d'un plombier.",
+        "h1": "Eau calcaire : protéger votre installation",
         "excerpt": "Le tartre réduit la durée de vie du chauffe-eau et encrasse la robinetterie. Réglages, entretien et solutions pour le limiter.",
         "services": ["chauffe-eau-var", "installation-sanitaire-var"],
         "body":
-            "<p>Dans une grande partie du Var, l'eau du robinet est calcaire. Sans danger pour la santé, le calcaire est en revanche l'ennemi des installations de plomberie : il se dépose partout où l'eau circule et surtout là où elle chauffe.</p>"
+            "<p>Dans une grande partie de la région, l'eau du robinet est calcaire. Sans danger pour la santé, le calcaire est en revanche l'ennemi des installations de plomberie : il se dépose partout où l'eau circule et surtout là où elle chauffe.</p>"
             "<h2>Connaître la dureté de son eau</h2>"
             "<p>La dureté de l'eau s'exprime en degrés français (°f). Au-delà d'environ 25 à 30 °f, on parle d'eau dure. La dureté varie d'une commune à l'autre : elle figure sur les résultats d'analyse publiés par l'Agence régionale de santé et sur les informations transmises par votre service des eaux. Des bandelettes de test, vendues en magasin, donnent aussi une indication.</p>"
             "<h2>Les effets du calcaire</h2>"
