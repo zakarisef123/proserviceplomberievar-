@@ -17,7 +17,7 @@ SERVICES = [
         "title": "Plombier urgence 24h/24 — nuit, week-end, jours fériés",
         "meta": "Plombier d'urgence 24h/24 et 7j/7 : fuite, dégât des eaux, WC bouché, chauffe-eau en panne. Tarif annoncé avant déplacement. ☎ 06 75 93 19 04",
         "h1": "Plombier d'urgence 24h/24 et 7j/7",
-        "lead": "Fuite importante, dégât des eaux, WC bouché, plus d'eau chaude : un plombier vous répond <b>jour et nuit, week-end et jours fériés compris</b>,.",
+        "lead": "Fuite importante, dégât des eaux, WC bouché, plus d'eau chaude : un plombier vous répond <b>jour et nuit, week-end et jours fériés compris</b>.",
         "checks": ["Réponse immédiate au téléphone", "Prix annoncé avant de partir", "Facture pour l'assurance"],
         "card_desc": "Fuite, dégât des eaux, panne : un plombier joignable jour et nuit, week-end et jours fériés compris.",
         "card_checks": ["Disponible 7j/7", "Tarif confirmé avant déplacement"],

@@ -1137,7 +1137,7 @@ def build_home():
     <div class="sec-head">
       <div class="pill pill-purple sec-badge">{svc_icon("shield", 15)}Services professionnels</div>
       <h2>Nos services de plomberie</h2>
-      <p>Un artisan plombier à votre service pour l'urgence comme pour les travaux, 24h/24 et 7j/7,.</p>
+      <p>Un artisan plombier à votre service pour l'urgence comme pour les travaux, 24h/24 et 7j/7.</p>
     </div>
     {services_grid()}
   </div>
@@ -1418,7 +1418,7 @@ def build_prestations():
                "Toutes nos prestations de plomberie : urgence 24h/24, recherche de fuite, débouchage, chauffe-eau, canalisation, installation sanitaire, salle de bain.",
                path, [business_schema(), breadcrumb_schema(crumbs)])
     out += header(path)
-    out += page_hero(crumbs, "Nos prestations de plomberie", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement,.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à un client")
+    out += page_hero(crumbs, "Nos prestations de plomberie", "De l'urgence de nuit au projet de salle de bain, <b>un seul artisan</b> pour toute la plomberie de votre logement.", ["Devis gratuit", "Prix annoncé à l'avance", "Travaux garantis"], image="plombier-devis-client.jpg", image_alt="Plombier présentant le devis à un client")
     out += trust_marquee()
     out += f"""<section><div class="wrap">{services_grid()}</div></section>
 <section class="alt"><div class="wrap text-block prose">
