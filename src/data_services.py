@@ -47,7 +47,7 @@ SERVICES = [
         ],
         "faq": [
             ("Combien coûte un plombier en urgence la nuit ou le dimanche ?", "Le prix dépend de la nature de l'intervention et de l'horaire. Un supplément peut s'appliquer la nuit, le week-end et les jours fériés : il vous est annoncé au téléphone avant le déplacement, puis le prix total est confirmé sur place avant de commencer."),
-            ("En combien de temps un plombier peut-il arriver ?", "Selon votre commune, comptez de 15 minutes (Le Muy, Les Arcs, Le Cannet-des-Maures) à environ une heure (Toulon et son agglomération), hors trafic. Le délai précis vous est donné au moment de l'appel."),
+            ("En combien de temps un plombier peut-il arriver ?", "Comptez 15 à 40 minutes selon votre commune et la circulation. Le délai précis vous est donné au moment de l'appel."),
             ("Que faire si je n'arrive pas à couper l'eau ?", "Cherchez le robinet général près du compteur d'eau (regard extérieur, garage, placard technique). S'il est bloqué, ne forcez pas avec un outil : vous risquez de le casser. Appelez-nous, nous vous guidons au téléphone."),
             ("Intervenez-vous pour les dégâts des eaux pris en charge par l'assurance ?", "Oui. Nous recherchons l'origine de la fuite, la réparons et vous remettons une facture détaillée et un descriptif de la cause, utiles pour votre déclaration et le constat amiable dégât des eaux."),
         ],

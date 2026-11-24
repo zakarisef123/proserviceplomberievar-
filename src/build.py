@@ -75,18 +75,19 @@ def guide_path(g):
     return "/conseils/%s/" % g["slug"]
 
 
+DELAY_RANGE = "15-40 min"  # délai d'arrivée affiché pour toutes les communes
+
+
 def delay_label(c):
-    return "sur place" if c["delay"] == 0 else "~%d min" % c["delay"]
+    return DELAY_RANGE
 
 
 def delay_sentence(c):
-    if c["delay"] == 0:
-        return "Notre base est à Vidauban : nous y intervenons sans délai de route, souvent dans l'heure."
-    return "Comptez environ %d minutes pour notre arrivée %s, hors trafic. Le délai précis vous est donné au moment de l'appel." % (c["delay"], c["a"])
+    return "Comptez 15 à 40 minutes pour notre arrivée %s, selon l'heure et la circulation. Le délai précis vous est donné au moment de l'appel." % c["a"]
 
 
 def delay_txt(c):
-    return "Intervention rapide" if c["delay"] == 0 else "Arrivée estimée ~%d min" % c["delay"]
+    return "Arrivée en " + DELAY_RANGE
 
 
 def picture(name, alt, width, height, sizes, cls="", attrs=""):
@@ -158,19 +159,9 @@ def price_conditions_html(cls="price-conds"):
 
 
 def delay_faq():
-    """Réponse « En combien de temps arrivez-vous ? » construite à partir des délais de data_cities.py."""
-    groups = {}
-    for slug in ["le-muy", "les-arcs-sur-argens", "le-cannet-des-maures", "le-luc", "la-garde-freinet", "gonfaron",
-                 "draguignan", "frejus", "saint-raphael", "hyeres", "toulon"]:
-        c = CITY_BY_SLUG.get(slug)
-        if c:
-            groups.setdefault(c["delay"], []).append(c["name"])
-    parts = []
-    for d in sorted(groups):
-        ns = groups[d]
-        parts.append("%d minutes pour %s" % (d, ns[0] if len(ns) == 1 else ", ".join(ns[:-1]) + " ou " + ns[-1]))
-    return ("Selon votre commune, comptez environ %s, hors trafic. Ces délais sont indicatifs : "
-            "le délai précis vous est donné au moment de l'appel, avant tout déplacement." % ", ".join(parts))
+    """Réponse « En combien de temps arrivez-vous ? »."""
+    return ("Comptez 15 à 40 minutes selon votre commune, l'heure et la circulation. "
+            "Le délai précis vous est donné au moment de l'appel, avant tout déplacement.")
 
 
 # ---------------------------------------------------------------- icônes
@@ -1017,7 +1008,7 @@ def zones_section(current=None, service=None, cls=""):
         pool += [current] + [CITY_BY_SLUG[n] for n in current["near"] if n in CITY_BY_SLUG and CITY_BY_SLUG[n].get("extra")]
     seen = set()
     pool = [c for c in pool if not (c["slug"] in seen or seen.add(c["slug"]))]
-    cities = sorted(pool, key=lambda c: (c["delay"], c["name"]))
+    cities = sorted(pool, key=lambda c: c["name"])
     items = []
     for c in cities:
         href = combo_path(service, c) if service else city_path(c)

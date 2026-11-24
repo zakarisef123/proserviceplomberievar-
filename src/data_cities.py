@@ -9,7 +9,7 @@ CITIES = [
     {
         "name": "Vidauban", "slug": "vidauban", "cp": "83550", "a": "à Vidauban", "de": "de Vidauban",
         "delay": 0, "core": True,
-        "intro": "Notre base est à Vidauban : c'est ici que nous intervenons le plus vite, souvent dans l'heure. Centre du village, quartiers résidentiels, maisons de la plaine et domaines viticoles le long de l'Argens, nous connaissons les installations du secteur.",
+        "intro": "Notre base est à Vidauban : c'est d'ici que nous partons, pour intervenir en 15 à 40 minutes. Centre du village, quartiers résidentiels, maisons de la plaine et domaines viticoles le long de l'Argens, nous connaissons les installations du secteur.",
         "context": "À Vidauban, le parc de logements mêle maisons de village anciennes, où l'on rencontre encore des canalisations vieillissantes, et villas plus récentes avec chauffe-eau, piscines et arrosage. Être sur place nous permet d'intervenir sans délai de route et de revenir facilement si une pièce doit être commandée.",
         "near": ["taradeau", "le-cannet-des-maures", "les-arcs-sur-argens", "le-muy", "la-garde-freinet", "le-thoronet"],
     },
@@ -219,7 +219,7 @@ CITY_BY_SLUG = {c["slug"]: c for c in CITIES}
 # pour que le chiffre ne soit à modifier qu'à un seul endroit.
 for _c in CITIES:
     for _k in ("intro", "context"):
-        _c[_k] = _c[_k].replace("{delai}", "environ %d minutes" % _c["delay"])
+        _c[_k] = _c[_k].replace("{delai}", "15 à 40 minutes")
 
 TRADE = "plombier"
 CONTEXTS = {
