@@ -1129,7 +1129,6 @@ def build_home():
     out += insurers_section("ins-top")
     out += trust_marquee()
     out += urgent_band()
-    out += pricing_section()
     out += f"""<section id="services">
   <div class="wrap">
     <div class="sec-head">
@@ -1140,7 +1139,9 @@ def build_home():
     {services_grid()}
   </div>
 </section>
-<div class="alt" style="padding:0 0 10px"><div class="wrap">{stats_block()}</div></div>
+"""
+    out += pricing_section()
+    out += f"""<div class="alt" style="padding:0 0 10px"><div class="wrap">{stats_block()}</div></div>
 <section class="alt">
   <div class="wrap text-block prose">
     <h2>Un plombier de confiance dans tout le Var depuis {B.SINCE}</h2>
@@ -1352,7 +1353,6 @@ def build_city(c):
     out += insurers_section("ins-top")
     out += trust_marquee()
     out += urgent_band()
-    out += pricing_section()
     near_html = "".join('<a class="chip" href="%s">Plombier %s <span class="d">%s</span></a>' % (city_path(n), esc(n["name"]), delay_label(n)) for n in near)
     out += f"""<section>
   <div class="wrap layout">
@@ -1392,6 +1392,7 @@ def build_city(c):
   </div>
 </section>
 """
+    out += pricing_section()
     out += '<div class="alt" style="padding:0 0 10px"><div class="wrap">%s</div></div>' % stats_block()
     out += charter_section()
     out += guarantees_section("alt")
