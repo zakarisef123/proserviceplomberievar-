@@ -131,7 +131,7 @@ function gtagReportConversion_Formulaire(url) {
         btn.textContent = original;
         if(status){
           status.className = 'form-status err';
-          status.textContent = 'L’envoi a échoué. Appelez-nous au 06 75 93 19 04 ou écrivez à proservice83@hotmail.com.';
+          status.textContent = 'L’envoi a échoué. Appelez-nous au 06 75 93 19 04 ou écrivez à proservice83contact@gmail.com.';
         }
       });
     });
