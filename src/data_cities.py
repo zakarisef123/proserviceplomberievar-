@@ -9,7 +9,7 @@ CITIES = [
     {
         "name": "Vidauban", "slug": "vidauban", "cp": "83550", "a": "à Vidauban", "de": "de Vidauban",
         "delay": 0, "core": True,
-        "intro": "Ma base est à Vidauban : c'est d'ici que je pars, pour intervenir en 15 à 40 minutes. Centre du village, quartiers résidentiels, maisons de la plaine et domaines viticoles le long de l'Argens, je connais les installations du secteur.",
+        "intro": "Vidauban fait partie de ma zone d'intervention, 24h/24 et 7j/7, avec une arrivée en 15 à 40 minutes. Centre du village, quartiers résidentiels, maisons de la plaine et domaines viticoles le long de l'Argens, je connais les installations du secteur.",
         "context": "À Vidauban, le parc de logements mêle maisons de village anciennes, où l'on rencontre encore des canalisations vieillissantes, et villas plus récentes avec chauffe-eau, piscines et arrosage. Être sur place me permet d'intervenir sans délai de route et de revenir facilement si une pièce doit être commandée.",
         "near": ["taradeau", "le-cannet-des-maures", "les-arcs-sur-argens", "le-muy", "la-garde-freinet", "le-thoronet"],
     },
@@ -37,7 +37,7 @@ CITIES = [
     {
         "name": "Le Luc", "slug": "le-luc", "cp": "83340", "a": "au Luc", "de": "du Luc",
         "delay": 20, "core": True,
-        "intro": "Le Luc (Le Luc-en-Provence), sur la DN7 entre Vidauban et Brignoles, fait partie de ma zone d'intervention, 24h/24 et 7j/7. Centre ancien, lotissements et zones d'activité : j'y interviens tous les jours de l'année.",
+        "intro": "Le Luc (Le Luc-en-Provence), sur la DN7 en direction de Brignoles, fait partie de ma zone d'intervention, 24h/24 et 7j/7. Centre ancien, lotissements et zones d'activité : j'y interviens tous les jours de l'année.",
         "context": "Au Luc, le centre ancien concentre des immeubles et maisons de ville aux colonnes d'évacuation communes, où les bouchons et les dégâts des eaux entre voisins sont fréquents. Dans les quartiers pavillonnaires, j'interviens surtout sur les chauffe-eau, les fuites et la rénovation de salles de bain.",
         "near": ["le-cannet-des-maures", "gonfaron", "les-mayons", "le-thoronet", "vidauban", "pignans"],
     },
@@ -66,7 +66,7 @@ CITIES = [
     {
         "name": "Taradeau", "slug": "taradeau", "cp": "83460", "a": "à Taradeau", "de": "de Taradeau",
         "delay": 10, "core": False,
-        "intro": "Taradeau, petit village viticole entre Vidauban et Les Arcs, est à une dizaine de minutes de ma base : c'est l'une des communes où j'arrive le plus vite.",
+        "intro": "Taradeau, petit village viticole près des Arcs, fait partie de ma zone d'intervention, 24h/24 et 7j/7, avec une arrivée en 15 à 40 minutes.",
         "context": "À Taradeau, j'interviens dans le village et dans les maisons et domaines alentour, souvent alimentés par de longues canalisations enterrées. Fuites après compteur, chauffe-eau et débouchages représentent l'essentiel de mes interventions.",
         "near": ["vidauban", "les-arcs-sur-argens", "lorgues", "le-thoronet"],
     },
@@ -296,7 +296,7 @@ def _intro(r, i):
             "Même dans un village comme %s (environ %s habitants), vous joignez directement un artisan %s de la région. J'interviens dans le village et les hameaux alentour, 24h/24 et 7j/7." % (r["name"], p, TRADE),
             "%s, petite commune %s d'environ %s habitants, fait partie de ma zone d'intervention. Village, hameaux ou maisons isolées : je me déplace jour et nuit." % (r["name"], lab_de, p),
         ][i % 2]
-    where = ("La commune se trouve à environ %d km de ma base de Vidauban, dans %s, %s." % (r["km"], lab, desc)) if r["km"] >= 3 else ""
+    where = "La commune se trouve dans %s, %s." % (lab, desc)
     return (first + " " + where).strip()
 
 

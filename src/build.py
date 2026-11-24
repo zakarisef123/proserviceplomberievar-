@@ -426,7 +426,7 @@ def footer(form_anchor="#devis"):
     <div class="foot-cols">
       <div>
         <a class="logo" href="/">{LOGO_SVG.replace('class="logo-mark"', 'class="logo-mark" width="34" height="34"')}<span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · 24h/24</span></span></a>
-        <p class="foot-about">Artisan à Vidauban depuis {B.SINCE}. Je décroche moi-même, <b>24h/24 et 7j/7</b>, dans le <b>Var (83)</b>. Un souci ? Appelez, je vous dis tout de suite ce que je peux faire.</p>
+        <p class="foot-about">Artisan du coin depuis {B.SINCE}. Je décroche moi-même, <b>24h/24 et 7j/7</b>, dans le <b>Var (83)</b>. Un souci ? Appelez, je vous dis tout de suite ce que je peux faire.</p>
         <p class="foot-about"><a href="tel:{B.PHONE_TEL}"><b>{B.PHONE}</b></a><br><a href="mailto:{B.EMAIL}">{B.EMAIL}</a></p>
       </div>
       <div><h2>Prestations</h2><ul>{svc_links}</ul></div>
@@ -880,7 +880,7 @@ def brands_section(cls=""):
 """
 
 
-def artisan_word():
+def artisan_word(city=None):
     """« Le mot de l'artisan » : ton personnel, signature manuscrite (aucun fait inventé)."""
     return f"""<section class="artisan-word">
   <div class="wrap aw-grid">
@@ -888,7 +888,7 @@ def artisan_word():
       <div class="pill pill-lav sec-badge">Le mot de l'artisan</div>
       <h2>Ici, c'est un artisan du coin qui vous répond</h2>
       <blockquote>
-        <p>Quand vous m'appelez, vous ne tombez pas sur un centre d'appel à l'autre bout de la France. Vous tombez sur moi, à Vidauban.</p>
+        <p>Quand vous m'appelez, vous ne tombez pas sur un centre d'appel à l'autre bout de la France. Vous tombez sur moi, un artisan du coin{' qui intervient ' + city['a'] if city else ''}.</p>
         <p>Je connais les maisons du coin, leurs vieilles canalisations, l'eau calcaire qui use les chauffe-eau. Je vous dis franchement ce qui doit être réparé, et ce qui peut attendre.</p>
         <p>Un client content, c'est un voisin qui me recommande. Alors je prends le temps d'expliquer, j'annonce le prix avant de commencer, et je fais le travail comme si c'était chez moi.</p>
       </blockquote>
@@ -1198,7 +1198,7 @@ def build_home():
 <section class="alt">
   <div class="wrap text-block prose">
     <h2>Pourquoi je travaille comme ça</h2>
-    <p><strong>{B.NAME}</strong>, c'est mon entreprise de plomberie, installée à Vidauban : j'interviens dans le Var (83) depuis {B.SINCE}. Pas de standard, pas de sous-traitance : quand vous appelez le <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>, c'est moi qui décroche.</p>
+    <p><strong>{B.NAME}</strong>, c'est mon entreprise de plomberie : j'interviens dans le Var (83) depuis {B.SINCE}. Pas de standard, pas de sous-traitance : quand vous appelez le <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>, c'est moi qui décroche.</p>
     <p>On a tous connu le plombier qu'on n'arrive jamais à joindre, ou la facture qui double une fois le travail fini. Moi, j'ai choisi l'inverse : je vous écoute, je vous aide à couper l'eau si besoin, et je vous annonce le prix avant de prendre la route.</p>
     <p>J'interviens sur l'ensemble de la plomberie de la maison : <a href="/recherche-de-fuite-var/">recherche et réparation de fuite</a>, <a href="/debouchage-canalisation-var/">débouchage de WC et de canalisations</a>, <a href="/chauffe-eau-var/">dépannage et remplacement de chauffe-eau</a>, <a href="/reparation-canalisation-var/">réparation de canalisations</a>, <a href="/installation-sanitaire-var/">installation sanitaire et robinetterie</a> et <a href="/renovation-salle-de-bain-var/">rénovation de salle de bain</a>. Pour les sinistres, je fournis les <a href="/{ASSURANCE_PAGE['slug']}/">justificatifs demandés par votre assurance</a>.</p>
     <p>Et si quelque chose ne va pas après mon passage, vous me rappelez : je reviens. C'est ça, être l'artisan du coin.</p>
@@ -1291,7 +1291,7 @@ def build_combo(s, c, si, ci):
         ("En combien de temps intervenez-vous %s ?" % c["a"], delay_sentence(c) + " Pour une urgence, appelez le 06 75 93 19 04."),
         sf[v % len(sf)],
         sf[(v + 1) % len(sf)],
-        ("Intervenez-vous aussi autour %s ?" % c["de"], "Oui, j'interviens également à %s et. <a href=\"/zones-intervention/\">Voir toutes mes zones</a>." % near_names),
+        ("Intervenez-vous aussi autour %s ?" % c["de"], "Oui, j'interviens également à %s et dans les communes voisines. <a href=\"/zones-intervention/\">Voir toutes mes zones</a>." % near_names),
     ]
     schemas = [business_schema(), breadcrumb_schema(crumbs),
                service_schema("%s %s" % (s["combo_h1"], c["a"]), strip_tags(lead), path, c["name"], s["price_min"]),
@@ -1405,7 +1405,7 @@ def build_city(c):
     lead = "Fuite d'eau, débouchage, chauffe-eau, canalisation, installation sanitaire : un artisan plombier intervient <b>%s 24h/24 et 7j/7</b>, avec un prix annoncé avant de partir." % c["a"]
     out += city_hero(c, crumbs)
     out += insurers_section("ins-top")
-    out += artisan_word()
+    out += artisan_word(c)
     out += trust_marquee()
     out += urgent_band()
     near_html = "".join('<a class="chip" href="%s">Plombier %s <span class="d">%s</span></a>' % (city_path(n), esc(n["name"]), delay_label(n)) for n in near)
@@ -1975,7 +1975,7 @@ def build_sitemap():
 
 
 def build_llms():
-    summary = ("%s est un artisan plombier indépendant, en activité depuis %d (siège à Vidauban). "
+    summary = ("%s est un artisan plombier indépendant, en activité depuis %d. "
                "Il intervient 24h/24 et 7j/7 pour les urgences et les travaux de plomberie : fuite d'eau et recherche de fuite, "
                "débouchage, chauffe-eau, canalisations, installation sanitaire et rénovation de salle de bain. Téléphone : %s." % (B.NAME, B.SINCE, B.PHONE))
     lines = ["# %s — Plombier" % B.NAME, "", "> " + summary, "",
@@ -1983,7 +1983,7 @@ def build_llms():
              "- Téléphone (24h/24, 7j/7) : %s" % B.PHONE,
              "- E-mail : %s" % B.EMAIL,
              "- Base : %s (%s), %s" % (B.BASE_CITY, B.BASE_CP, B.DEPARTEMENT),
-             "- Expérience : artisan depuis %d (siège à Vidauban)" % B.SINCE,
+             "- Expérience : artisan depuis %d" % B.SINCE,
              "- Tarifs TTC en journée : " + prices_summary() + ". Diagnostic téléphonique et devis gratuits. " + majorations_sentence(),
              "- Tarifs selon l'heure d'intervention (heure de Paris) : " + " ; ".join("%s %s : %s" % (label.lower(), rate_hours(pid), ", ".join("%s %s" % (sv["short"], rate_price(sv["price_min"], coef)) for sv in SERVICES if sv["price_min"] and sv.get("rate_card") is not False)) for pid, label, coef in B.RATE_PERIODS) + " (prix TTC à partir de). Dimanches et jours fériés : tarif de nuit. Déplacement : " + deplacement_txt() + "." + (" Main-d'œuvre : %s TTC de l'heure." % eur(B.TAUX_HORAIRE) if B.TAUX_HORAIRE else ""),
              "- Engagements : prix annoncé avant le déplacement, devis validé avant les travaux, facture détaillée, travaux garantis.",
@@ -2092,7 +2092,7 @@ def main():
         WARNINGS.append("Tarifs : TAUX_HORAIRE non renseigné")
     if B.RATE_SUNDAY_COEF != period_coef("nuit"):
         WARNINGS.append("Tarifs : RATE_SUNDAY_COEF différent du tarif de nuit, la carte de l'accueil affiche le tarif de nuit le dimanche")
-    WARNINGS.append("Délais estimés automatiquement (distance depuis Vidauban) pour %d communes : à vérifier dans src/data_communes_var.py" % len(EXTRA_CITIES))
+    WARNINGS.append("Délais estimés automatiquement pour %d communes : à vérifier dans src/data_communes_var.py" % len(EXTRA_CITIES))
     unconfirmed = [c["name"] for c in CITIES if c.get("delay_todo")]
     if unconfirmed:
         WARNINGS.append("Délais à confirmer : " + ", ".join(unconfirmed))
