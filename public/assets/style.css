@@ -797,3 +797,7 @@ footer.site{background:#0b0b0b; border-top:4px solid #ffd400;}
 .ins-count{text-align:center; font-family:'Space Grotesk', sans-serif; font-weight:700; color:var(--ink); margin-top:18px;}
 .logos-legal{max-width:760px; margin:10px auto 0; text-align:center; font-size:12px; color:var(--gray-600);}
 @media (max-width:560px){ .ins-logo{width:120px; height:70px;} }
+
+/* Assureurs juste sous le héros */
+section.ins-top{padding:44px 0 36px; background:var(--paper-2); border-bottom:1px solid var(--line);}
+section.ins-top .sec-head{margin-bottom:22px;}
