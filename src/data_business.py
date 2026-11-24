@@ -33,9 +33,8 @@ MEDIATEUR = {"nom": "", "site": ""}  # ex. {"nom": "CM2C", "site": "https://www.
 TAGLINE = "Artisan plombier dans tout le Var (83) — dépannage 24h/24"
 PHONE = "06 75 93 19 04"
 PHONE_TEL = "+33675931904"
-# Adresse e-mail publique (contact, JSON-LD). Idéalement une adresse sur le domaine,
-# ex. contact@pro-service83.com, à créer avant de la mettre ici.
-EMAIL = "proservice83@hotmail.com"
+# Adresse e-mail publique (contact, JSON-LD).
+EMAIL = "proservice83contact@gmail.com"
 BASE_CITY = "Vidauban"
 BASE_CP = "83550"
 REGION = "Provence-Alpes-Côte d'Azur"

@@ -9,7 +9,8 @@ src/
   build.py            générateur du site (Python 3, sans dépendance)
   data_business.py    URL du site, identité légale (Kbis), assurances, médiateur, tarifs, Google Ads, avis
   data_services.py    les 7 prestations (textes, FAQ, prix)
-  data_cities.py      les 29 communes desservies (textes, délais, voisines)
+  data_cities.py      les 29 communes principales (textes écrits à la main) + génération des 124 autres
+  data_communes_var.py les 153 communes du Var (INSEE) : code postal, secteur, voisines, délai estimé
   data_guides.py      les guides pratiques (rubrique Conseils)
   assets/             CSS, JS, favicon, images
   make_images.js      régénère les PNG (og-image, logo, favicon) avec Playwright
@@ -25,11 +26,12 @@ netlify.toml          configuration Netlify (dossier publié, en-têtes)
    La fin du build liste les informations encore « À compléter » (mentions légales, tarifs, conversions, délais).
 3. Commiter `src/` **et** `public/`, puis pousser.
 
-## Pages générées (256 pages indexables)
+## Pages générées (380 pages indexables)
 
 - Accueil, Prestations, Zones d'intervention, Tarifs, À propos, FAQ, Contact, Conseils, Plan du site
 - 7 pages de service + 1 page « dégât des eaux & assurance »
-- 29 pages « Plombier + commune » (dont Toulon et son agglomération)
+- 153 pages d'accueil locales « Plombier + commune » : une par commune du Var, avec toutes les sections de l'accueil
+  (héros, urgence, tarifs, services, charte, garanties, étapes, assureurs, zones, conseils, FAQ, formulaire)
 - 203 pages « service + commune » (7 services × 29 communes)
 - 7 guides pratiques
 - Mentions légales, confidentialité (noindex), 404
@@ -62,7 +64,7 @@ Bandeau « Tout accepter / Tout refuser / Personnaliser » relié au Google Cons
 
 Trois formulaires Netlify Forms : `devis` (bas de chaque page), `rappel` (colonne latérale des pages de service et de commune) et `devis-express` (fenêtre « Demander un devis »). Après envoi, le visiteur arrive sur `/merci/`.
 Activer la détection des formulaires dans Netlify : *Project configuration → Forms → Enable form detection*,
-puis ajouter une notification e-mail vers proservice83@hotmail.com.
+puis ajouter une notification e-mail vers proservice83contact@gmail.com.
 
 ## À compléter
 
@@ -83,3 +85,14 @@ l'attribut `data-netlify="true"` du HTML publié : son absence dans le code sour
 
 La section « Avis » n'apparaît que si `REVIEWS` (dans `src/data_business.py`) contient des avis réels,
 chacun avec le lien vers sa source (fiche Google, etc.).
+
+## Design
+
+Thème « Noir & jaune » : anthracite + jaune signal (#ffd400), titres en Space Grotesk, texte en Inter.
+Le thème est en fin de `src/assets/style.css`. Logo : badge rond jaune « 24/7 » avec le symbole du métier
+(`LOGO_SVG` dans `src/build.py`, `src/assets/favicon.svg`) ; les PNG se régénèrent avec `node src/make_images.js`.
+
+## Délais des 124 communes ajoutées
+
+Les délais des communes ajoutées sont **estimés** (distance depuis Vidauban, relief) : à vérifier et corriger
+dans `src/data_communes_var.py` (champ `delay`).

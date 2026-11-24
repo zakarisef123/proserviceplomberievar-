@@ -14,7 +14,7 @@ from datetime import date
 
 sys.path.insert(0, os.path.dirname(__file__))
 import data_business as B  # noqa: E402
-from data_cities import CITIES, CITY_BY_SLUG  # noqa: E402
+from data_cities import CITIES, CITY_BY_SLUG, ALL_CITIES, EXTRA_CITIES, SECTORS  # noqa: E402
 from data_guides import GUIDES  # noqa: E402
 from data_services import SERVICES, SERVICE_ICONS, ASSURANCE_PAGE  # noqa: E402
 
@@ -176,7 +176,7 @@ def svc_icon(key, size=24):
     return '<svg width="%d" height="%d" viewBox="0 0 24 24" fill="none" aria-hidden="true">%s</svg>' % (size, size, SERVICE_ICONS[key])
 
 
-LOGO_SVG = '<svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 3 L33 20 L20 37 L7 20 Z" fill="#4a2a86"/><path d="M20 3 L33 20 L20 37 Z" fill="#f37b1e"/></svg>'
+LOGO_SVG = '<svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#ffd400"/><circle cx="32" cy="32" r="24.5" fill="none" stroke="#111" stroke-width="2.2"/><g transform="translate(20 9.5)"><path d="M12 3.2c0 0-6.2 7.1-6.2 11.4a6.2 6.2 0 0 0 12.4 0C18.2 10.3 12 3.2 12 3.2Z" fill="#111"/></g><text x="32" y="47" text-anchor="middle" font-family="Space Grotesk, Arial, sans-serif" font-weight="700" font-size="12.5" fill="#111">24/7</text></svg>'
 
 
 # ---------------------------------------------------------------- données structurées
@@ -333,7 +333,7 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#4a2a86">
+<meta name="theme-color" content="#111111">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -361,7 +361,7 @@ def head(title, desc, path, schemas, og_type="website", noindex=False):
 {gtm_tag}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css?v={ASSET_VERSION}">
 {schema_tags}
 </head>
@@ -374,7 +374,7 @@ def header(path):
     def cur(href):
         return ' aria-current="page"' if path.startswith(href) and href != "/" else ""
     svc_items = [(s["short"], service_path(s)) for s in SERVICES] + [(ASSURANCE_PAGE["name"], "/%s/" % ASSURANCE_PAGE["slug"]), ("Toutes les prestations", "/prestations/")]
-    zone_items = [("Plombier %s" % c["name"], city_path(c)) for c in MENU_CITIES] + [("Toutes nos zones (%d communes)" % len(CITIES), "/zones-intervention/")]
+    zone_items = [("Plombier %s" % c["name"], city_path(c)) for c in MENU_CITIES] + [("Toutes nos zones (%d communes)" % len(ALL_CITIES), "/zones-intervention/")]
 
     def dropdown(label, href, items):
         sub = "".join('<a href="%s">%s</a>' % (h, esc(t)) for t, h in items)
@@ -394,7 +394,7 @@ def header(path):
   <div class="wrap headbar">
     <a class="logo" href="/" aria-label="{B.NAME}, accueil">
       {LOGO_SVG}
-      <span class="logo-text"><span class="l1" style="display:block">Proservice</span><span class="l2" style="display:block">PLOMBIER 83</span></span>
+      <span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · Var</span></span>
     </a>
     <nav class="main" aria-label="Navigation principale">{links}</nav>
     <a href="tel:{B.PHONE_TEL}" class="call-pill">
@@ -422,7 +422,7 @@ def footer(form_anchor="#devis"):
   <div class="wrap">
     <div class="foot-cols">
       <div>
-        <a class="logo" href="/">{LOGO_SVG.replace('class="logo-mark"', 'class="logo-mark" width="34" height="34"')}<span class="logo-text"><span class="l2">{B.NAME}</span></span></a>
+        <a class="logo" href="/">{LOGO_SVG.replace('class="logo-mark"', 'class="logo-mark" width="34" height="34"')}<span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · Var</span></span></a>
         <p class="foot-about">Artisan plombier indépendant depuis {B.SINCE}. Dépannage <b>24h/24 et 7j/7</b> dans <b>tout le Var (83)</b> : fuite, débouchage, chauffe-eau, sanitaire, salle de bain.</p>
         <p class="foot-about"><a href="tel:{B.PHONE_TEL}"><b>{B.PHONE}</b></a><br><a href="mailto:{B.EMAIL}">{B.EMAIL}</a></p>
       </div>
@@ -593,7 +593,7 @@ def other_services_section(current=None, city=None):
     for s in SERVICES:
         if s is current:
             continue
-        href = combo_path(s, city) if city else service_path(s)
+        href = combo_path(s, city) if city and not city.get("extra") else service_path(s)
         items.append('<a class="os-card" href="%s"><span class="icon-sq pu">%s</span><span>%s%s</span><span class="arrow">→</span></a>'
                      % (href, svc_icon(s["icon"], 22), esc(s["short"]), (" " + city["a"]) if city else ""))
     if not city:
@@ -650,7 +650,7 @@ def service_options(selected=None):
 
 def city_options(selected=None):
     opts = ['<option value="">Choisir…</option>']
-    opts += ['<option%s>%s</option>' % (" selected" if c["name"] == selected else "", esc(c["name"])) for c in CITIES]
+    opts += ['<option%s>%s</option>' % (" selected" if c["name"] == selected else "", esc(c["name"])) for c in sorted(ALL_CITIES, key=lambda c: c["name"])]
     opts.append("<option>Autre commune du Var</option>")
     return "".join(opts)
 
@@ -956,7 +956,12 @@ def stats_block():
 
 def zones_section(current=None, service=None, cls=""):
     """Section « Un plombier proche de chez vous » : toutes les communes avec le temps d'arrivée."""
-    cities = sorted(CITIES, key=lambda c: (c["delay"], c["name"]))
+    pool = list(CITIES)
+    if current and not service and current.get("extra"):
+        pool += [current] + [CITY_BY_SLUG[n] for n in current["near"] if n in CITY_BY_SLUG and CITY_BY_SLUG[n].get("extra")]
+    seen = set()
+    pool = [c for c in pool if not (c["slug"] in seen or seen.add(c["slug"]))]
+    cities = sorted(pool, key=lambda c: (c["delay"], c["name"]))
     items = []
     for c in cities:
         href = combo_path(service, c) if service else city_path(c)
@@ -981,6 +986,16 @@ def zones_section(current=None, service=None, cls=""):
   </div>
 </section>
 """
+
+
+def sector_blocks():
+    """Toutes les communes du Var, regroupées par secteur (intercommunalité)."""
+    out = ""
+    for key, (lab, lab_de, desc) in SECTORS.items():
+        cs = sorted([c for c in ALL_CITIES if c.get("sector") == key], key=lambda c: c["name"])
+        if cs:
+            out += '<h3 class="sector-title">%s</h3>%s' % (esc(lab[0].upper() + lab[1:]), zone_cards(cs))
+    return out
 
 
 def zone_cards(cities, link_fn=city_path):
@@ -1234,6 +1249,51 @@ def build_combo(s, c, si, ci):
     write_page(path, out, "0.7" if c["core"] else "0.6")
 
 
+def charter_section(cls=""):
+    return f"""<section id="pourquoi" class="{cls}">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="pill pill-lav sec-badge">{svc_icon("shield", 15)}Entreprise de confiance</div>
+      <h2>Notre charte de confiance</h2>
+      <p>Le dépannage d'urgence a mauvaise réputation. Nous avons choisi de faire l'inverse, et de l'écrire noir sur blanc.</p>
+    </div>
+    {trust_list_html()}
+    <div class="center" style="margin-top:34px"><a class="btn btn-outline" href="/a-propos/">En savoir plus sur nous</a></div>
+  </div>
+</section>
+"""
+
+
+def city_hero(c, crumbs):
+    """Héros de la page d'accueil, version commune."""
+    return f"""<section class="hero hero-split hero-city">
+  <div class="wrap hero-inner">
+    <div class="hero-text">
+    {crumbs_html(crumbs)}
+    <div class="pill avail-badge"><span class="dot dot-pulse"></span><span>{esc(delay_txt(c))} · {c["cp"]}</span></div>
+    <h1>Votre plombier<br><span class="accent">{c["a"]}, 24h/24</span></h1>
+    <p class="lead">Fuite d'eau, canalisation bouchée, chauffe-eau en panne ? <b>Un artisan plombier vous répond en direct, jour et nuit, 7j/7</b>, et intervient {c["a"]} avec un prix annoncé avant de commencer. Plus de {B.YEARS.rstrip("+")} ans d'expérience dans le Var, facture détaillée acceptée par votre assureur.</p>
+    <a href="tel:{B.PHONE_TEL}" class="hero-cta">
+      <span class="num">{phone_icon(24, True)} {B.PHONE}</span>
+      <span class="sub">Appel direct, disponible 24/7</span>
+    </a>
+    <button type="button" class="hero-devis svc-quote" data-service="Plombier {esc(c["a"])}">Ou demandez un devis gratuit</button>
+    <div class="hero-checks">
+      <div class="check-row"><span class="check-circle gr">✓</span>Diagnostic gratuit</div>
+      <div class="check-row"><span class="check-circle gr">✓</span>Prix annoncé à l'avance</div>
+      <div class="check-row"><span class="check-circle gr">✓</span>Travaux garantis</div>
+      <div class="check-row"><span class="check-circle gr">✓</span>Facture détaillée acceptée par votre assureur</div>
+    </div>
+    </div>
+    <div class="hero-media">
+      {picture("plombier-intervention-var.jpg", "Plombier " + c["a"] + " en intervention sur un collecteur d'eau", 452, 452, "(max-width: 900px) 100vw, 560px", attrs=' fetchpriority="high"')}
+      <div class="hero-tag"><b>{esc(c["name"])}</b><span>{esc(delay_label(c))} · prix annoncé avant travaux</span></div>
+    </div>
+  </div>
+</section>
+"""
+
+
 def build_city(c):
     path = city_path(c)
     crumbs = [("Accueil", "/"), ("Zones d'intervention", "/zones-intervention/"), ("Plombier " + c["name"], path)]
@@ -1251,9 +1311,10 @@ def build_city(c):
     out = head(title, desc, path, schemas)
     out += header(path)
     lead = "Fuite d'eau, débouchage, chauffe-eau, canalisation, installation sanitaire : un artisan plombier intervient <b>%s 24h/24 et 7j/7</b>, avec un prix annoncé avant de partir." % c["a"]
-    out += page_hero(crumbs, "Plombier %s (%s)" % (c["a"], c["cp"]), lead, ["Diagnostic gratuit", "Prix annoncé à l'avance", "Facture détaillée acceptée par votre assureur"], badge="%s · disponible 24h/24" % delay_txt(c), image="plombier-devis-client.jpg", image_alt="Plombier %s présentant le devis avant l'intervention" % c["a"], quote_service="Plombier %s" % c["a"])
+    out += city_hero(c, crumbs)
     out += trust_marquee()
     out += urgent_band()
+    out += pricing_section()
     near_html = "".join('<a class="chip" href="%s">Plombier %s <span class="d">%s</span></a>' % (city_path(n), esc(n["name"]), delay_label(n)) for n in near)
     out += f"""<section>
   <div class="wrap layout">
@@ -1293,10 +1354,17 @@ def build_city(c):
   </div>
 </section>
 """
-    out += guarantees_section("")
-    out += zones_section(current=c, cls="alt")
-    out += process_section()
-    out += faq_block(faq, "Plombier %s : vos questions" % c["a"])
+    out += '<div class="alt" style="padding:0 0 10px"><div class="wrap">%s</div></div>' % stats_block()
+    out += charter_section()
+    out += guarantees_section("alt")
+    out += process_section("Simple, clair, sans surprise")
+    out += insurers_section("alt")
+    out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons %s et dans les communes voisines, tous les jours, 24h/24." % c["a"])
+    out += zones_section(current=c)
+    out += realisations_section(cls="alt")
+    out += reviews_section("alt" if not B.REALISATIONS else "", city=c)
+    out += guides_teaser(GUIDES[:3])
+    out += faq_block(faq, "Plombier %s : vos questions" % c["a"], cls="alt")
     out += contact_section(path, "Un plombier %s ? Contactez-nous" % c["a"], city=c["name"])
     out += footer()
     write_page(path, out, "0.8" if c["core"] else "0.7")
@@ -1403,6 +1471,8 @@ def build_zones():
     {zone_cards(CORE_CITIES)}
     <div class="sec-head" style="margin-top:56px"><h2>Autres communes desservies</h2></div>
     {zone_cards([c for c in CITIES if not c["core"]])}
+    <div class="sec-head" style="margin-top:56px"><h2>Toutes les communes du Var ({len(ALL_CITIES)})</h2><p>Chaque commune a sa page. Délais estimés hors trafic, confirmés au téléphone avant tout déplacement.</p></div>
+    {sector_blocks()}
   </div>
 </section>
 <section class="alt">
@@ -1658,7 +1728,7 @@ def build_plan():
                   ("Tarifs", "/tarifs/"), ("À propos", "/a-propos/"), ("Conseils", "/conseils/"), ("FAQ", "/faq/"),
                   ("Contact & devis", "/contact/"), ("Mentions légales", "/mentions-legales/"), ("Confidentialité", "/politique-confidentialite/")]
     svc = [(s["name"], service_path(s)) for s in SERVICES] + [(ASSURANCE_PAGE["name"], "/%s/" % ASSURANCE_PAGE["slug"])]
-    cities = [("Plombier %s (%s)" % (c["name"], c["cp"]), city_path(c)) for c in CITIES]
+    cities = [("Plombier %s (%s)" % (c["name"], c["cp"]), city_path(c)) for c in sorted(ALL_CITIES, key=lambda c: c["name"])]
     guides = [(g["h1"], guide_path(g)) for g in GUIDES]
     out += f"""<section><div class="wrap">
   <div class="sitemap-cols">
@@ -1831,7 +1901,7 @@ def build_llms():
         lines.append("- [%s](%s%s) : %s %s." % (s["name"], SITE, service_path(s), strip_tags(s["lead"]), s["price_label"][0].upper() + s["price_label"][1:] if s["price_label"].lower().startswith("tarif") else "Tarif : " + s["price_label"]))
     lines.append("- [Dégât des eaux & assurance](%s/%s/) : recherche de fuite, réparation et justificatifs pour l'assurance habitation." % (SITE, ASSURANCE_PAGE["slug"]))
     lines += ["", "## Zones d'intervention", ""]
-    for c in CITIES:
+    for c in ALL_CITIES:
         lines.append("- [Plombier %s (%s)](%s%s) : %s" % (c["name"], c["cp"], SITE, city_path(c), delay_sentence(c)))
     lines += ["", "Chaque prestation existe aussi en page dédiée par commune, selon le modèle %s/{prestation}-{commune}/ (ex. %s%s, %s%s). Liste complète : %s/plan-du-site/" % (
         SITE, SITE, combo_path(SERVICES[2], CITIES[1]), SITE, combo_path(SERVICES[0], CITIES[7]), SITE)]
@@ -1878,7 +1948,7 @@ def build_static():
             shutil.copy(src, os.path.join(OUT, name))
     manifest = {
         "name": B.NAME + " — Plombier Var", "short_name": B.NAME, "lang": "fr",
-        "start_url": "/", "display": "browser", "background_color": "#ffffff", "theme_color": "#4a2a86",
+        "start_url": "/", "display": "browser", "background_color": "#ffffff", "theme_color": "#111111",
         "icons": [{"src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png"},
                   {"src": "/assets/logo-512.png", "sizes": "512x512", "type": "image/png"}],
     }
@@ -1897,6 +1967,8 @@ def main():
         build_service(s, i)
     build_assurance()
     build_zones()
+    for c in EXTRA_CITIES:
+        build_city(c)
     for ci, c in enumerate(CITIES):
         build_city(c)
         for si, s in enumerate(SERVICES):
@@ -1927,6 +1999,7 @@ def main():
         WARNINGS.append("Tarifs : TAUX_HORAIRE non renseigné")
     if B.RATE_SUNDAY_COEF != period_coef("nuit"):
         WARNINGS.append("Tarifs : RATE_SUNDAY_COEF différent du tarif de nuit, la carte de l'accueil affiche le tarif de nuit le dimanche")
+    WARNINGS.append("Délais estimés automatiquement (distance depuis Vidauban) pour %d communes : à vérifier dans src/data_communes_var.py" % len(EXTRA_CITIES))
     unconfirmed = [c["name"] for c in CITIES if c.get("delay_todo")]
     if unconfirmed:
         WARNINGS.append("Délais à confirmer : " + ", ".join(unconfirmed))
