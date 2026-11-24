@@ -138,6 +138,15 @@ def majorations_sentence():
                                                         B.RATE_NIGHT_START, B.RATE_DAY_START, m[2][1].replace("+", "")))
 
 
+def prices_summary():
+    """« fuite d'eau dès 79 €, débouchage dès 99 €… » à partir des prix des prestations (hors urgence)."""
+    items = []
+    for sv in SERVICES:
+        if sv["price_min"] and "urgence" not in sv["slug"]:
+            items.append("%s %s" % (sv["short"].lower(), sv["price_label"].replace("à partir de", "dès")))
+    return ", ".join(items)
+
+
 def price_conditions_html(cls="price-conds"):
     items = [("Prix", "TTC, en journée (lun-sam, %dh – %dh)" % (B.RATE_DAY_START, B.RATE_EVENING_START)),
              ("Déplacement", deplacement_txt())]
@@ -922,7 +931,7 @@ def pricing_section():
         for pid, label, coef in B.RATE_PERIODS)
     rows = ""
     for s in SERVICES:
-        if not s["price_min"]:
+        if not s["price_min"] or s.get("rate_card") is False:
             continue
         prices = "".join('<b data-p="%s">%s</b>' % (pid, rate_price(s["price_min"], coef)) for pid, label, coef in B.RATE_PERIODS)
         rows += '<li><a href="%s">%s</a><span class="rate-price"><small>à partir de</small>%s</span></li>' % (service_path(s), esc(s["short"]), prices)
@@ -1040,13 +1049,13 @@ def trust_list_html():
 
 # ---------------------------------------------------------------- pages
 HOME_FAQ = [
-    ("Combien coûte une intervention de plombier ?", "Les tarifs démarrent à 79 € pour une fuite, 89 € pour une réparation de canalisation et 99 € pour un débouchage, en journée. Le prix exact dépend de l'intervention et de l'horaire ; il est toujours annoncé au téléphone et confirmé sur place avant les travaux. <a href=\"/tarifs/\">Voir nos tarifs</a>."),
+    ("Combien coûte une intervention de plombier ?", "Nos prix TTC en journée : " + prices_summary() + ". Le prix exact dépend de l'intervention et de l'horaire ; il est toujours annoncé au téléphone et confirmé sur place avant les travaux. <a href=\"/tarifs/\">Voir nos tarifs</a>."),
     ("Intervenez-vous la nuit, le week-end et les jours fériés ?", "Oui, un plombier est joignable 24h/24 et 7j/7 au 06 75 93 19 04, jours fériés compris. " + majorations_sentence() + " La majoration est toujours annoncée avant le déplacement."),
-    ("Dans quelles communes intervenez-vous ?", "Nous intervenons dans tout le Var (83), notamment à Toulon et dans son agglomération, à Fréjus, Saint-Raphaël, Draguignan, ainsi qu\'à Le Muy, Les Arcs-sur-Argens, Le Cannet-des-Maures, Le Luc, La Garde-Freinet, Gonfaron, Draguignan, Lorgues, Taradeau, Le Thoronet, mais aussi Fréjus, Saint-Raphaël, Toulon et son agglomération (La Seyne-sur-Mer, La Garde, La Valette-du-Var, Hyères, Six-Fours-les-Plages, Ollioules). <a href=\"/zones-intervention/\">Voir toutes les communes</a>."),
+    ("Dans quelles communes intervenez-vous ?", "Dans tout le Var (83), sur les 153 communes du département. <a href=\"/zones-intervention/\">Voir toutes les communes</a>."),
     ("Le devis est-il gratuit ?", "Oui, le diagnostic téléphonique et le devis sur place sont gratuits et sans engagement."),
     ("Vos factures sont-elles acceptées par les assurances ?", "Oui. Nous remettons une facture détaillée et un descriptif de la cause de la fuite. Nos clients se font rembourser auprès de leur assureur habitation, selon les garanties de leur contrat."),
     ("Faites-vous de la recherche de fuite ?", "Oui, nous réalisons la détection de fuite (visuelle, thermique ou acoustique selon le cas) puis la réparation, en limitant la casse au strict nécessaire."),
-    ("En combien de temps arrivez-vous ?", delay_faq()),
+    ("En combien de temps arrivez-vous ?", "Le délai dépend de votre commune et de l'heure de l'appel : il vous est annoncé au téléphone, avant le déplacement. <a href=\"/zones-intervention/\">Voir nos zones d'intervention</a>."),
     ("Allez-vous devoir casser du carrelage ou un mur ?", "Nous privilégions toujours les méthodes les moins invasives (détection thermique ou acoustique, contrôle de pression) et n'ouvrons que si c'est vraiment nécessaire, uniquement à l'endroit de la fuite et avec votre accord."),
     ("Faut-il réparer ou remplacer mon chauffe-eau ?", "Tout dépend de son âge et de la panne. Une résistance, un thermostat ou un groupe de sécurité se remplacent facilement. Si la cuve elle-même fuit ou si l'appareil est très ancien, le remplacement est souvent plus rentable. Nous vous donnons un avis honnête, chiffres à l'appui."),
     ("Qui va intervenir chez moi ?", "Un plombier de " + B.NAME + ", artisan local. Vous l'avez au téléphone avant son arrivée, il vous annonce le prix avant de commencer et vous remet une facture détaillée. Après l'intervention, vous gardez le même numéro pour tout suivi."),
@@ -1082,7 +1091,7 @@ def build_home():
     </div>
     </div>
     <div class="hero-media">
-      {picture("plombier-devis-client.jpg", "Plombier présentant le devis à un client avant l'intervention", 560, 560, "(max-width: 900px) 100vw, 560px", attrs=' fetchpriority="high"')}
+      {picture("plombier-intervention-var.jpg", "Plombier en intervention sur un collecteur d'eau", 452, 452, "(max-width: 900px) 100vw, 560px", attrs=' fetchpriority="high"')}
       <div class="hero-tag"><b>Sur place</b><span>Devis annoncé avant travaux</span></div>
     </div>
   </div>
@@ -1105,7 +1114,7 @@ def build_home():
 <section class="alt">
   <div class="wrap text-block prose">
     <h2>Un plombier de confiance dans tout le Var depuis {B.SINCE}</h2>
-    <p><strong>{B.NAME}</strong> est une entreprise artisanale de plomberie qui intervient dans <strong>tout le Var (83)</strong>. Depuis {B.SINCE}, nous dépannons et équipons les particuliers, propriétaires, locataires, gestionnaires de résidences secondaires et petites entreprises de tout le département : Toulon, La Seyne-sur-Mer, Hyères, Fréjus, Saint-Raphaël, Draguignan, Le Muy, Le Luc et les communes voisines.</p>
+    <p><strong>{B.NAME}</strong> est une entreprise artisanale de plomberie qui intervient dans <strong>tout le Var (83)</strong>. Depuis {B.SINCE}, nous dépannons et équipons les particuliers, propriétaires, locataires, gestionnaires de résidences secondaires et petites entreprises de tout le département.</p>
     <p>Notre métier, c'est de régler vos problèmes de plomberie <strong>rapidement, proprement et au juste prix</strong>. Une fuite sous l'évier un dimanche, un WC bouché un soir de fête, un chauffe-eau qui lâche en plein hiver : vous joignez directement un plombier au <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>, sans plateforme ni centre d'appel. Il vous écoute, vous aide à sécuriser la situation et vous annonce une fourchette de prix <strong>avant</strong> de prendre la route.</p>
     <p>Nous intervenons sur l'ensemble de la plomberie de la maison : <a href="/recherche-de-fuite-var/">recherche et réparation de fuite</a>, <a href="/debouchage-canalisation-var/">débouchage de WC et de canalisations</a>, <a href="/chauffe-eau-var/">dépannage et remplacement de chauffe-eau</a>, <a href="/reparation-canalisation-var/">réparation de canalisations</a>, <a href="/installation-sanitaire-var/">installation sanitaire et robinetterie</a> et <a href="/renovation-salle-de-bain-var/">rénovation de salle de bain</a>. Pour les sinistres, nous fournissons les <a href="/{ASSURANCE_PAGE['slug']}/">justificatifs demandés par votre assurance</a>.</p>
     <p>Ce qui nous distingue ? Des engagements simples et tenus : un prix annoncé à l'avance, un devis validé avant les travaux, aucune intervention inutile et une facture détaillée. Des engagements tenus à chaque intervention, de jour comme de nuit.</p>
@@ -1126,7 +1135,6 @@ def build_home():
     out += process_section("Simple, clair, sans surprise")
     out += insurers_section("alt")
     out += cta_band("Fuite d'eau, canalisation bouchée ?", "Nous intervenons dans tout le Var (83), tous les jours, 24h/24.")
-    out += zones_section()
     out += realisations_section(cls="alt")
     out += reviews_section("alt" if not B.REALISATIONS else "")
     out += guides_teaser(GUIDES[:3])
@@ -1303,7 +1311,7 @@ def build_city(c):
     faq = [
         ("Quel est le délai d'intervention d'un plombier %s ?" % c["a"], delay_sentence(c)),
         ("Intervenez-vous %s la nuit et le week-end ?" % c["a"], "Oui, nous intervenons 24h/24 et 7j/7, jours fériés compris. " + majorations_sentence() + " La majoration vous est annoncée avant le déplacement."),
-        ("Combien coûte un plombier %s ?" % c["a"], "Nos interventions démarrent à 79 € pour une fuite, 89 € pour une canalisation et 99 € pour un débouchage en journée. Le prix est annoncé au téléphone avant le départ et confirmé sur place. <a href=\"/tarifs/\">Voir nos tarifs</a>."),
+        ("Combien coûte un plombier %s ?" % c["a"], "Nos prix TTC en journée : " + prices_summary() + ". Le prix exact dépend de l'intervention et de l'horaire ; il est toujours annoncé au téléphone et confirmé sur place avant les travaux. <a href=\"/tarifs/\">Voir nos tarifs</a>."),
         ("Vos factures sont-elles prises en charge par mon assurance ?", "Nous remettons une facture détaillée et un descriptif de la cause de la fuite, que nos clients transmettent à leur assureur habitation pour se faire rembourser, selon les garanties de leur contrat."),
         ("Quelles communes desservez-vous autour %s ?" % c["de"], "Nous intervenons notamment à %s, et dans tout le Var." % ", ".join(n["name"] for n in near)),
     ]
@@ -1500,7 +1508,7 @@ def build_tarifs():
         ("Puis-je refuser le devis sur place ?", "Oui. Le prix est confirmé avant de commencer et vous restez libre de refuser."),
     ]
     out = head("Tarifs plombier dans le Var — prix fuite, débouchage, chauffe-eau",
-               "Tarifs de plombier dans le Var : fuite dès 79 €, canalisation dès 89 €, débouchage dès 99 €. Devis gratuit, prix annoncé avant intervention, sans frais cachés.",
+               "Tarifs de plombier dans le Var : " + prices_summary() + ". Devis gratuit, prix annoncé avant intervention, sans frais cachés.",
                path, [business_schema(), breadcrumb_schema(crumbs), faq_schema(faq)])
     out += header(path)
     out += page_hero(crumbs, "Nos tarifs de plombier dans le Var", "Des <b>prix clairs, annoncés avant le déplacement</b> et confirmés sur place avant les travaux. Pas de mauvaise surprise sur la facture.", ["Devis gratuit", "Sans frais cachés", "Facture détaillée"])
@@ -1508,7 +1516,7 @@ def build_tarifs():
         if not price_min:
             return '<td colspan="3">%s</td>' % esc(label)
         return "".join("<td>dès %s</td>" % rate_price(price_min, coef) for _, _, coef in B.RATE_PERIODS)
-    rows = "".join('<tr><td><a href="%s"><strong>%s</strong></a></td>%s</tr>' % (service_path(s), esc(s["name"]), price_cells(s["price_min"], s["price_label"])) for s in SERVICES)
+    rows = "".join('<tr><td><a href="%s"><strong>%s</strong></a></td>%s</tr>' % (service_path(s), esc(s["name"]), price_cells(s["price_min"], s["price_label"]) if s.get("rate_card") is not False else '<td colspan="3">%s (travaux planifiés, devis détaillé gratuit)</td>' % esc(s["price_label"])) for s in SERVICES)
     rows += "".join('<tr><td><strong>%s</strong></td>%s</tr>' % (esc(label), price_cells(p, "sur devis")) for label, p in getattr(B, "PRICE_DETAILS", []))
     hours = "".join("<th>%s<br><small>%s</small></th>" % (esc(label), rate_hours(pid)) for pid, label, _ in B.RATE_PERIODS)
     out += f"""<section>
@@ -1891,8 +1899,8 @@ def build_llms():
              "- E-mail : %s" % B.EMAIL,
              "- Base : %s (%s), %s" % (B.BASE_CITY, B.BASE_CP, B.DEPARTEMENT),
              "- Expérience : artisan dans le Var depuis %d (siège à Vidauban)" % B.SINCE,
-             "- Tarifs : fuite d'eau dès 79 €, réparation de canalisation dès 89 €, débouchage dès 99 €, chauffe-eau / installation sanitaire / salle de bain sur devis. Diagnostic téléphonique et devis gratuits. " + majorations_sentence(),
-             "- Tarifs selon l'heure d'intervention (heure de Paris) : " + " ; ".join("%s %s : %s" % (label.lower(), rate_hours(pid), ", ".join("%s %s" % (sv["short"], rate_price(sv["price_min"], coef)) for sv in SERVICES if sv["price_min"])) for pid, label, coef in B.RATE_PERIODS) + " (prix TTC à partir de). Dimanches et jours fériés : tarif de nuit. Déplacement : " + deplacement_txt() + "." + (" Main-d'œuvre : %s TTC de l'heure." % eur(B.TAUX_HORAIRE) if B.TAUX_HORAIRE else ""),
+             "- Tarifs TTC en journée : " + prices_summary() + ". Diagnostic téléphonique et devis gratuits. " + majorations_sentence(),
+             "- Tarifs selon l'heure d'intervention (heure de Paris) : " + " ; ".join("%s %s : %s" % (label.lower(), rate_hours(pid), ", ".join("%s %s" % (sv["short"], rate_price(sv["price_min"], coef)) for sv in SERVICES if sv["price_min"] and sv.get("rate_card") is not False)) for pid, label, coef in B.RATE_PERIODS) + " (prix TTC à partir de). Dimanches et jours fériés : tarif de nuit. Déplacement : " + deplacement_txt() + "." + (" Main-d'œuvre : %s TTC de l'heure." % eur(B.TAUX_HORAIRE) if B.TAUX_HORAIRE else ""),
              "- Engagements : prix annoncé avant le déplacement, devis validé avant les travaux, facture détaillée, travaux garantis.",
              "- Assurance : facture détaillée acceptée par votre assureur habitation, remboursement selon les garanties du contrat.",
              "- Communes desservies : %s." % ", ".join("%s (%s, %s)" % (c["name"], c["cp"], delay_label(c)) for c in CITIES),
