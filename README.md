@@ -62,9 +62,9 @@ Bandeau « Tout accepter / Tout refuser / Personnaliser » relié au Google Cons
 
 ## Formulaires
 
-Trois formulaires Netlify Forms : `devis` (bas de chaque page), `rappel` (colonne latérale des pages de service et de commune) et `devis-express` (fenêtre « Demander un devis »). Après envoi, le visiteur arrive sur `/merci/`.
-Activer la détection des formulaires dans Netlify : *Project configuration → Forms → Enable form detection*,
-puis ajouter une notification e-mail vers proservice83contact@gmail.com.
+Trois formulaires (`devis`, `rappel`, `devis-express`) envoyés par **FormSubmit** directement par e-mail à `FORM_EMAIL`
+(`src/data_business.py`). Après envoi, le visiteur arrive sur `/merci/` (conversion Google Ads).
+**Première mise en ligne** : envoyer une demande test, puis cliquer sur le lien « Activate Form » reçu par e-mail.
 
 ## À compléter
 
@@ -75,11 +75,6 @@ Dans `src/data_business.py` :
 - `ASSURANCE_DECENNALE` : passer à `True` si l'entreprise a une décennale et une RC pro à jour
 - `GOOGLE_BUSINESS_URL`, `GOOGLE_REVIEW_URL`, `SAME_AS` : fiche Google, lien « laisser un avis », autres profils
 
-## Formulaires (Netlify Forms)
-
-Les formulaires `devis`, `devis-express` et `rappel` sont reçus par Netlify Forms : la détection des
-formulaires doit être activée dans Netlify (Project configuration > Forms). Au déploiement, Netlify retire
-l'attribut `data-netlify="true"` du HTML publié : son absence dans le code source en ligne est donc normale.
 
 ## Avis clients
 

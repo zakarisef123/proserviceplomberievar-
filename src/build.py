@@ -672,19 +672,33 @@ def consent_field(prefix):
             '<span>J\'accepte d\'être recontacté au sujet de ma demande, conformément à la <a href="/politique-confidentialite/">politique de confidentialité</a>.</span></label></div>') % prefix
 
 
+def form_hidden(form_name):
+    """Champs cachés FormSubmit : objet de l'e-mail, mise en forme, retour vers /merci/ sans JavaScript."""
+    labels = {"devis": "Demande de devis", "devis-express": "Demande de devis (fenêtre)", "rappel": "Demande de rappel"}
+    subject = "%s — %s — site %s" % (labels.get(form_name, "Demande"), B.NAME, B.FORM_SITE_LABEL)
+    return ('<input type="hidden" name="formulaire" value="%s">'
+            '<input type="hidden" name="_subject" value="%s">'
+            '<input type="hidden" name="_template" value="table">'
+            '<input type="hidden" name="_captcha" value="false">'
+            '<input type="hidden" name="_next" value="%s/merci/">') % (form_name, esc(subject), SITE)
+
+
+FORM_ACTION = "https://formsubmit.co/" + B.FORM_EMAIL
+
+
 def quote_modal():
-    """Fenêtre « Demander un devis » (Netlify Forms : « devis-express »), ouverte par les boutons .svc-quote."""
+    """Fenêtre « Demander un devis » (FormSubmit : « devis-express »), ouverte par les boutons .svc-quote."""
     return f"""<div class="modal-overlay" id="quote-modal" aria-hidden="true">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="quote-title">
     <button type="button" class="modal-close" id="quote-close" aria-label="Fermer">✕</button>
     <span class="pill pill-orange" id="quote-service-label">Demande de devis</span>
     <h2 id="quote-title">Demander un devis gratuit</h2>
     <p class="modal-sub">Réponse rapide. Pour une urgence, appelez le <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>.</p>
-    <form class="quote" name="devis-express" method="POST" data-netlify="true" netlify-honeypot="adresse-web" action="/merci/" style="padding:0">
-      <input type="hidden" name="form-name" value="devis-express">
+    <form class="quote" name="devis-express" method="POST" action="{FORM_ACTION}" style="padding:0">
+      {form_hidden("devis-express")}
       <input type="hidden" name="page" value="">
       <input type="hidden" name="besoin" value="Demande de devis" id="quote-service-input">
-      <p class="hp"><label>Ne pas remplir : <input name="adresse-web" tabindex="-1" autocomplete="off"></label></p>
+      <p class="hp"><label>Ne pas remplir : <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
       <div class="frow-2">
         <div class="frow"><label for="q-prenom">Prénom *</label><input id="q-prenom" name="prenom" type="text" required autocomplete="given-name"></div>
         <div class="frow"><label for="q-nom">Nom *</label><input id="q-nom" name="nom" type="text" required autocomplete="family-name"></div>
@@ -704,7 +718,7 @@ def quote_modal():
 
 
 def contact_section(path, title="Besoin d'un plombier maintenant ?", service=None, city=None):
-    """Formulaire de devis complet (Netlify Forms : « devis »), présent en bas de chaque page."""
+    """Formulaire de devis complet (FormSubmit : « devis »), présent en bas de chaque page."""
     return f"""<section class="contact" id="devis">
   <div class="wrap contact-grid">
     <div>
@@ -726,10 +740,10 @@ def contact_section(path, title="Besoin d'un plombier maintenant ?", service=Non
         </div>
       </div>
     </div>
-    <form class="quote" name="devis" method="POST" data-netlify="true" netlify-honeypot="adresse-web" action="/merci/">
-      <input type="hidden" name="form-name" value="devis">
+    <form class="quote" name="devis" method="POST" action="{FORM_ACTION}">
+      {form_hidden("devis")}
       <input type="hidden" name="page" value="{esc(path)}">
-      <p class="hp"><label>Ne pas remplir : <input name="adresse-web" tabindex="-1" autocomplete="off"></label></p>
+      <p class="hp"><label>Ne pas remplir : <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
       <div class="frow-2">
         <div class="frow">
           <label for="d-prenom">Prénom *</label>
@@ -779,14 +793,14 @@ def contact_section(path, title="Besoin d'un plombier maintenant ?", service=Non
 
 
 def quick_form(path, service=None, city=None, title="Rappel rapide"):
-    """Formulaire court (Netlify Forms : « rappel »), dans la colonne latérale des pages de service."""
+    """Formulaire court (FormSubmit : « rappel »), dans la colonne latérale des pages de service."""
     return f"""<div class="side-card" id="rappel">
   <h2>{title}</h2>
   <p style="color:var(--gray-600)">Laissez votre numéro, un plombier vous rappelle au plus vite.</p>
-  <form class="quote" name="rappel" method="POST" data-netlify="true" netlify-honeypot="adresse-web" action="/merci/" style="padding:0">
-    <input type="hidden" name="form-name" value="rappel">
+  <form class="quote" name="rappel" method="POST" action="{FORM_ACTION}" style="padding:0">
+    {form_hidden("rappel")}
     <input type="hidden" name="page" value="{esc(path)}">
-    <p class="hp"><label>Ne pas remplir : <input name="adresse-web" tabindex="-1" autocomplete="off"></label></p>
+    <p class="hp"><label>Ne pas remplir : <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
     <div class="frow"><label for="r-nom">Nom *</label><input id="r-nom" name="nom" type="text" required autocomplete="name" placeholder="Votre nom"></div>
     <div class="frow"><label for="r-tel">Téléphone *</label><input id="r-tel" name="telephone" type="tel" required autocomplete="tel" placeholder="06 00 00 00 00"></div>
     <div class="frow"><label for="r-ville">Commune</label><select id="r-ville" name="commune">{city_options(city)}</select></div>
@@ -1851,7 +1865,7 @@ def build_legal():
     out += header(path)
     out += page_hero(crumbs, "Politique de confidentialité", "Comment nous utilisons les informations que vous nous transmettez.")
     out += f"""<section><div class="wrap text-block prose">
-  <h2>Données collectées</h2><p>Via nos formulaires, nous collectons les informations que vous saisissez : nom, téléphone, e-mail, commune, type de besoin et message. Elles servent uniquement à vous recontacter et à traiter votre demande. Elles ne sont ni vendues ni cédées.</p>
+  <h2>Données collectées</h2><p>Via nos formulaires, nous collectons les informations que vous saisissez : nom, téléphone, e-mail, commune, type de besoin et message. Elles servent uniquement à vous recontacter et à traiter votre demande. Elles ne sont ni vendues ni cédées. Les messages des formulaires nous sont transmis par e-mail via le service FormSubmit (formsubmit.co).</p>
   <h2>Durée de conservation</h2><p>Les demandes sans suite sont supprimées au plus tard 3 ans après le dernier contact. Les factures sont conservées pendant la durée légale.</p>
   <h2>Cookies et mode de consentement</h2>
   <p>Lors de votre première visite, un bandeau vous permet de <strong>tout accepter</strong>, <strong>tout refuser</strong> ou de <strong>personnaliser</strong> vos choix. Tant que vous n'avez pas choisi, aucun cookie publicitaire n'est déposé.</p>
