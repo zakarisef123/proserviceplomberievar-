@@ -426,7 +426,7 @@ def footer(form_anchor="#devis"):
     <div class="foot-cols">
       <div>
         <a class="logo" href="/">{LOGO_SVG.replace('class="logo-mark"', 'class="logo-mark" width="34" height="34"')}<span class="logo-text"><span class="l2" style="display:block">Proservice</span><span class="l1" style="display:block">Plomberie · 24h/24</span></span></a>
-        <p class="foot-about">Artisan plombier indépendant depuis {B.SINCE}. Dépannage <b>24h/24 et 7j/7</b> dans le <b>Var (83)</b> : fuite, débouchage, chauffe-eau, sanitaire, salle de bain.</p>
+        <p class="foot-about">Artisans à Vidauban depuis {B.SINCE}. On décroche nous-mêmes, <b>24h/24 et 7j/7</b>, dans le <b>Var (83)</b>. Un souci ? Appelez, on vous dit tout de suite ce qu'on peut faire.</p>
         <p class="foot-about"><a href="tel:{B.PHONE_TEL}"><b>{B.PHONE}</b></a><br><a href="mailto:{B.EMAIL}">{B.EMAIL}</a></p>
       </div>
       <div><h2>Prestations</h2><ul>{svc_links}</ul></div>
@@ -709,14 +709,14 @@ def quote_modal():
 """
 
 
-def contact_section(path, title="Besoin d'un plombier maintenant ?", service=None, city=None):
+def contact_section(path, title="Racontez-nous votre souci", service=None, city=None):
     """Formulaire de devis complet (FormSubmit : « devis »), présent en bas de chaque page."""
     return f"""<section class="contact" id="devis">
   <div class="wrap contact-grid">
     <div>
       <div class="pill pill-orange">Contact &amp; devis gratuit</div>
       <h2>{title}</h2>
-      <p class="lead">Pour une urgence, l'appel reste le plus rapide : un plombier vous répond directement. Pour une demande de devis, remplissez le formulaire, nous vous rappelons rapidement (sous 1 h en journée).</p>
+      <p class="lead">Le plus simple, c'est de nous appeler : c'est nous qui décrochons, même la nuit et le week-end. Vous préférez écrire ? Expliquez-nous la situation ci-contre, on vous rappelle nous-mêmes, en général dans l'heure en journée.</p>
       <div class="contact-info">
         <div class="cinfo">
           <div class="icon-sq">{phone_icon(18)}</div>
@@ -1011,6 +1011,22 @@ def pricing_section():
 """
 
 
+def promises_block():
+    """Quatre promesses écrites à la main (à la place des chiffres clés)."""
+    notes = [("On décroche nous-mêmes", "Pas de standard, pas de plateforme : c'est l'artisan qui répond."),
+             ("Le prix avant de venir", "Et confirmé sur place, avant de toucher à quoi que ce soit."),
+             ("On laisse propre", "Protection des sols, nettoyage, et on remporte les vieilles pièces."),
+             ("On reste joignable", "Un souci après notre passage ? Vous rappelez, on revient.")]
+    cards = "".join('<li class="note"><b>%s</b><span>%s</span></li>' % (esc(a), esc(b)) for a, b in notes)
+    return f"""<section class="promises alt">
+  <div class="wrap">
+    <div class="sec-head"><h2>Ce qu'on vous promet</h2><p>Pas de grands discours : quatre choses qu'on tient à chaque intervention.</p></div>
+    <ul class="notes">{cards}</ul>
+  </div>
+</section>
+"""
+
+
 def stats_block():
     stats = [
         ('<path d="M3 17 9 11 13 15 21 7M21 7h-5M21 7v5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>', B.YEARS, "Années d'expérience", "Depuis %d" % B.SINCE),
@@ -1142,6 +1158,7 @@ def build_home():
       <span class="sub">Appel direct, disponible 24/7</span>
     </a>
     <button type="button" class="hero-devis svc-quote" data-service="Demande de devis">Ou demandez un devis gratuit</button>
+    <p class="hero-note">On décroche nous-mêmes, promis !</p>
     <div class="hero-checks">
       <div class="check-row"><span class="check-circle gr">✓</span>Diagnostic gratuit</div>
       <div class="check-row"><span class="check-circle gr">✓</span>Prix annoncé à l'avance</div>
@@ -1157,37 +1174,37 @@ def build_home():
 </section>
 """
     out += insurers_section("ins-top")
+    out += artisan_word()
     out += trust_marquee()
     out += urgent_band()
     out += f"""<section id="services">
   <div class="wrap">
     <div class="sec-head">
       <div class="pill pill-purple sec-badge">{svc_icon("shield", 15)}Services professionnels</div>
-      <h2>Nos services de plomberie</h2>
+      <h2>Ce qu'on fait pour vous</h2>
       <p>Un artisan plombier à votre service pour l'urgence comme pour les travaux, 24h/24 et 7j/7.</p>
     </div>
     {services_grid()}
   </div>
 </section>
 """
-    out += artisan_word()
     out += pricing_section()
-    out += f"""<div class="alt" style="padding:0 0 10px"><div class="wrap">{stats_block()}</div></div>
+    out += f"""{promises_block()}
 <section class="alt">
   <div class="wrap text-block prose">
-    <h2>Un plombier de confiance depuis {B.SINCE}</h2>
-    <p><strong>{B.NAME}</strong> est une entreprise artisanale de plomberie qui intervient dans le Var (83), 24h/24 et 7j/7. Depuis {B.SINCE}, nous dépannons et équipons les particuliers, propriétaires, locataires, gestionnaires de résidences secondaires et petites entreprises de tout le département.</p>
-    <p>Notre métier, c'est de régler vos problèmes de plomberie <strong>rapidement, proprement et au juste prix</strong>. Une fuite sous l'évier un dimanche, un WC bouché un soir de fête, un chauffe-eau qui lâche en plein hiver : vous joignez directement un plombier au <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>, sans plateforme ni centre d'appel. Il vous écoute, vous aide à sécuriser la situation et vous annonce une fourchette de prix <strong>avant</strong> de prendre la route.</p>
+    <h2>Pourquoi on travaille comme ça</h2>
+    <p><strong>{B.NAME}</strong>, c'est une petite entreprise de plomberie installée à Vidauban, qui intervient dans le Var (83) depuis {B.SINCE}. Pas de standard, pas de sous-traitance : quand vous appelez le <a href="tel:{B.PHONE_TEL}">{B.PHONE}</a>, c'est nous qui décrochons.</p>
+    <p>On a tous connu le plombier qu'on n'arrive jamais à joindre, ou la facture qui double une fois le travail fini. Nous, on a choisi l'inverse : on vous écoute, on vous aide à couper l'eau si besoin, et on vous annonce le prix avant de prendre la route.</p>
     <p>Nous intervenons sur l'ensemble de la plomberie de la maison : <a href="/recherche-de-fuite-var/">recherche et réparation de fuite</a>, <a href="/debouchage-canalisation-var/">débouchage de WC et de canalisations</a>, <a href="/chauffe-eau-var/">dépannage et remplacement de chauffe-eau</a>, <a href="/reparation-canalisation-var/">réparation de canalisations</a>, <a href="/installation-sanitaire-var/">installation sanitaire et robinetterie</a> et <a href="/renovation-salle-de-bain-var/">rénovation de salle de bain</a>. Pour les sinistres, nous fournissons les <a href="/{ASSURANCE_PAGE['slug']}/">justificatifs demandés par votre assurance</a>.</p>
-    <p>Ce qui nous distingue ? Des engagements simples et tenus : un prix annoncé à l'avance, un devis validé avant les travaux, aucune intervention inutile et une facture détaillée. Des engagements tenus à chaque intervention, de jour comme de nuit.</p>
+    <p>Et si quelque chose ne va pas après notre passage, vous nous rappelez : on revient. C'est ça, être l'artisan du coin.</p>
   </div>
 </section>
 <section id="pourquoi">
   <div class="wrap">
     <div class="sec-head">
       <div class="pill pill-lav sec-badge">{svc_icon("shield", 15)}Entreprise de confiance</div>
-      <h2>Notre charte de confiance</h2>
-      <p>Le dépannage d'urgence a mauvaise réputation. Nous avons choisi de faire l'inverse, et de l'écrire noir sur blanc.</p>
+      <h2>Nos engagements, noir sur blanc</h2>
+      <p>Le dépannage a parfois mauvaise réputation. Nous, on préfère que vous sachiez exactement à quoi vous attendre.</p>
     </div>
     {trust_list_html()}
     <div class="center" style="margin-top:34px"><a class="btn btn-outline" href="/a-propos/">En savoir plus sur nous</a></div>
@@ -1199,7 +1216,7 @@ def build_home():
     out += realisations_section(cls="alt")
     out += reviews_section("alt" if not B.REALISATIONS else "")
     out += guides_teaser(GUIDES[:3])
-    out += faq_block(HOME_FAQ, "Avant d'appeler : vos questions", cls="alt")
+    out += faq_block(HOME_FAQ, "Les questions qu'on nous pose souvent", cls="alt")
     out += contact_section(path)
     out += footer()
     write_page(path, out, "1.0")
@@ -1323,8 +1340,8 @@ def charter_section(cls=""):
   <div class="wrap">
     <div class="sec-head">
       <div class="pill pill-lav sec-badge">{svc_icon("shield", 15)}Entreprise de confiance</div>
-      <h2>Notre charte de confiance</h2>
-      <p>Le dépannage d'urgence a mauvaise réputation. Nous avons choisi de faire l'inverse, et de l'écrire noir sur blanc.</p>
+      <h2>Nos engagements, noir sur blanc</h2>
+      <p>Le dépannage a parfois mauvaise réputation. Nous, on préfère que vous sachiez exactement à quoi vous attendre.</p>
     </div>
     {trust_list_html()}
     <div class="center" style="margin-top:34px"><a class="btn btn-outline" href="/a-propos/">En savoir plus sur nous</a></div>
@@ -1347,6 +1364,7 @@ def city_hero(c, crumbs):
       <span class="sub">Appel direct, disponible 24/7</span>
     </a>
     <button type="button" class="hero-devis svc-quote" data-service="Plombier {esc(c["a"])}">Ou demandez un devis gratuit</button>
+    <p class="hero-note">On décroche nous-mêmes, promis !</p>
     <div class="hero-checks">
       <div class="check-row"><span class="check-circle gr">✓</span>Diagnostic gratuit</div>
       <div class="check-row"><span class="check-circle gr">✓</span>Prix annoncé à l'avance</div>
@@ -1382,6 +1400,7 @@ def build_city(c):
     lead = "Fuite d'eau, débouchage, chauffe-eau, canalisation, installation sanitaire : un artisan plombier intervient <b>%s 24h/24 et 7j/7</b>, avec un prix annoncé avant de partir." % c["a"]
     out += city_hero(c, crumbs)
     out += insurers_section("ins-top")
+    out += artisan_word()
     out += trust_marquee()
     out += urgent_band()
     near_html = "".join('<a class="chip" href="%s">Plombier %s <span class="d">%s</span></a>' % (city_path(n), esc(n["name"]), delay_label(n)) for n in near)
@@ -1417,15 +1436,14 @@ def build_city(c):
   <div class="wrap">
     <div class="sec-head">
       <div class="pill pill-purple sec-badge">Prestations</div>
-      <h2>Nos services de plombier {c["a"]}</h2>
+      <h2>Ce qu'on fait pour vous {c["a"]}</h2>
     </div>
     {services_grid(c)}
   </div>
 </section>
 """
-    out += artisan_word()
     out += pricing_section()
-    out += '<div class="alt" style="padding:0 0 10px"><div class="wrap">%s</div></div>' % stats_block()
+    out += promises_block()
     out += charter_section()
     out += guarantees_section("alt")
     out += process_section()
@@ -1636,7 +1654,7 @@ def build_about():
     <p>Nous connaissons les installations du secteur : maisons de village aux canalisations anciennes, villas avec réseaux enterrés jusqu'au portail, résidences secondaires du massif des Maures, appartements de Draguignan aux colonnes communes. Et nous connaissons l'eau de la région, souvent calcaire, qui use les chauffe-eau et la robinetterie.</p>
     <h2>Pourquoi un artisan local change tout</h2>
     <p>Quand vous cherchez « plombier urgence » sur internet, beaucoup de numéros mènent à des plateformes nationales qui revendent votre appel à un intervenant parfois éloigné, avec des prix difficiles à prévoir. Avec nous, vous appelez directement le plombier qui va intervenir. Il connaît le secteur, il est proche, et il a tout intérêt à bien faire : sa réputation se joue ici, auprès de vos voisins.</p>
-    <h2>Notre charte de confiance</h2>
+    <h2>Nos engagements, noir sur blanc</h2>
   </div>
   <div class="wrap" style="margin-top:20px">{trust_list_html()}</div>
 </section>
@@ -1750,7 +1768,7 @@ def build_merci():
     out += f"""<section class="page-hero"><div class="wrap merci">
   <div class="merci-icon">✓</div>
   <h1>Merci, on a bien reçu votre demande</h1>
-  <p class="lead">Un plombier de {B.NAME} vous rappelle rapidement (sous 1 h en journée). <b>Pour une urgence, n'attendez pas : appelez directement le {B.PHONE}.</b></p>
+  <p class="lead">On vous rappelle très vite, nous-mêmes (en général dans l\'heure en journée). <b>Pour une urgence, n'attendez pas : appelez directement le {B.PHONE}.</b></p>
   <div class="actions"><a href="tel:{B.PHONE_TEL}" class="btn btn-orange">{phone_icon(18, True)} {B.PHONE}</a><a href="/" class="btn btn-ghost">Retour à l'accueil</a></div>
 </div></section>
 <section><div class="wrap text-block prose">
