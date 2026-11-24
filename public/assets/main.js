@@ -107,7 +107,7 @@ function gtagReportConversion_Formulaire(url) {
     });
   }
 
-  /* Formulaires de devis (Netlify Forms, envoi en arrière-plan puis page merci) */
+  /* Formulaires de devis : envoi par FormSubmit (e-mail direct), en arrière-plan, puis page merci */
   document.querySelectorAll('form.quote').forEach(function(form){
     form.addEventListener('submit', function(e){
       e.preventDefault();
@@ -116,15 +116,17 @@ function gtagReportConversion_Formulaire(url) {
       var original = btn.textContent;
       btn.disabled = true;
       btn.textContent = 'Envoi en cours…';
-      var body = new URLSearchParams(new FormData(form)).toString();
-      fetch('/', {
+      var url = form.getAttribute('action').replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      fetch(url, {
         method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: body
+        headers: {'Accept': 'application/json'},
+        body: new FormData(form)
       }).then(function(res){
-        if(!res.ok){ throw new Error(res.status); }
+        return res.json().catch(function(){ return {}; }).then(function(data){
+          if(!res.ok || String(data.success) === 'false'){ throw new Error(res.status); }
+        });
+      }).then(function(){
         btn.textContent = 'Demande envoyée ✓';
-        btn.style.background = '#22a559';
         window.location.href = '/merci/';
       }).catch(function(){
         btn.disabled = false;
