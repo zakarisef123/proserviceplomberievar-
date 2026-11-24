@@ -220,3 +220,108 @@ CITY_BY_SLUG = {c["slug"]: c for c in CITIES}
 for _c in CITIES:
     for _k in ("intro", "context"):
         _c[_k] = _c[_k].replace("{delai}", "environ %d minutes" % _c["delay"])
+
+TRADE = "plombier"
+CONTEXTS = {
+    "littoral": [
+        "{a}, beaucoup de logements sont des résidences secondaires ou des villas avec piscine et arrosage automatique : une fuite peut couler des semaines avant d'être découverte. Nous intervenons aussi bien pour la recherche de fuite que pour remettre en route un chauffe-eau à l'arrivée des vacances.",
+        "Sur le littoral, l'eau est calcaire et les installations travaillent fort en été. {a}, nous remplaçons souvent des chauffe-eau entartrés, des robinetteries usées et des flexibles fatigués, et nous débouchons les canalisations des appartements et locations saisonnières.",
+        "{a}, entre appartements de vacances, villas et maisons de famille, nos interventions vont de la fuite sous évier au dégât des eaux entre voisins. Pour les propriétaires absents, nous pouvons intervenir en lien avec un gardien ou une agence, avec photos et facture à l'appui.",
+    ],
+    "ville": [
+        "{a}, beaucoup de logements sont en immeuble, avec des colonnes d'eau et d'évacuation communes : un bouchon ou une fuite chez un voisin peut vite toucher plusieurs appartements. Nous localisons l'origine et fournissons le rapport utile au syndic et aux assureurs.",
+        "Entre immeubles anciens du centre et quartiers résidentiels, les installations {de} sont très variées. Nous intervenons sur les canalisations vieillissantes, les chauffe-eau de petite capacité des appartements et les WC bouchés, à toute heure.",
+        "{a}, les dégâts des eaux en copropriété sont fréquents. Nous recherchons la fuite sans casse inutile, réparons et remettons les justificatifs demandés pour le constat amiable et l'assurance.",
+    ],
+    "rural": [
+        "{a}, beaucoup de maisons sont anciennes, en pierre, parfois isolées, avec un assainissement individuel et des canalisations qui ont vécu. En hiver, le gel peut faire éclater un tuyau exposé : coupez l'eau au compteur et appelez-nous, nous intervenons même loin du village.",
+        "Dans le Haut-Var, l'eau est souvent calcaire et les réseaux longs. {a}, nous intervenons pour des fuites enterrées, des chauffe-eau entartrés et des évacuations bouchées dans les maisons de village comme dans les fermes et résidences secondaires.",
+    ],
+    "plaine": [
+        "{a}, le parc mêle maisons de village anciennes et lotissements plus récents, avec des réseaux d'eau enterrés jusqu'au portail : recherches de fuite après compteur, remplacements de chauffe-eau et débouchages font partie de nos interventions courantes.",
+        "L'eau est calcaire dans le secteur {de} : les chauffe-eau s'entartrent et la robinetterie s'use plus vite. Nous dépannons, remplaçons et conseillons sur l'entretien, en plus des urgences de fuite et de débouchage.",
+        "{a}, nous intervenons dans le centre ancien comme dans les quartiers pavillonnaires et les mas en périphérie : fuites, WC bouchés, chauffe-eau en panne ou rénovation de salle de bain, avec un prix annoncé avant de partir.",
+    ],
+}
+
+
+# ---------------------------------------------------------------- les 153 communes du Var
+# Les 29 communes ci-dessus ont des textes écrits à la main. Les autres communes du Var
+# (data_communes_var.py) reçoivent une page d'accueil locale avec des textes construits à partir
+# de leur secteur, de leur taille et de leurs voisines. Délais estimés : à confirmer.
+from data_communes_var import COMMUNES_VAR  # noqa: E402
+
+SECTORS = {
+    "dracenie": ("la Dracénie", "de la Dracénie", "autour de Draguignan, de la plaine de l'Argens aux villages perchés du Haut-Var"),
+    "coeur-du-var": ("le Cœur du Var", "du Cœur du Var", "dans la plaine des Maures et la vallée de l'Aille, le long de l'A8 et de la DN7"),
+    "golfe": ("le golfe de Saint-Tropez", "du golfe de Saint-Tropez", "entre les villages perchés des Maures et les stations balnéaires du golfe"),
+    "esterel": ("l'agglomération Estérel Côte d'Azur", "de l'agglomération Estérel Côte d'Azur", "entre la basse vallée de l'Argens et le massif de l'Estérel"),
+    "maures-littoral": ("le secteur Méditerranée Porte des Maures", "du secteur Méditerranée Porte des Maures", "entre les plages et le massif des Maures, de La Londe au Lavandou"),
+    "toulon": ("la métropole toulonnaise", "de la métropole toulonnaise", "autour de la rade de Toulon, entre littoral, collines et plaine de La Crau"),
+    "gapeau": ("la vallée du Gapeau", "de la vallée du Gapeau", "entre Toulon et Cuers, au pied des collines de Solliès"),
+    "sud-sainte-baume": ("le Sud Sainte-Baume", "du Sud Sainte-Baume", "entre le littoral de Bandol et Sanary et les villages du Castellet et du Beausset"),
+    "provence-verte": ("la Provence Verte", "de la Provence Verte", "autour de Brignoles et Saint-Maximin, entre vignes, forêts et collines"),
+    "sainte-baume-nord": ("le pied de la Sainte-Baume", "du pied de la Sainte-Baume", "dans la haute vallée de l'Huveaune, à la limite des Bouches-du-Rhône"),
+    "provence-verdon": ("le Haut-Var, côté Provence Verdon", "du Haut-Var, côté Provence Verdon", "sur les plateaux et dans les villages ruraux entre Barjols et Rians"),
+    "lacs-verdon": ("le secteur des lacs et gorges du Verdon", "du secteur des lacs et gorges du Verdon", "du lac de Sainte-Croix aux plateaux de l'Artuby"),
+    "verdon-durance": ("la vallée du Verdon et de la Durance", "de la vallée du Verdon et de la Durance", "à la limite des Alpes-de-Haute-Provence"),
+    "fayence": ("le pays de Fayence", "du pays de Fayence", "dans les villages perchés entre l'Estérel et les premiers plateaux, autour du lac de Saint-Cassien"),
+}
+SECTOR_KIND = {"golfe": "littoral", "esterel": "littoral", "maures-littoral": "littoral", "sud-sainte-baume": "littoral",
+               "toulon": "ville", "fayence": "rural", "provence-verdon": "rural", "lacs-verdon": "rural",
+               "verdon-durance": "rural", "sainte-baume-nord": "plaine", "provence-verte": "plaine",
+               "gapeau": "plaine", "coeur-du-var": "plaine", "dracenie": "plaine"}
+
+
+def _pop(n):
+    n = int(round(n, -2)) if n >= 1000 else int(round(n, -1))
+    return "{:,}".format(n).replace(",", " ")
+
+
+def _intro(r, i):
+    lab, lab_de, desc = SECTORS[r["sector"]]
+    p = _pop(r["pop"])
+    if r["pop"] >= 15000:
+        first = [
+            "%s, avec ses quelque %s habitants, est l'une des principales villes %s. Nous y intervenons 24h/24 et 7j/7, en centre-ville comme dans les quartiers résidentiels." % (r["name"], p, lab_de),
+            "Avec environ %s habitants, %s est l'une des grandes communes du Var. Un artisan %s s'y déplace jour et nuit, week-ends et jours fériés compris." % (p, r["name"], TRADE),
+        ][i % 2]
+    elif r["pop"] >= 3000:
+        first = [
+            "%s (%s), commune %s d'environ %s habitants, fait partie de notre zone d'intervention, jour et nuit, 7j/7." % (r["name"], r["cp"], lab_de, p),
+            "Nous intervenons %s (%s), commune d'environ %s habitants, pour les urgences comme pour les travaux planifiés, 24h/24 et 7j/7." % (r["a"], r["cp"], p),
+        ][i % 2]
+    else:
+        first = [
+            "Même dans un village comme %s (environ %s habitants), vous joignez directement un artisan %s du Var. Nous intervenons dans le village et les hameaux alentour, 24h/24 et 7j/7." % (r["name"], p, TRADE),
+            "%s, petite commune %s d'environ %s habitants, fait partie de notre zone d'intervention. Village, hameaux ou maisons isolées : nous nous déplaçons jour et nuit." % (r["name"], lab_de, p),
+        ][i % 2]
+    where = ("La commune se trouve à environ %d km de notre base de Vidauban, dans %s, %s." % (r["km"], lab, desc)) if r["km"] >= 3 else ""
+    return (first + " " + where).strip()
+
+
+def _context(r, i):
+    opts = CONTEXTS[SECTOR_KIND[r["sector"]]]
+    t = opts[i % len(opts)].format(a=r["a"], de=r["de"], name=r["name"])
+    return t[0].upper() + t[1:]
+
+
+_HAND = {c["slug"] for c in CITIES}
+EXTRA_CITIES = []
+for _i, _r in enumerate(COMMUNES_VAR):
+    if _r["slug"] in _HAND:
+        continue
+    EXTRA_CITIES.append({
+        "name": _r["name"], "slug": _r["slug"], "cp": _r["cp"], "a": _r["a"], "de": _r["de"],
+        "delay": _r["delay"], "core": False, "extra": True, "estimated": True,
+        "sector": _r["sector"], "pop": _r["pop"], "km": _r["km"],
+        "intro": _intro(_r, _i), "context": _context(_r, _i),
+        "near": _r["near"][:6],
+    })
+_SECT = {r["slug"]: r["sector"] for r in COMMUNES_VAR}
+for _c in CITIES:
+    _c.setdefault("sector", _SECT.get(_c["slug"], "dracenie"))
+# Toutes les communes (pages d'accueil locales) ; CITIES reste la liste des 29 communes
+# qui ont en plus une page par prestation.
+ALL_CITIES = CITIES + EXTRA_CITIES
+CITY_BY_SLUG = {c["slug"]: c for c in ALL_CITIES}
